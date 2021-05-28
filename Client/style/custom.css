@@ -1,0 +1,17 @@
+.loginLogo img{
+    max-width: 150px !important;
+    margin: 0 30px;
+}
+
+.loginLogo{
+    text-align: center;
+}
+
+.loginTitle{
+    margin-bottom: 50px;
+}
+
+#loginBody{
+    margin-top: 10%;
+}
+
