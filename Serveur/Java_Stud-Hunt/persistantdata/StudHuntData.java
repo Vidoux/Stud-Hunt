@@ -15,10 +15,6 @@ import studhunt.UserTypes;
 public class StudHuntData implements PersistentStudHunt {
 	Connection dataBase;
 	
-	public static void main(String[] args) {
-		System.out.println(UserTypes.COMPANY);
-	}
-	
 	static {
 		StudHunt.getInstance().setData(new StudHuntData());
 	}
@@ -52,7 +48,7 @@ public class StudHuntData implements PersistentStudHunt {
 		String sqlStatement = "SELECT * FROM APP_USER WHERE idUser = '" + login + "' AND password = '" + password + "'";
 		PreparedStatement query;
 		ResultSet response;
-		ConnexionInfos connectInfos = null;
+		ConnexionInfos connectInfos = new ConnexionInfos(false, null);
 		try {
 			synchronized (dataBase) {
 				query = dataBase.prepareStatement(sqlStatement);
