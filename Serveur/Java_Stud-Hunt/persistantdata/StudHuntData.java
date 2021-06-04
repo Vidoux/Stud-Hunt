@@ -2,14 +2,22 @@ package persistantdata;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import studhunt.ConnexionInfos;
 import studhunt.PersistentStudHunt;
 import studhunt.StudHunt;
+import studhunt.UserTypes;
 
 public class StudHuntData implements PersistentStudHunt {
 	Connection dataBase;
+	
+	public static void main(String[] args) {
+		System.out.println(UserTypes.COMPANY);
+	}
 	
 	static {
 		StudHunt.getInstance().setData(new StudHuntData());
@@ -38,5 +46,52 @@ public class StudHuntData implements PersistentStudHunt {
 		}
 	}
 	
-	//Fonctions de communication en SQL
+	@Override
+	public ConnexionInfos getUser(String login, String password) {
+		System.out.println("Finding user " + login + " in the database");
+		String sqlStatement = "SELECT * FROM APP_USER WHERE idUser = '" + login + "' AND password = '" + password + "'";
+		PreparedStatement query;
+		ResultSet response;
+		ConnexionInfos connectInfos = null;
+		try {
+			synchronized (dataBase) {
+				query = dataBase.prepareStatement(sqlStatement);
+				response = query.executeQuery();
+			}
+			System.out.println("Statement passed successfully");
+			if (response.next()) {
+				System.out.println("Found user " + login + " (Name : " + response.getString("name") + ")");
+				UserTypes user = getUserType(login);
+				connectInfos = new ConnexionInfos(true, user);
+			}
+			query.close();
+			response.close();
+		} catch (SQLException e) {
+			System.err.println("An error occured in the following SQL Statement : " + sqlStatement);
+		}
+		return connectInfos;
+	}
+
+	private UserTypes getUserType(String login) {
+		for (UserTypes user : UserTypes.values()) {
+			String sqlStatement = "SELECT * FROM " + user + " WHERE idUser = '" + login + "'";
+			PreparedStatement query;
+			ResultSet response;
+			try {
+				synchronized (dataBase) {
+					query = dataBase.prepareStatement(sqlStatement);
+					response = query.executeQuery();
+				}
+				System.out.println("Statement passed successfully");
+				if (response.next()) {
+					System.out.println("The student is a " + user);
+					return user;
+				}
+			} catch (SQLException e) {
+				continue;
+			}
+		}
+		System.err.println("Could not find the user type");
+		return null;
+	}
 }

@@ -1,5 +1,6 @@
 package studhunt;
 
 public interface PersistentStudHunt {
-	// Lister ici les méthodes de communication sql
+
+	ConnexionInfos getUser(String login, String password);
 }
