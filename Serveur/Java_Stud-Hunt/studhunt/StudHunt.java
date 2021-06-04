@@ -17,5 +17,7 @@ public class StudHunt {
 		if (this.data == null) this.data = data;
 	}
 	
-	//Mêmes fonctions que celles de SQLInterface
+	public ConnexionInfos getUser(String login, String password) {
+		return data.getUser(login, password);
+	}
 }
