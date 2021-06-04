@@ -16,7 +16,7 @@ import javax.servlet.annotation.*;
 /**
  * Servlet de gestion de l'Authentification par login mot de passe
  */
-@WebServlet("/login_frm")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
 
