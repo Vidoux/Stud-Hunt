@@ -2,19 +2,19 @@ package studhunt;
 
 public class ConnexionInfos {
     private boolean validPassword;
-    private UserTypes user;
+    private UserTypes userType;
     
     public ConnexionInfos(boolean validPassword, UserTypes user) {
     	this.validPassword = validPassword;
-    	this.user = user;
+    	this.userType = user;
     }
 
 
     public boolean isValidPassword() {
-        return validPassword && user!=null;
+        return validPassword && userType!=null;
     }
 
-    public UserTypes getUser() {
-        return user;
+    public UserTypes getUserType() {
+        return userType;
     }
 }

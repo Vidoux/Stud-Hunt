@@ -1,6 +1,7 @@
 package services;
 
 
+import persistantdata.User;
 import studhunt.ConnexionInfos;
 import studhunt.StudHunt;
 import studhunt.UserTypes;
@@ -27,36 +28,25 @@ public class LoginServlet extends HttpServlet {
         ConnexionInfos loginStatus = StudHunt.getInstance().getUser(login, password);
 
         String message;
+        User user = new User(login, password, loginStatus.getUserType());
 
-        if(loginStatus.isValidPassword()){
-            UserTypes user = loginStatus.getUser();
-        }else{
+        if(!loginStatus.isValidPassword()){
             message = "Utilisateur non reconnu...";
             sendErrorPage(request,response, message);
         }
 
-        if()
 
 
-        // On vérifie d'abord l'existence de l'utilisateur puis qu'il est bibliothécaire
-        if(user != null){
-            Object userType = user.data()[3];
-            System.out.println(userType.toString());
+        //Création de la variable session
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
 
-            if(userType.toString().equals("LIBRARIAN")){
-                //Connexion autorisée
-                System.out.println("Logged in");
-                RequestDispatcher disp = request.getRequestDispatcher("/doc_list");
-                disp.forward(request, response);
+        if(user.getUserType().compareTo(UserTypes.COMPANY) == 0){
+            sendEnterpriseMainPage();
+        }
 
-            }else{
-                message = "Vous n'êtes pas autorisé à accéder à cette ressource";
-                sendErrorPage(request, response, message);
-            }
-
-        }else{
-            message = "Utilisateur non reconnu...";
-            sendErrorPage(request,response, message);
+        if(user.getUserType().compareTo(UserTypes.STUDENT) == 0){
+            sendStudentMainPage();
         }
 
     }
@@ -69,6 +59,14 @@ public class LoginServlet extends HttpServlet {
         request.setAttribute("backDestination", "./login_frm");
         request.setAttribute("errorMessage", "Echec de la connexion, "+message);
         this.getServletContext().getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+    }
+
+    private void sendStudentMainPage(){
+
+    }
+
+    private void sendEnterpriseMainPage(){
+
     }
 
     public void destroy() {
