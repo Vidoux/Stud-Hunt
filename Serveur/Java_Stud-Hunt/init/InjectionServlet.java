@@ -12,7 +12,7 @@ public class InjectionServlet extends HttpServlet {
 	public void init() throws ServletException {
 
 		try {
-			//Injection de la dépendance vers MediatekData
+			//Injection de la dépendance vers StudHuntData
 			Class.forName("persistantdata.StudHuntData");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
