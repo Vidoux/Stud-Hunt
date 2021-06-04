@@ -17,5 +17,5 @@ public class StudHunt {
 		if (this.data == null) this.data = data;
 	}
 	
-	//Mêmes fonctions que celles de SQLInterface
+	//Mêmes fonctions que celles de StudHuntData
 }
