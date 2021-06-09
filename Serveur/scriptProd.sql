@@ -26,101 +26,133 @@ DROP TABLE concern CASCADE CONSTRAINTS PURGE
 /
 DROP TABLE is_part_of CASCADE CONSTRAINTS PURGE
 /
+
+DROP SEQUENCE id_User_Seq
+/
+DROP SEQUENCE id_Project_seq
+/
+DROP SEQUENCE id_CV_Seq
+/
+DROP SEQUENCE id_ProfilePicture_Seq
+/
+DROP SEQUENCE id_JobOffer_Seq
+/
+DROP SEQUENCE id_Industry_Seq
+/
+DROP SEQUENCE id_School_Seq
+/
+
+CREATE SEQUENCE id_User_Seq
+/
+CREATE SEQUENCE id_Project_seq
+/
+CREATE SEQUENCE id_CV_Seq
+/
+CREATE SEQUENCE id_ProfilePicture_Seq
+/
+CREATE SEQUENCE id_JobOffer_Seq
+/
+CREATE SEQUENCE id_Industry_Seq
+/
+CREATE SEQUENCE id_School_Seq
+/
+
+
 CREATE TABLE APP_USER(
-   idUser VARCHAR(30),
+   id_User INTEGER,
    name VARCHAR(20) NOT NULL,
    forname VARCHAR(20) NOT NULL,
    password VARCHAR(30) NOT NULL,
-   PRIMARY KEY(idUser)
+   PRIMARY KEY(id_User)
 );
 
 CREATE TABLE COMPANY(
-   idUser VARCHAR(30),
-   PRIMARY KEY(idUser),
-   FOREIGN KEY(idUser) REFERENCES APP_USER(idUser)
+   id_User INTEGER,
+   PRIMARY KEY(id_User),
+   FOREIGN KEY(id_User) REFERENCES APP_USER(id_User)
 );
 
 CREATE TABLE STUDENT(
-   idUser VARCHAR(30),
+   id_User INTEGER,
    apprenticeship NUMBER(1) NOT NULL,
    internship NUMBER(1) NOT NULL,
-   PRIMARY KEY(idUser),
-   FOREIGN KEY(idUser) REFERENCES APP_USER(idUser)
+   PRIMARY KEY(id_User),
+   FOREIGN KEY(id_User) REFERENCES APP_USER(id_User)
 );
 
 CREATE TABLE PROJECT(
-   Id_PROJECT COUNTER,
+   id_Project INTEGER,
    realisation_year DATE NOT NULL,
-   PRIMARY KEY(Id_PROJECT)
+   PRIMARY KEY(id_Project)
 );
 
 CREATE TABLE CV(
-   idTesttt VARCHAR(50),
-   idUser VARCHAR(30) NOT NULL,
-   PRIMARY KEY(idTesttt),
-   FOREIGN KEY(idUser) REFERENCES STUDENT(idUser)
+   id_CV INTEGER,
+   id_User INTEGER NOT NULL,
+   PRIMARY KEY(id_CV),
+   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User)
 );
 
 CREATE TABLE PROFILE_PICTURE(
-   Id_PROFILE_PICTURE COUNTER,
-   imageBlob ,
-   idUser VARCHAR(30) NOT NULL,
-   PRIMARY KEY(Id_PROFILE_PICTURE),
-   FOREIGN KEY(idUser) REFERENCES STUDENT(idUser)
+   id_ProfilePicture INTEGER,
+   imageBlob BLOB,
+   id_User INTEGER NOT NULL,
+   PRIMARY KEY(id_ProfilePicture),
+   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User)
 );
 
 CREATE TABLE JOB_OFFER(
-   Id_JOB_OFFER COUNTER,
-   offerType BYTE NOT NULL,
-   idUser VARCHAR(30) NOT NULL,
-   PRIMARY KEY(Id_JOB_OFFER),
-   FOREIGN KEY(idUser) REFERENCES COMPANY(idUser)
+   id_JobOffer INTEGER,
+   offerType INTEGER NOT NULL,
+   id_User INTEGER NOT NULL,
+   PRIMARY KEY(id_JobOffer),
+   FOREIGN KEY(id_User) REFERENCES COMPANY(id_User)
 );
 
 CREATE TABLE INDUSTRY(
-   Id_INDUSTRY COUNTER,
-   PRIMARY KEY(Id_INDUSTRY)
+   id_Industry INTEGER,
+   PRIMARY KEY(id_Industry)
 );
 
 CREATE TABLE SCHOOL(
-   Id_SCHOOL COUNTER,
-   PRIMARY KEY(Id_SCHOOL)
+   id_School INTEGER,
+   PRIMARY KEY(id_School)
 );
 
 CREATE TABLE ADMIN(
-   idUser VARCHAR(30),
-   PRIMARY KEY(idUser),
-   FOREIGN KEY(idUser) REFERENCES APP_USER(idUser)
+   id_User INTEGER,
+   PRIMARY KEY(id_User),
+   FOREIGN KEY(id_User) REFERENCES APP_USER(id_User)
 );
 
 CREATE TABLE Accomplish(
-   Id_PROJECT INT,
-   idUser VARCHAR(30) NOT NULL,
-   PRIMARY KEY(Id_PROJECT),
-   FOREIGN KEY(Id_PROJECT) REFERENCES PROJECT(Id_PROJECT),
-   FOREIGN KEY(idUser) REFERENCES STUDENT(idUser)
+   id_Project INTEGER,
+   id_User INTEGER NOT NULL,
+   PRIMARY KEY(id_Project),
+   FOREIGN KEY(id_Project) REFERENCES PROJECT(id_Project),
+   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User)
 );
 
 CREATE TABLE Asso_8(
-   idUser VARCHAR(30),
-   Id_INDUSTRY INT,
-   PRIMARY KEY(idUser, Id_INDUSTRY),
-   FOREIGN KEY(idUser) REFERENCES COMPANY(idUser),
-   FOREIGN KEY(Id_INDUSTRY) REFERENCES INDUSTRY(Id_INDUSTRY)
+   id_User INTEGER,
+   id_Industry INTEGER,
+   PRIMARY KEY(id_User, id_Industry),
+   FOREIGN KEY(id_User) REFERENCES COMPANY(id_User),
+   FOREIGN KEY(id_Industry) REFERENCES INDUSTRY(id_Industry)
 );
 
 CREATE TABLE concern(
-   idUser VARCHAR(30),
-   Id_INDUSTRY INT,
-   PRIMARY KEY(idUser, Id_INDUSTRY),
-   FOREIGN KEY(idUser) REFERENCES STUDENT(idUser),
-   FOREIGN KEY(Id_INDUSTRY) REFERENCES INDUSTRY(Id_INDUSTRY)
+   id_User INTEGER,
+   id_Industry INTEGER,
+   PRIMARY KEY(id_User, id_Industry),
+   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User),
+   FOREIGN KEY(id_Industry) REFERENCES INDUSTRY(id_Industry)
 );
 
 CREATE TABLE is_part_of(
-   idUser VARCHAR(30),
-   Id_SCHOOL INT,
-   PRIMARY KEY(idUser, Id_SCHOOL),
-   FOREIGN KEY(idUser) REFERENCES STUDENT(idUser),
-   FOREIGN KEY(Id_SCHOOL) REFERENCES SCHOOL(Id_SCHOOL)
+   id_User INTEGER,
+   id_School INTEGER,
+   PRIMARY KEY(id_User, id_School),
+   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User),
+   FOREIGN KEY(id_School) REFERENCES SCHOOL(id_School)
 );
