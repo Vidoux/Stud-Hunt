@@ -2,18 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <!-- You MUST include jQuery before Fomantic -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+	<script src="semantic/dist/semantic.min.js"></script>
     <link rel="stylesheet" href="style/custom.css">
     <title>Title</title>
 </head>
 
     <body id="loginBody">
+        <div class="ui stackable middle aligned grid">
+            <div class="two column row">
+                <div class="three wide centered column loginLogo">
+                    <img src="images/logo_titre.png" alt="logo">
+                </div>
+                <div class="thirteen wide column">
+                    <div class="ui center aligned container loginTitle">
+                        <h1 class="ui header">Authentification</h1>
+                        <h4 class="ui header">Veuillez vous connecter pour accéder à votre espace personnel</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="ui container segment small">
 
             <div class="ui stackable middle aligned grid">
                 <div class="two column row">
                     <div class="three wide centered column loginLogo">
-                        <img src="images/logo_titre.png">
+                        <img src="images/logo_titre.png" alt="logo">
                     </div>
                     <div class="thirteen wide column">
                         <div class="ui center aligned container loginTitle">
@@ -38,7 +54,7 @@
                         <input type="password" placeholder="mot de passe" name="password">
                     </div>
                     <div class="ui hidden divider"></div>
-                    <button class="big ui teal button" id="submitButton" type="submit">Connexion</button>
+                    <button class="big ui teal button blue" id="submitButton" type="submit">Connexion</button>
 
                 </div>
 
