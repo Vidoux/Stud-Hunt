@@ -2,5 +2,5 @@ package studhunt;
 
 public interface PersistentStudHunt {
 
-	ConnexionInfos getUser(String login, String password);
+	ConnexionInfos getUserConnection(String login, String password);
 }

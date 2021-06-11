@@ -43,12 +43,12 @@ public class StudHuntData implements PersistentStudHunt {
 	}
 	
 	@Override
-	public ConnexionInfos getUser(String login, String password) {
+	public ConnexionInfos getUserConnection(String login, String password) {
 		System.out.println("Finding user " + login + " in the database");
-		String sqlStatement = "SELECT * FROM APP_USER WHERE idUser = '" + login + "' AND password = '" + password + "'";
+		String sqlStatement = "SELECT * FROM APP_USER WHERE name = '" + login + "' AND password = '" + password + "'";
 		PreparedStatement query;
 		ResultSet response;
-		ConnexionInfos connectInfos = new ConnexionInfos(false, null);
+		ConnexionInfos connectInfos = new ConnexionInfos(false, null, null, null);
 		try {
 			synchronized (dataBase) {
 				query = dataBase.prepareStatement(sqlStatement);
@@ -57,8 +57,7 @@ public class StudHuntData implements PersistentStudHunt {
 			System.out.println("Statement passed successfully");
 			if (response.next()) {
 				System.out.println("Found user " + login + " (Name : " + response.getString("name") + ")");
-				UserTypes user = getUserType(login);
-				connectInfos = new ConnexionInfos(true, user);
+				connectInfos = new ConnexionInfos(true, getUserType(login), response.getString("name"), response.getString("forname"));
 			}
 			query.close();
 			response.close();
@@ -70,7 +69,7 @@ public class StudHuntData implements PersistentStudHunt {
 
 	private UserTypes getUserType(String login) {
 		for (UserTypes user : UserTypes.values()) {
-			String sqlStatement = "SELECT * FROM " + user + " WHERE idUser = '" + login + "'";
+			String sqlStatement = "SELECT * FROM " + user + " WHERE id_User = '" + login + "'";
 			PreparedStatement query;
 			ResultSet response;
 			try {

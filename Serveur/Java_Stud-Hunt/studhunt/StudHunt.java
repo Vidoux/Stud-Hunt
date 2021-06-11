@@ -17,7 +17,7 @@ public class StudHunt {
 		if (this.data == null) this.data = data;
 	}
 	
-	public ConnexionInfos getUser(String login, String password) {
-		return data.getUser(login, password);
+	public ConnexionInfos getUserConnection(String login, String password) {
+		return data.getUserConnection(login, password);
 	}
 }
