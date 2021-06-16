@@ -3,10 +3,14 @@ package studhunt;
 public class ConnexionInfos {
     private boolean validPassword;
     private UserTypes userType;
+    private String name;
+    private String forname;
     
-    public ConnexionInfos(boolean validPassword, UserTypes user) {
+    public ConnexionInfos(boolean validPassword, UserTypes user, String name, String forname) {
     	this.validPassword = validPassword;
     	this.userType = user;
+    	this.name = name;
+    	this.forname = forname;
     }
 
 
@@ -17,4 +21,9 @@ public class ConnexionInfos {
     public UserTypes getUserType() {
         return userType;
     }
+
+
+	public String getUser() {
+		return this.name + " " + this.forname;
+	}
 }
