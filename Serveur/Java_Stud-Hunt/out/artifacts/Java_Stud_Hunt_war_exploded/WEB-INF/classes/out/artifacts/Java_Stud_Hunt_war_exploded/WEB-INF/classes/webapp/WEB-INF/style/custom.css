@@ -1,0 +1,58 @@
+
+@media only screen and (min-width: 501px) {
+    /* tablettes et ordinateurs */
+
+    /*--------------------NAVIGATION------------------------*/
+    #desktopMenu{
+        visibility: visible;
+    }
+    #mobileMenu{
+        visibility: hidden;
+    }
+    /*------------------------------------------------------*/
+    /*-----------------------Login Page-------------------------------*/
+    .loginLogo img{
+        max-width: 150px !important;
+        margin: 0 30px;
+    }
+
+    .loginLogo{
+        text-align: center;
+    }
+
+    .loginTitle{
+        margin-bottom: 50px;
+    }
+    /*------------------------------------------------------*/
+
+    /*-----------------------Footer-------------------------------*/
+    footer{
+        background-color: #003d60;
+    }
+    /*------------------------------------------------------*/
+    #titrePage{
+        color: black
+    }
+
+    .mainContent{
+        margin-top: 70px;
+    }
+}
+
+
+#loginBody{
+    margin-top: 10%;
+}
+
+@media only screen and (max-width: 500px) {
+    /* smartphone */
+    /*---------------------NAVIGATION---------------------------------*/
+    #desktopMenu{
+        visibility: hidden;
+    }
+    #mobileMenu{
+        visibility: visible;
+    }
+    /*------------------------------------------------------*/
+}
+

@@ -15,6 +15,7 @@ public class InjectionServlet extends HttpServlet {
 			//Injection de la dépendance vers StudHuntData
 			Class.forName("persistantdata.StudHuntData");
 		} catch (ClassNotFoundException e) {
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 			e.printStackTrace();
 		}
 		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");

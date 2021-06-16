@@ -4,18 +4,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-    <link rel="stylesheet" href="style/custom.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/semantic/dist/semantic.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/custom.css">
+    <script src="${pageContext.request.contextPath}/semantic/dist/semantic.min.js"></script>
     <title>Title</title>
 </head>
 
 <body id="loginBody">
+
 <div class="ui container segment small">
 
     <div class="ui stackable middle aligned grid">
         <div class="two column row">
             <div class="three wide centered column loginLogo">
-                <img src="images/logo_titre.png">
+                <img src="${pageContext.request.contextPath}/img/logo_titre.png">
             </div>
             <div class="thirteen wide column">
                 <div class="ui center aligned container loginTitle">
@@ -47,6 +51,9 @@
     </form>
 
 </div>
-</div>
+<div style="flex-grow:1"></div>
+
+<%@include file="footer.jsp"%>
 </body>
+<script src="${pageContext.request.contextPath}/scripts/mainScript.js"></script>
 </html>
