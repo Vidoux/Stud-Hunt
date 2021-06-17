@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/custom.css">
     <script src="${pageContext.request.contextPath}/semantic/dist/semantic.min.js"></script>
-    <title>Title</title>
+    <title>StudHunt-login</title>
 </head>
 
 <body id="loginBody">
