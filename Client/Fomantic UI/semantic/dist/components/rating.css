@@ -91,22 +91,22 @@
 -------------- */
 
 .ui.primary.rating .active.icon {
-  color: #54C8FF;
+  color: #4A95BC;
   text-shadow: 0px -1px 0px #FF1493, -1px 0px 0px #FF1493, 0px 1px 0px #FF1493, 1px 0px 0px #FF1493;
 }
 .ui.primary.rating .icon.selected,
 .ui.primary.rating .icon.selected.active,
 .ui.primary.rating .icon.selected.partial.active {
   background: inherit;
-  color: #21b8ff;
+  color: #347a9f;
   text-shadow: 0px -1px 0px #fa0087, -1px 0px 0px #fa0087, 0px 1px 0px #fa0087, 1px 0px 0px #fa0087;
   -webkit-text-stroke: unset;
   background-clip: unset;
 }
 .ui.primary.rating .icon.partial.active {
-  background: -webkit-gradient(linear, left top, right top, from(#54C8FF), to(rgba(0, 0, 0, 0.15)));
-  background: -webkit-linear-gradient(left, #54C8FF 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
-  background: linear-gradient(to right, #54C8FF 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
+  background: -webkit-gradient(linear, left top, right top, from(#4A95BC), to(rgba(0, 0, 0, 0.15)));
+  background: -webkit-linear-gradient(left, #4A95BC 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
+  background: linear-gradient(to right, #4A95BC 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
   text-shadow: none;
   -webkit-text-stroke: #FF1493 0.78px;
   -webkit-background-clip: text;
@@ -207,14 +207,14 @@
 }
 .ui.olive.rating .active.icon {
   color: #D9E778;
-  text-shadow: 0px -1px 0px #32CD32, -1px 0px 0px #32CD32, 0px 1px 0px #32CD32, 1px 0px 0px #32CD32;
+  text-shadow: 0px -1px 0px #AAAAAA, -1px 0px 0px #AAAAAA, 0px 1px 0px #AAAAAA, 1px 0px 0px #AAAAAA;
 }
 .ui.olive.rating .icon.selected,
 .ui.olive.rating .icon.selected.active,
 .ui.olive.rating .icon.selected.partial.active {
   background: inherit;
   color: #d2e745;
-  text-shadow: 0px -1px 0px #26bf26, -1px 0px 0px #26bf26, 0px 1px 0px #26bf26, 1px 0px 0px #26bf26;
+  text-shadow: 0px -1px 0px #9d9d9d, -1px 0px 0px #9d9d9d, 0px 1px 0px #9d9d9d, 1px 0px 0px #9d9d9d;
   -webkit-text-stroke: unset;
   background-clip: unset;
 }
@@ -223,7 +223,7 @@
   background: -webkit-linear-gradient(left, #D9E778 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
   background: linear-gradient(to right, #D9E778 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
   text-shadow: none;
-  -webkit-text-stroke: #32CD32 0.78px;
+  -webkit-text-stroke: #AAAAAA 0.78px;
   -webkit-background-clip: text;
           background-clip: text;
   color: transparent;
@@ -275,24 +275,24 @@
   color: transparent;
 }
 .ui.blue.rating .active.icon {
-  color: #54C8FF;
-  text-shadow: 0px -1px 0px #FFF, -1px 0px 0px #FFF, 0px 1px 0px #FFF, 1px 0px 0px #FFF;
+  color: #4A95BC;
+  text-shadow: 0px -1px 0px #023C5F, -1px 0px 0px #023C5F, 0px 1px 0px #023C5F, 1px 0px 0px #023C5F;
 }
 .ui.blue.rating .icon.selected,
 .ui.blue.rating .icon.selected.active,
 .ui.blue.rating .icon.selected.partial.active {
   background: inherit;
-  color: #21b8ff;
-  text-shadow: 0px -1px 0px #f2f2f2, -1px 0px 0px #f2f2f2, 0px 1px 0px #f2f2f2, 1px 0px 0px #f2f2f2;
+  color: #347a9f;
+  text-shadow: 0px -1px 0px #002d48, -1px 0px 0px #002d48, 0px 1px 0px #002d48, 1px 0px 0px #002d48;
   -webkit-text-stroke: unset;
   background-clip: unset;
 }
 .ui.blue.rating .icon.partial.active {
-  background: -webkit-gradient(linear, left top, right top, from(#54C8FF), to(rgba(0, 0, 0, 0.15)));
-  background: -webkit-linear-gradient(left, #54C8FF 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
-  background: linear-gradient(to right, #54C8FF 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
+  background: -webkit-gradient(linear, left top, right top, from(#4A95BC), to(rgba(0, 0, 0, 0.15)));
+  background: -webkit-linear-gradient(left, #4A95BC 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
+  background: linear-gradient(to right, #4A95BC 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
   text-shadow: none;
-  -webkit-text-stroke: #FFF 0.78px;
+  -webkit-text-stroke: #023C5F 0.78px;
   -webkit-background-clip: text;
           background-clip: text;
   color: transparent;

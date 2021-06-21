@@ -12,7 +12,7 @@
     <title>StudHunt-login</title>
 </head>
 
-<body id="loginBody">
+<body class="littleBody">
 
 <div class="ui container segment small">
 
@@ -44,7 +44,7 @@
                 <input type="password" placeholder="mot de passe" name="password">
             </div>
             <div class="ui hidden divider"></div>
-            <button class="big ui teal button" id="submitButton" type="submit">Connexion</button>
+            <button class="big ui blue button" id="submitButton" type="submit">Connexion</button>
 
         </div>
 

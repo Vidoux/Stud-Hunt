@@ -485,7 +485,7 @@
 }
 .ui.inverted.primary.toast,
 .ui.toast-container .toast-box > .inverted.primary.attached.progress .bar {
-  background-color: #54C8FF;
+  background-color: #4A95BC;
   color: rgba(0, 0, 0, 0.87);
 }
 .ui.secondary.toast {
@@ -525,7 +525,7 @@
   color: rgba(0, 0, 0, 0.87);
 }
 .ui.olive.toast {
-  background-color: #32CD32;
+  background-color: #AAAAAA;
   color: rgba(255, 255, 255, 0.9);
 }
 .ui.inverted.olive.toast,
@@ -552,12 +552,12 @@
   color: rgba(0, 0, 0, 0.87);
 }
 .ui.blue.toast {
-  background-color: #FFF;
+  background-color: #023C5F;
   color: rgba(255, 255, 255, 0.9);
 }
 .ui.inverted.blue.toast,
 .ui.toast-container .toast-box > .inverted.blue.attached.progress .bar {
-  background-color: #54C8FF;
+  background-color: #4A95BC;
   color: rgba(0, 0, 0, 0.87);
 }
 .ui.violet.toast {

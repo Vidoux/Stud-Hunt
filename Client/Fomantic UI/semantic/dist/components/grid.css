@@ -1362,7 +1362,7 @@
 .ui.grid > .olive.row,
 .ui.grid > .olive.column,
 .ui.grid > .row > .olive.column {
-  background-color: #32CD32;
+  background-color: #AAAAAA;
   color: #FFFFFF;
 }
 .ui.grid > .green.row,
@@ -1380,7 +1380,7 @@
 .ui.grid > .blue.row,
 .ui.grid > .blue.column,
 .ui.grid > .row > .blue.column {
-  background-color: #FFF;
+  background-color: #023C5F;
   color: #FFFFFF;
 }
 .ui.grid > .violet.row,

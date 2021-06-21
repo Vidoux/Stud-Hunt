@@ -495,19 +495,19 @@
 }
 .ui.blue.message {
   background-color: #DFF0FF;
-  color: #FFF;
+  color: #023C5F;
 }
 .ui.blue.message,
 .ui.attached.blue.message {
-  -webkit-box-shadow: 0 0 0 1px #FFF inset, 0 0 0 0 rgba(0, 0, 0, 0);
-          box-shadow: 0 0 0 1px #FFF inset, 0 0 0 0 rgba(0, 0, 0, 0);
+  -webkit-box-shadow: 0 0 0 1px #023C5F inset, 0 0 0 0 rgba(0, 0, 0, 0);
+          box-shadow: 0 0 0 1px #023C5F inset, 0 0 0 0 rgba(0, 0, 0, 0);
 }
 .ui.floating.blue.message {
-  -webkit-box-shadow: 0 0 0 1px #FFF inset, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);
-          box-shadow: 0 0 0 1px #FFF inset, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);
+  -webkit-box-shadow: 0 0 0 1px #023C5F inset, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);
+          box-shadow: 0 0 0 1px #023C5F inset, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);
 }
 .ui.blue.message .header {
-  color: #f2f2f2;
+  color: #012c46;
 }
 .ui.violet.message {
   background-color: #EAE7FF;

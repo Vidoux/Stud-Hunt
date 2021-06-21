@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<footer class="ui bottom attached inverted vertical footer segment">
+<footer class="ui blue bottom attached inverted vertical footer segment">
     <div class="ui container">
-        <div class="ui stackable inverted divided equal width height stackable grid">
+        <div class="ui stackable divided equal width height stackable grid">
             <div class="column">
                 <h4 class="ui inverted header">Réalisé par:</h4>
                 <div class="ui list">
