@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Servlet d'enregistrement d'un nouvel utilisateur
@@ -23,35 +25,32 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String password = request.getParameter("password");
-        String login = request.getParameter("login");
-        System.out.println(login);
-        System.out.println(password);
-        ConnexionInfos loginStatus = StudHunt.getInstance().getUserConnection(login, password);
+        String email = request.getParameter("email");
+        String prenom = request.getParameter("prenom");
+        String nom = request.getParameter("nom");
+        String type = request.getParameter("type");
 
-        System.out.println(loginStatus.toString());
+        if(password != null && email != null && prenom != null && nom != null && type != null){
+            try {
+                if(type.equals("student")){
+                    List<Object> infos = new ArrayList<>();
+                    infos.add(0);
+                    infos.add(0);
+                    StudHunt.getInstance().createUser(email, nom, prenom, password, UserTypes.STUDENT, infos);
+                }else{
+                    StudHunt.getInstance().createUser(email, nom, prenom, password, UserTypes.COMPANY, null);
+                }
+            }catch(Exception e) {
+                sendErrorPage(request, response, "error while creating the user in the database, please retry");
+            }
 
-        String message;
-        User user = new User(login, password, loginStatus.getUserType());
-
-
-        if(!loginStatus.isValidPassword()){
-            message = "Utilisateur non reconnu...";
-            sendErrorPage(request,response, message);
+        }else{
+            sendErrorPage(request, response, "missing information to register the user");
         }
 
 
 
-        //Création de la variable session
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
 
-        if(user.getUserType().compareTo(UserTypes.COMPANY) == 0){
-            sendEnterpriseMainPage();
-        }
-
-        if(user.getUserType().compareTo(UserTypes.STUDENT) == 0){
-            sendStudentMainPage();
-        }
 
     }
 

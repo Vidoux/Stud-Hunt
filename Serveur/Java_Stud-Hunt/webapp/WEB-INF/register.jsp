@@ -34,39 +34,43 @@
 <form method="post" action="./register">
     <div class="ui form container segment center aligned">
         <h3>Informations de création du compte</h3>
-
-        <div class="inline fields">
-            <label>adresse email (login de connexion)</label>
-            <input type="email" placeholder="xxxxx@mail.fr" name="email">
-        </div>
-
-        <div class="inline fields">
-            <label>nom</label>
-            <input type="text" placeholder="nom" name="nom">
-        </div>
-        <div class="inline fields">
-            <label>prénom</label>
-            <input type="text" placeholder="prénom" name="prenom">
-        </div>
-        <div class="grouped fields">
-            <label>Vous êtes: </label>
+        <div class="inline three fields">
             <div class="field">
-                <div class="ui slider checkbox">
-                    <input type="radio" name="type">
-                    <label>Une Entreprise</label>
-                </div>
+                <label>prénom</label>
+                <input type="text" placeholder="prénom" name="prenom">
             </div>
             <div class="field">
-                <div class="ui slider checkbox">
-                    <input type="radio" name="type">
-                    <label>Un Étudiant</label>
+                <label>nom</label>
+                <input type="text" placeholder="nom" name="nom">
+            </div>
+            <div class="grouped fields">
+                <label>Vous êtes: </label>
+                <div class="field">
+                    <div class="ui slider checkbox">
+                        <input type="radio" name="type" value="company">
+                        <label>Une Entreprise</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui slider checkbox">
+                        <input type="radio" name="type" value="student">
+                        <label>Un Étudiant</label>
+                    </div>
                 </div>
             </div>
+
         </div>
-        <div class="inline fields">
-            <label>mot de passe</label>
-            <input type="password" name="password">
+        <div class="inline two fields">
+            <div class="field">
+                <label>adresse email (login de connexion)</label>
+                <input type="email" placeholder="xxxxx@mail.fr" name="email">
+            </div>
+            <div class="field">
+                <label>mot de passe</label>
+                <input type="password" name="password">
+            </div>
         </div>
+
         <button class="big ui blue button" id="submitButton" type="submit">Connexion</button>
     </div>
 
