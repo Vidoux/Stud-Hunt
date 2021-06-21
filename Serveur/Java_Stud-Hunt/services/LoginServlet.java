@@ -28,11 +28,12 @@ public class LoginServlet extends HttpServlet {
         System.out.println(login);
         System.out.println(password);
         ConnexionInfos loginStatus = StudHunt.getInstance().getUserConnection(login, password);
-        System.out.println(loginStatus);
 
+        System.out.println(loginStatus.toString());
 
         String message;
         User user = new User(login, password, loginStatus.getUserType());
+
 
         if(!loginStatus.isValidPassword()){
             message = "Utilisateur non reconnu...";

@@ -26,4 +26,14 @@ public class ConnexionInfos {
 	public String getUser() {
 		return this.name + " " + this.forname;
 	}
+
+    @Override
+    public String toString() {
+        return "ConnexionInfos{" +
+                "validPassword=" + validPassword +
+                ", userType=" + userType +
+                ", name='" + name + '\'' +
+                ", forname='" + forname + '\'' +
+                '}';
+    }
 }

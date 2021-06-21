@@ -45,7 +45,7 @@ public class StudHuntData implements PersistentStudHunt {
 	@Override
 	public ConnexionInfos getUserConnection(String login, String password) {
 		System.out.println("Finding user " + login + " in the database");
-		String sqlStatement = "SELECT * FROM APP_USER WHERE name = '" + login + "' AND password = '" + password + "'";
+		String sqlStatement = "SELECT * FROM APP_USER WHERE name = '" + login + "' AND password = '" + password + "'" ;
 		PreparedStatement query;
 		ResultSet response;
 		ConnexionInfos connectInfos = new ConnexionInfos(false, null, null, null);
