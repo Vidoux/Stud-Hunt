@@ -12,7 +12,7 @@
     <title>Title</title>
 </head>
 
-<body>
+<body class="littleBody">
 <div class="ui container segment small">
 
     <div class="ui container center aligned">

@@ -591,10 +591,10 @@
   color: #FFFFFF;
 }
 .ui.olive.segment.segment.segment.segment.segment:not(.inverted) {
-  border-top: 2px solid #32CD32;
+  border-top: 2px solid #AAAAAA;
 }
 .ui.inverted.olive.segment.segment.segment.segment.segment {
-  background-color: #32CD32;
+  background-color: #AAAAAA;
   color: #FFFFFF;
 }
 .ui.green.segment.segment.segment.segment.segment:not(.inverted) {
@@ -612,10 +612,10 @@
   color: #FFFFFF;
 }
 .ui.blue.segment.segment.segment.segment.segment:not(.inverted) {
-  border-top: 2px solid #FFF;
+  border-top: 2px solid #023C5F;
 }
 .ui.inverted.blue.segment.segment.segment.segment.segment {
-  background-color: #FFF;
+  background-color: #023C5F;
   color: #FFFFFF;
 }
 .ui.violet.segment.segment.segment.segment.segment:not(.inverted) {

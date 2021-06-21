@@ -32,8 +32,8 @@
     .loginTitle{
         margin-bottom: 50px;
     }
-    #loginBody{
-        margin-top: 10%;
+    .littleBody{
+        padding-top: 10%;
     }
 
 
@@ -41,7 +41,9 @@
 
     /*-----------------------Footer-------------------------------*/
     .footer{
+        border-radius: 55px;
         margin-bottom: 0 !important;
+        background-color: blue;
     }
     /*------------------------------------------------------*/
 

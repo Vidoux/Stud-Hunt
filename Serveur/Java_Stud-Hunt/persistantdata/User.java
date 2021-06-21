@@ -32,4 +32,13 @@ public class User {
     public UserTypes getUserType() {
         return userType;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", userType=" + userType +
+                '}';
+    }
 }
