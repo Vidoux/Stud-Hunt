@@ -14,7 +14,7 @@
 
 <body class="littleBody">
 
-<div class="ui container segment small">
+<div class="ui container segment small transparent">
 
     <div class="ui stackable middle aligned grid">
         <div class="two column row">

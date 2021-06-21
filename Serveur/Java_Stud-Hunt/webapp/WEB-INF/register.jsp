@@ -14,7 +14,7 @@
 
 <body class="littleBody">
 
-<div class="ui container segment small">
+<div class="ui container segment small transparent">
 
     <div class="ui stackable middle aligned grid">
         <div class="two column row">
@@ -32,7 +32,7 @@
 
 
 <form method="post" action="./register">
-    <div class="ui form container segment center aligned">
+    <div class="ui form container segment center aligned transparent">
         <h3>Informations de création du compte</h3>
         <div class="inline three fields">
             <div class="field">
@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <button class="big ui blue button" id="submitButton" type="submit">Connexion</button>
+        <button class="big ui blue button" id="submitButton" type="submit">Enregister</button>
     </div>
 
 </form>
