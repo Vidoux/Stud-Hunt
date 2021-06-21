@@ -25,7 +25,11 @@ public class LoginServlet extends HttpServlet {
 
         String password = request.getParameter("password");
         String login = request.getParameter("login");
-        ConnexionInfos loginStatus = StudHunt.getInstance().getUser(login, password);
+        System.out.println(login);
+        System.out.println(password);
+        ConnexionInfos loginStatus = StudHunt.getInstance().getUserConnection(login, password);
+        System.out.println(loginStatus);
+
 
         String message;
         User user = new User(login, password, loginStatus.getUserType());
@@ -56,7 +60,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
-        request.setAttribute("backDestination", "./login_frm");
+        request.setAttribute("backDestination", "./login");
         request.setAttribute("errorMessage", "Echec de la connexion, "+message);
         this.getServletContext().getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
     }

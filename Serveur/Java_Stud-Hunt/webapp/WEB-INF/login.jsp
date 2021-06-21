@@ -31,7 +31,7 @@
     </div>
 
 
-    <form method="post" action="/login">
+    <form method="post" action="./login">
 
         <div class="ui form container center aligned">
             <label>Identifiant: </label>
