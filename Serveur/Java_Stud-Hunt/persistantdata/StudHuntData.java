@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 import studhunt.ConnexionInfos;
@@ -29,9 +30,9 @@ public class StudHuntData implements PersistentStudHunt {
 		}
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Entrez l'identifiant de votre base de donnée : ");
-		String login = "SYSTEM";
+		String login = "system";
 		System.out.print("\nEntrez le mot de passe de votre base de donnée : ");
-		String password = "YES";
+		String password = "madrich";
 		sc.close();
 		try {
 			this.dataBase = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", login, password);
@@ -43,9 +44,33 @@ public class StudHuntData implements PersistentStudHunt {
 	}
 	
 	@Override
-	public ConnexionInfos getUserConnection(String login, String password) {
-		System.out.println("Finding user " + login + " in the database");
-		String sqlStatement = "SELECT * FROM APP_USER WHERE name = '" + login + "' AND password = '" + password + "'";
+	public void createUser(String email, String name, String forname, String password, UserTypes userType, List<Object> infos) {
+		String sqlStatement = "INSERT INTO APP_USER VALUES ('" + email + "', '" + name + "', '" + forname + "', '" + password + "')";
+		PreparedStatement query;
+		try {
+			query = dataBase.prepareStatement(sqlStatement);
+			query.executeQuery();
+			switch (userType) {
+			case STUDENT :
+				query = dataBase.prepareStatement("INSERT INTO STUDENT VALUES ('" + email + "', " + infos.get(0) + ", " + infos.get(1) + ")");
+				query.executeQuery();
+				break;
+			case COMPANY :
+				query = dataBase.prepareStatement("INSERT INTO COMPANY VALUES ('" + email + "')");
+				query.executeQuery();
+				break;	
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println("Error while creating user");
+		}
+		System.out.println("User created");
+	}
+	
+	@Override
+	public ConnexionInfos getUserConnection(String email, String password) {
+		System.out.println("Finding user " + email + " in the database");
+		String sqlStatement = "SELECT * FROM APP_USER WHERE email = '" + email + "' AND password = '" + password + "'";
 		PreparedStatement query;
 		ResultSet response;
 		ConnexionInfos connectInfos = new ConnexionInfos(false, null, null, null);
@@ -56,8 +81,8 @@ public class StudHuntData implements PersistentStudHunt {
 			}
 			System.out.println("Statement passed successfully");
 			if (response.next()) {
-				System.out.println("Found user " + login + " (Name : " + response.getString("name") + ")");
-				connectInfos = new ConnexionInfos(true, getUserType(login), response.getString("name"), response.getString("forname"));
+				System.out.println("Found user " + email + " (Name : " + response.getString("name") + ")");
+				connectInfos = new ConnexionInfos(true, getUserType(email), response.getString("name"), response.getString("forname"));
 			}
 			query.close();
 			response.close();
@@ -67,9 +92,9 @@ public class StudHuntData implements PersistentStudHunt {
 		return connectInfos;
 	}
 
-	private UserTypes getUserType(String login) {
+	private UserTypes getUserType(String email) {
 		for (UserTypes user : UserTypes.values()) {
-			String sqlStatement = "SELECT * FROM " + user + " WHERE id_User = '" + login + "'";
+			String sqlStatement = "SELECT * FROM " + user + " WHERE email = '" + email + "'";
 			PreparedStatement query;
 			ResultSet response;
 			try {
@@ -79,7 +104,7 @@ public class StudHuntData implements PersistentStudHunt {
 				}
 				System.out.println("Statement passed successfully");
 				if (response.next()) {
-					System.out.println("The student is a " + user);
+					System.out.println("The user is a " + user);
 					return user;
 				}
 			} catch (SQLException e) {

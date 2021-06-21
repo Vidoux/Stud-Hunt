@@ -57,27 +57,26 @@ CREATE SEQUENCE id_Industry_Seq
 CREATE SEQUENCE id_School_Seq
 /
 
-
 CREATE TABLE APP_USER(
-   id_User INTEGER,
+   email VARCHAR(50),
    name VARCHAR(20) NOT NULL,
    forname VARCHAR(20) NOT NULL,
    password VARCHAR(30) NOT NULL,
-   PRIMARY KEY(id_User)
+   PRIMARY KEY(email)
 );
 
 CREATE TABLE COMPANY(
-   id_User INTEGER,
-   PRIMARY KEY(id_User),
-   FOREIGN KEY(id_User) REFERENCES APP_USER(id_User)
+   email VARCHAR(50),
+   PRIMARY KEY(email),
+   FOREIGN KEY(email) REFERENCES APP_USER(email)
 );
 
 CREATE TABLE STUDENT(
-   id_User INTEGER,
+   email VARCHAR(50),
    apprenticeship NUMBER(1) NOT NULL,
    internship NUMBER(1) NOT NULL,
-   PRIMARY KEY(id_User),
-   FOREIGN KEY(id_User) REFERENCES APP_USER(id_User)
+   PRIMARY KEY(email),
+   FOREIGN KEY(email) REFERENCES APP_USER(email)
 );
 
 CREATE TABLE PROJECT(
@@ -88,25 +87,25 @@ CREATE TABLE PROJECT(
 
 CREATE TABLE CV(
    id_CV INTEGER,
-   id_User INTEGER NOT NULL,
+   email VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_CV),
-   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User)
+   FOREIGN KEY(email) REFERENCES STUDENT(email)
 );
 
 CREATE TABLE PROFILE_PICTURE(
    id_ProfilePicture INTEGER,
    imageBlob BLOB,
-   id_User INTEGER NOT NULL,
+   email VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_ProfilePicture),
-   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User)
+   FOREIGN KEY(email) REFERENCES STUDENT(email)
 );
 
 CREATE TABLE JOB_OFFER(
    id_JobOffer INTEGER,
    offerType INTEGER NOT NULL,
-   id_User INTEGER NOT NULL,
+   email VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_JobOffer),
-   FOREIGN KEY(id_User) REFERENCES COMPANY(id_User)
+   FOREIGN KEY(email) REFERENCES COMPANY(email)
 );
 
 CREATE TABLE INDUSTRY(
@@ -120,39 +119,39 @@ CREATE TABLE SCHOOL(
 );
 
 CREATE TABLE ADMIN(
-   id_User INTEGER,
-   PRIMARY KEY(id_User),
-   FOREIGN KEY(id_User) REFERENCES APP_USER(id_User)
+   email VARCHAR(50),
+   PRIMARY KEY(email),
+   FOREIGN KEY(email) REFERENCES APP_USER(email)
 );
 
 CREATE TABLE Accomplish(
    id_Project INTEGER,
-   id_User INTEGER NOT NULL,
+   email VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_Project),
    FOREIGN KEY(id_Project) REFERENCES PROJECT(id_Project),
-   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User)
+   FOREIGN KEY(email) REFERENCES STUDENT(email)
 );
 
 CREATE TABLE Asso_8(
-   id_User INTEGER,
+   email VARCHAR(50),
    id_Industry INTEGER,
-   PRIMARY KEY(id_User, id_Industry),
-   FOREIGN KEY(id_User) REFERENCES COMPANY(id_User),
+   PRIMARY KEY(email, id_Industry),
+   FOREIGN KEY(email) REFERENCES COMPANY(email),
    FOREIGN KEY(id_Industry) REFERENCES INDUSTRY(id_Industry)
 );
 
 CREATE TABLE concern(
-   id_User INTEGER,
+   email VARCHAR(50),
    id_Industry INTEGER,
-   PRIMARY KEY(id_User, id_Industry),
-   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User),
+   PRIMARY KEY(email, id_Industry),
+   FOREIGN KEY(email) REFERENCES STUDENT(email),
    FOREIGN KEY(id_Industry) REFERENCES INDUSTRY(id_Industry)
 );
 
 CREATE TABLE is_part_of(
-   id_User INTEGER,
+   email VARCHAR(50),
    id_School INTEGER,
-   PRIMARY KEY(id_User, id_School),
-   FOREIGN KEY(id_User) REFERENCES STUDENT(id_User),
+   PRIMARY KEY(email, id_School),
+   FOREIGN KEY(email) REFERENCES STUDENT(email),
    FOREIGN KEY(id_School) REFERENCES SCHOOL(id_School)
 );
