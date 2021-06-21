@@ -12,11 +12,19 @@
         <servlet-name>services.LoginServlet</servlet-name>
         <servlet-class>services.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>services.RegisterServlet</servlet-name>
+        <servlet-class>services.RegisterServlet</servlet-class>
+    </servlet>
 
     <!--Mapping-->
     <servlet-mapping>
         <servlet-name>init</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>services.RegisterServlet</servlet-name>
+        <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>services.LoginServlet</servlet-name>

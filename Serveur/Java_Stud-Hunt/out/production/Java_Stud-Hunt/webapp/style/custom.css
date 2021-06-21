@@ -41,7 +41,7 @@
 
     /*-----------------------Footer-------------------------------*/
     .footer{
-        border-radius: 55px;
+        border-radius: 30% 30% 0 0 !important;
         margin-bottom: 0 !important;
         background-color: blue;
     }
