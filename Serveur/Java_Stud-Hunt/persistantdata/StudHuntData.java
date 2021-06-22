@@ -50,7 +50,7 @@ public class StudHuntData implements PersistentStudHunt {
 			e.printStackTrace();
 		}
 		String databasePath = "jdbc:oracle:thin:@localhost:1521:XE";
-		String login = "system";
+		String login = "SYSTEM";
 		String password = "studhunt";
 		try {
 			this.dataBase = DriverManager.getConnection(databasePath, login, password);

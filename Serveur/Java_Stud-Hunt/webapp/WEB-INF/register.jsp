@@ -36,7 +36,11 @@
 <form method="post" action="./register">
     <div class="ui form container segment center aligned transparent">
         <h3>Informations de création du compte</h3>
-        <div class="inline two fields">
+        <div class="inline three fields">
+            <div class="field">
+                <label>prénom</label>
+                <input type="text" placeholder="prénom" name="prenom">
+            </div>
             <div class="field">
                 <label>nom</label>
                 <input type="text" placeholder="nom" name="nom">

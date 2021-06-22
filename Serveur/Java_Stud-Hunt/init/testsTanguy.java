@@ -12,7 +12,7 @@ import studhunt.UserTypes;
 
 public class testsTanguy {
     public static void main(String[] args) {
-        //Init
+//Init
         try {
             new InjectionServlet().init();
         } catch (ServletException e) {
@@ -23,7 +23,7 @@ public class testsTanguy {
 
         File pic = new File("D:\\tanguy.jpg");
 
-        studHuntClass.setProfilePicture("test@mail.com", pic);
+        studHuntClass.setProfilePicture("mail.text@mail.com", pic);
 
         }
 

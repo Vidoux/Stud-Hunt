@@ -26,13 +26,15 @@ public class RegisterServlet extends HttpServlet {
 
         String password = request.getParameter("password");
         String email = request.getParameter("email");
+        String prenom = request.getParameter("prenom");
         String nom = request.getParameter("nom");
         String type = request.getParameter("type");
 
-        if(!password.equals("") && !email.equals("") && !nom.equals("") && !type.equals("")){
+        if(!password.equals("") && !email.equals("") && !prenom.equals("") && !nom.equals("") && !type.equals("")){
             try {
                 if(type.equals("student")){
                     List<Object> infos = new ArrayList<>();
+                    infos.add(prenom);
                     infos.add(0);
                     infos.add(0);
                     StudHunt.getInstance().createUser(email, nom, password, UserTypes.STUDENT, infos);
