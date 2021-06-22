@@ -13,9 +13,16 @@
             </div>
             <div class="right menu">
                 <!--          Si étudient alors: CV, Demandes de contact-->
+                <div class="<c:if test="${ sessionScope.user.getUserType() == UserTypes.COMPANY }">invisibleDiv</c:if>">
+                    <a class="item">Mes information</a>
+                    <a class="item">Demandes de contact</a>
+                </div>
                 <!--          Si entreprise alors: mes recherches, Prises de Contacts-->
-                <a class="item"></a>
-                <a class="item"></a>
+                <div class="<c:if test="${ sessionScope.user.getUserType() == UserTypes.STUDENT }">invisibleDiv</c:if>">
+                    <a class="item">Votre Entreprise</a>
+                    <a class="item">Vos Recherches</a>
+                </div>
+
                 <a class="item"><c:out value="${sessionScope.user.getUsername()}" /></a>
                 <div class="ui dropdown item <c:if test="${ sessionScope.user == null }">invisibleDiv</c:if>">
                     <img class="ui avatar image" src="" />  <!--insérer, dynamiquement l'image du profil-->

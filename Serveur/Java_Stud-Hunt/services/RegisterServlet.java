@@ -30,7 +30,7 @@ public class RegisterServlet extends HttpServlet {
         String nom = request.getParameter("nom");
         String type = request.getParameter("type");
 
-        if(password != null && email != null && prenom != null && nom != null && type != null){
+        if(!password.equals("") && !email.equals("") && !prenom.equals("") && !nom.equals("") && !type.equals("")){
             try {
                 if(type.equals("student")){
                     List<Object> infos = new ArrayList<>();
@@ -60,7 +60,7 @@ public class RegisterServlet extends HttpServlet {
 
     private void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
         request.setAttribute("backDestination", "./register");
-        request.setAttribute("errorMessage", "Echec de l'enregistrement', "+message);
+        request.setAttribute("errorMessage", "Echec de l'enregistrement: "+message);
         this.getServletContext().getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
     }
 
