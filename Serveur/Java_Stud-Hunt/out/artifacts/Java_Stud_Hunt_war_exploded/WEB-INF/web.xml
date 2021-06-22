@@ -25,8 +25,8 @@
         <servlet-class>services.StudentInfoServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>services.ImageLoaderServlet</servlet-name>
-        <servlet-class>services.ImageLoaderServlet</servlet-class>
+        <servlet-name>services.ImageActionServlet</servlet-name>
+        <servlet-class>services.ImageActionServlet</servlet-class>
     </servlet>
 
     <!--Mapping-->
@@ -51,8 +51,8 @@
         <url-pattern>/student_info</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>services.ImageLoaderServlet</servlet-name>
-        <url-pattern>/image_loader</url-pattern>
+        <servlet-name>services.ImageActionServlet</servlet-name>
+        <url-pattern>/image_action</url-pattern>
     </servlet-mapping>
 
 

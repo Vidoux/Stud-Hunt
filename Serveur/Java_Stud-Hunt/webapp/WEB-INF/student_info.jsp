@@ -23,10 +23,23 @@
     <div class="nine wide column">
         <div class="ui center aligned segment transparent">
             <img src="./image_loader?id=${sessionScope.user.getUsername()}" alt="raté...">
-            <button class="ui blue button" id="change_picture" onclick="changePicture">
-                <i class="pen icon"></i>
-                Modifier Votre photo de profil
-            </button>
+            <form method="post" action="./image_action">
+                <div class="item">
+                    <div>
+                        <p>Sélectionne ta photo</p>
+                        <div class="ui input">
+                            <input type="file" accept=".jpg" id="imageUpload" name="image">
+                        </div>
+                    </div>
+                </div><br>
+                <button class="ui blue button" id="change_picture" type="submit">
+                    <i class="pen icon"></i>
+                    Valider et uploader votre photo
+                </button>
+            </form>
+
+
+
 
         </div>
         <div class="ui center aligned segment transparent">

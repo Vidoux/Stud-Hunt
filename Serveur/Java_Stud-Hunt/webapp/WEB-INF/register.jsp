@@ -37,29 +37,31 @@
     <div class="ui form container segment center aligned transparent">
         <h3>Informations de création du compte</h3>
         <div class="inline three fields">
-            <div class="field">
-                <label>prénom</label>
-                <input type="text" placeholder="prénom" name="prenom">
-            </div>
-            <div class="field">
-                <label>nom</label>
-                <input type="text" placeholder="nom" name="nom">
-            </div>
-            <div class="grouped fields">
+            <div class="grouped fields" id="userTypeCheckbox">
                 <label>Vous êtes: </label>
                 <div class="field">
-                    <div class="ui slider checkbox">
+                    <div class="ui slider checkbox" id="company_checkbox">
                         <input type="radio" name="type" value="company">
                         <label>Une Entreprise</label>
                     </div>
                 </div>
                 <div class="field">
-                    <div class="ui slider checkbox">
+                    <div class="ui slider checkbox" id="student_checkbox">
                         <input type="radio" name="type" value="student">
                         <label>Un Étudiant</label>
                     </div>
                 </div>
             </div>
+            <div class="field">
+                <label>nom</label>
+                <input type="text" placeholder="nom" name="nom">
+            </div>
+            <div class="field" id="prenom_register">
+                <label>prénom</label>
+                <input type="text" placeholder="prénom" name="prenom">
+            </div>
+
+
 
         </div>
         <div class="inline two fields">

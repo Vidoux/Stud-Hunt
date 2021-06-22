@@ -22,8 +22,8 @@ import javax.servlet.annotation.*;
 /**
  * Servlet de gestion de l'Authentification par login mot de passe
  */
-@WebServlet("/image_loader")
-public class ImageLoaderServlet extends HttpServlet {
+@WebServlet("/image_action")
+public class ImageActionServlet extends HttpServlet {
 
 
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
@@ -39,6 +39,14 @@ public class ImageLoaderServlet extends HttpServlet {
         OutputStream out = response.getOutputStream();
         ImageIO.write(image, "jpg", out);
         out.close();
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       System.out.println("Tanguy");
+       HttpSession session = request.getSession();
+      // StudHunt.getInstance().setProfilePicture("mail.text@mail.com",request.getParameterValues("image"));
+
+
     }
 
 

@@ -30,7 +30,7 @@ public class RegisterServlet extends HttpServlet {
         String nom = request.getParameter("nom");
         String type = request.getParameter("type");
 
-        if(!password.equals("") && !email.equals("") && !prenom.equals("") && !nom.equals("") && !type.equals("")){
+        if(!password.equals("") && !email.equals("") && !nom.equals("") && !type.equals("")){
             try {
                 if(type.equals("student")){
                     List<Object> infos = new ArrayList<>();
@@ -49,10 +49,7 @@ public class RegisterServlet extends HttpServlet {
             sendErrorPage(request, response, "missing information to register the user");
         }
 
-
-
-
-
+        this.getServletContext().getRequestDispatcher( "/WEB-INF/login.jsp").forward( request, response );
     }
 
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {

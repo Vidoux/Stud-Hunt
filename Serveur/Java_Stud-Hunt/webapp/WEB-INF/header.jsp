@@ -26,7 +26,12 @@
                     <img class="ui avatar image" src="" />  <!--insérer, dynamiquement l'image du profil-->
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <a class="item" href="./student_info">Modifier votre profil</a>
+                        <c:if test="${ sessionScope.user.getUserType() == 'COMPANY' }">
+                            <a class="item" href="./company_info">Modifier votre profil</a>
+                        </c:if>
+                        <c:if test="${ sessionScope.user.getUserType() == 'STUDENT' }">
+                            <a class="item" href="./student_info">Modifier votre profil</a>
+                        </c:if>
                         <a class="item" href="./logout">Déconnexion</a>
                     </div>
                 </div>
