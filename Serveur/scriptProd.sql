@@ -27,13 +27,7 @@ DROP TABLE concern CASCADE CONSTRAINTS PURGE
 DROP TABLE is_part_of CASCADE CONSTRAINTS PURGE
 /
 
-DROP SEQUENCE id_User_Seq
-/
 DROP SEQUENCE id_Project_seq
-/
-DROP SEQUENCE id_CV_Seq
-/
-DROP SEQUENCE id_ProfilePicture_Seq
 /
 DROP SEQUENCE id_JobOffer_Seq
 /
@@ -41,14 +35,8 @@ DROP SEQUENCE id_Industry_Seq
 /
 DROP SEQUENCE id_School_Seq
 /
-
-CREATE SEQUENCE id_User_Seq
 /
 CREATE SEQUENCE id_Project_seq
-/
-CREATE SEQUENCE id_CV_Seq
-/
-CREATE SEQUENCE id_ProfilePicture_Seq
 /
 CREATE SEQUENCE id_JobOffer_Seq
 /
@@ -86,17 +74,16 @@ CREATE TABLE PROJECT(
 );
 
 CREATE TABLE CV(
-   id_CV INTEGER,
-   email VARCHAR(50) NOT NULL,
-   PRIMARY KEY(id_CV),
+   email VARCHAR(50),
+   pdfFile BLOB,
+   PRIMARY KEY(email),
    FOREIGN KEY(email) REFERENCES STUDENT(email)
 );
 
 CREATE TABLE PROFILE_PICTURE(
-   id_ProfilePicture INTEGER,
-   imageBlob BLOB,
-   email VARCHAR(50) NOT NULL,
-   PRIMARY KEY(id_ProfilePicture),
+   email VARCHAR(50),
+   imageBlob BLOB NOT NULL,
+   PRIMARY KEY(email),
    FOREIGN KEY(email) REFERENCES STUDENT(email)
 );
 
