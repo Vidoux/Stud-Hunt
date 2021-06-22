@@ -25,8 +25,8 @@ public class StudHunt {
 		return data.getUserConnection(login, password);
 	}
 	
-	public boolean createUser(String email, String name, String forname, String password, UserTypes userType, List<Object> infos) {
-		return data.createUser(email, name, forname, password, userType, infos);
+	public boolean createUser(String email, String name, String password, UserTypes userType, List<Object> infos) {
+		return data.createUser(email, name, password, userType, infos);
 	}
 	
 	public boolean setProfilePicture(String email, File file) {

@@ -74,36 +74,39 @@ public class StudHuntData implements PersistentStudHunt {
 	 * @return true if the user has been created
 	 */
 	@Override
-	public boolean createUser(String email, String name, String forname, String password, UserTypes userType, List<Object> infos) {
+	public boolean createUser(String email, String name, String password, UserTypes userType, List<Object> infos) {
 		PreparedStatement query;
-		String sqlStatement = "INSERT INTO APP_USER VALUES (?, ?, ?, ?)";
+		String sqlStatement = "INSERT INTO APP_USER VALUES (?, ?, ?)";
 		try {
 			synchronized (dataBase) {
 				query = dataBase.prepareStatement(sqlStatement);
 				query.setString(1, email);
 				query.setString(2, name);
-				query.setString(3, forname);
-				query.setString(4, password);
+				query.setString(3, password);
 				query.executeQuery();
 			}
 			query.close();
 			System.out.println("Query '" + sqlStatement + "' worked successfully");
 			switch (userType) {
 			case STUDENT :
+				sqlStatement = "INSERT INTO STUDENT VALUES (?, ?, ?, ?)";
 				synchronized (dataBase) {
-					query = dataBase.prepareStatement("INSERT INTO STUDENT VALUES (?, ?, ?)");
+					query = dataBase.prepareStatement(sqlStatement);
 					query.setString(1, email);
 					query.setObject(2, infos.get(0));
 					query.setObject(3, infos.get(1));
+					query.setObject(4, infos.get(2));
 					query.executeQuery();
 				}
-				query.close();
+				break;
 			case COMPANY :
+				sqlStatement = "INSERT INTO COMPANY VALUES (?)";
 				synchronized (dataBase) {
 					query = dataBase.prepareStatement("INSERT INTO COMPANY VALUES (?)");
 					query.setString(1, email);
 					query.executeQuery();
 				}
+				break;
 			}
 			query.close();
 			System.out.println("Query '" + sqlStatement + "' worked successfully");
@@ -130,9 +133,9 @@ public class StudHuntData implements PersistentStudHunt {
 	@Override
 	public ConnexionInfos getUserConnection(String email, String password) {
 		System.out.println("Finding user " + email + " in the database");
-		String sqlStatement = "SELECT * FROM APP_USER WHERE email = ? AND password = ?";
 		PreparedStatement query;
 		ResultSet response;
+		String sqlStatement = "SELECT * FROM APP_USER WHERE email = ? AND password = ?";
 		ConnexionInfos connectInfos = new ConnexionInfos(false, null, null, null);
 		try {
 			synchronized (dataBase) {
@@ -144,16 +147,22 @@ public class StudHuntData implements PersistentStudHunt {
 			System.out.println("Query '" + sqlStatement + "' worked successfully");
 			if (response.next()) {
 				System.out.println("Found user " + email + " (Name : " + response.getString("name") + ")");
-				connectInfos = new ConnexionInfos(true, getUserType(email), response.getString("name"), response.getString("forname"));
+				UserTypes user = getUserType(email);
+				if (user.equals(UserTypes.STUDENT)) {
+					connectInfos = new ConnexionInfos(true, user, response.getString("name"), getUserForname(email));
+				} else {
+					connectInfos = new ConnexionInfos(true, user, response.getString("name"));
+				}
 			}
 			query.close();
 			response.close();
 		} catch (SQLException e) {
 			System.err.println("An error occured in the SQL statement : '" + sqlStatement + "'");
+			e.printStackTrace();
 		}
 		return connectInfos;
 	}
-	
+
 	/**
 	 * Get the CV associated with the user if it exist
 	 * 
@@ -261,19 +270,22 @@ public class StudHuntData implements PersistentStudHunt {
 			}
 			System.out.println("Query '" + sqlStatement + "' worked successfully");
 			if (response.next()) {
-				sqlStatement = "UPDATE " + tableName + " SET imageBlob = ? WHERE email = ?";
-			} else {
-				sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
+				sqlStatement = "DELETE FROM " + tableName + " WHERE email = ?";
+				synchronized (dataBase) {
+					query = dataBase.prepareStatement(sqlStatement);
+					query.setString(1, email);
+				}
+				System.out.println("Query '" + sqlStatement + "' worked successfully");
 			}
+			response.close();
+			sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
 			byte[] fileInBytes = Files.readAllBytes(file.toPath());
 			synchronized (dataBase) {
 				query = dataBase.prepareStatement(sqlStatement);
 				query.setString(1, email);
 				query.setBytes(2, fileInBytes);
-				response = query.executeQuery();
 			}
 			query.close();
-			response.close();
 			System.out.println("Query '" + sqlStatement + "' worked successfully");
 			return true;
 		} catch (SQLException e) {
@@ -324,5 +336,34 @@ public class StudHuntData implements PersistentStudHunt {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Get an user forname from the email
+	 * 
+	 * @param email the email used to find forname
+	 * 
+	 * @return the forname
+	 */
+	private String getUserForname(String email) {
+		PreparedStatement query;
+		ResultSet response;
+		String forname = null;
+		String sqlStatement = "SELECT forname FROM STUDENT WHERE email = ?";
+		synchronized (dataBase) {
+			try {
+				query = dataBase.prepareStatement(sqlStatement);
+				query.setString(1, email);
+				response = query.executeQuery();
+				if (response.next()) {
+					forname = response.getString("forname");					
+				}
+				
+			} catch (SQLException e) {
+				System.err.println("An error occured in the SQL statement : '" + sqlStatement + "'");
+				e.printStackTrace();
+			}
+		}
+		return forname;
 	}
 }

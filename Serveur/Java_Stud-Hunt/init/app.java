@@ -11,30 +11,63 @@ import studhunt.StudHunt;
 import studhunt.UserTypes;
 
 public class app {
-
-
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
+		//Init
 		try {
 			new InjectionServlet().init();
 		} catch (ServletException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in the servlet injection");
 			e.printStackTrace();
 		}
-		//Creating company
-		StudHunt.getInstance().createUser("support@quadrica.fr", "support", "quadrica", "0QuadriSUP!!!", UserTypes.COMPANY, null);
-		//Creating student
-		List<Object> infos = new ArrayList<>();
-		infos.add(0);
-		infos.add(0);
-		StudHunt.getInstance().createUser("madrichanderson@gmail.com", "anderson", "madrich", "madrich", UserTypes.STUDENT, infos);
-		//Testing if student exist
-		ConnexionInfos ci = StudHunt.getInstance().getUserConnection("madrichanderson@gmail.com", "madrich");
-		System.out.println(ci.getUser());
-		//Adding user profile picture
-		StudHunt.getInstance().setProfilePicture("madrichanderson@gmail.com", new File("D:\\Users\\berna\\Google Drive\\Identités\\Anderson Madrich\\Photo Anderson 1.jpg"));
-		//Adding user CV
-		StudHunt.getInstance().setCV("madrichanderson@gmail.com", new File("D:\\Projets\\Stud-Hunt\\CV.pdf"));
-		//Getting user PP
-		StudHunt.getInstance().getProfilePicture("madrichanderson@gmail.com");
+		StudHunt studHuntClass = StudHunt.getInstance();
+		String email;
+		String name;
+		String forname;
+		String password;
+		File cv;
+		File pic;
+		STUDENT : {
+			//Infos
+			email = "bernard.hugo.thomas@gmail.com";
+			name = "Hugo";
+			forname = "Bernard";
+			password = "0combsHB";
+			cv = new File("D:\\Projets\\Stud-Hunt\\CV.pdf");
+			pic = new File("D:\\Projets\\Stud-Hunt\\Photo Hugo Pro.jpg");
+			//Creating student
+			List<Object> infos = new ArrayList<>();
+			infos.add(forname);
+			infos.add(0);
+			infos.add(0);
+			studHuntClass.createUser(email, name, password, UserTypes.STUDENT, infos);
+			//Adding student CV
+			studHuntClass.setCV(email, cv);
+			//Adding student profile picture
+			studHuntClass.setProfilePicture(email, pic);
+			//Testing student connection
+			ConnexionInfos ci = studHuntClass.getUserConnection(email, password);
+			System.out.println(ci.getUser());
+			//Getting student CV
+			studHuntClass.getCV(email);
+			//Getting student PP
+			studHuntClass.getProfilePicture(email);
+		}
+		COMPANY : {
+			//Infos
+			email = "RandomCompanyName@mail.com";
+			name = "RandomCompanyName";
+			password = "RandomCompanyPassword";
+			pic = new File("D:\\Projets\\Stud-Hunt\\Photo Anderson 2.jpg");
+			//Creating company
+			studHuntClass.createUser(email, name, password, UserTypes.COMPANY, null);
+			//Adding company profile picture
+			studHuntClass.setProfilePicture(email, pic);
+			//Testing company connection
+			ConnexionInfos ci = studHuntClass.getUserConnection(email, password);
+			System.out.println(ci.getUser());
+			//Getting company picture
+			studHuntClass.getProfilePicture(email);
+		}
 	}
 }
