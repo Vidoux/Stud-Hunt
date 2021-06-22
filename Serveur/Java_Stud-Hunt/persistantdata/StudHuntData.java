@@ -49,17 +49,9 @@ public class StudHuntData implements PersistentStudHunt {
 			System.err.println("The class was not found");
 			e.printStackTrace();
 		}
-<<<<<<< Updated upstream
-		Scanner sc = new Scanner(System.in);
-		String login = "SYSTEM";
-		System.out.print("\nEntrez le mot de passe de votre base de donnée : ");
-		String password = "studhunt";
-		sc.close();
-=======
 		String databasePath = "jdbc:oracle:thin:@localhost:1521:XE";
 		String login = "system";
 		String password = "studhunt";
->>>>>>> Stashed changes
 		try {
 			this.dataBase = DriverManager.getConnection(databasePath, login, password);
 			System.out.println("Connection to the database successful");
