@@ -1,10 +1,14 @@
 package persistantdata;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -44,6 +48,41 @@ public class StudHuntData implements PersistentStudHunt {
 	}
 	
 	@Override
+	public void addOrEditProfilePicture(String email, File file) {
+		sendFile("PROFILE_PICTURE", email, file);
+	}
+	
+	@Override
+	public void addOrEditCV(String email, File file) {
+		sendFile("CV", email, file);
+	}
+	
+	public void sendFile(String tableName, String email, File file) {
+		String sqlStatement = "SELECT * FROM " + tableName + " WHERE email = '" + email + "'";
+		PreparedStatement query;
+		ResultSet response;
+		try {
+			query = dataBase.prepareStatement(sqlStatement);
+			response = query.executeQuery();
+			if (response.next()) {
+				sqlStatement = "UPDATE " + tableName + " SET imageBlob = ? WHERE email = '" + email + "'";
+			} else {
+				sqlStatement = "INSERT INTO " + tableName + " VALUES('" + email + "', ?)";
+			}
+			query = dataBase.prepareStatement(sqlStatement);
+			byte[] fileInBytes = Files.readAllBytes(file.toPath());
+			query.setBytes(1, fileInBytes);
+			response = query.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
 	public void createUser(String email, String name, String forname, String password, UserTypes userType, List<Object> infos) {
 		String sqlStatement = "INSERT INTO APP_USER VALUES ('" + email + "', '" + name + "', '" + forname + "', '" + password + "')";
 		PreparedStatement query;
@@ -60,11 +99,12 @@ public class StudHuntData implements PersistentStudHunt {
 				query.executeQuery();
 				break;	
 			}
+			System.out.println("User created");
+		} catch (SQLIntegrityConstraintViolationException e) {
+			System.err.println("User already exist");
 		} catch (SQLException e) {
-			e.printStackTrace();
 			System.err.println("Error while creating user");
-		}
-		System.out.println("User created");
+		} 
 	}
 	
 	@Override

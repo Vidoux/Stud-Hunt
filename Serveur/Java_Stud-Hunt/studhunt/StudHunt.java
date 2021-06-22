@@ -1,5 +1,6 @@
 package studhunt;
 
+import java.io.File;
 import java.util.List;
 
 public class StudHunt {
@@ -25,5 +26,13 @@ public class StudHunt {
 	
 	public void createUser(String email, String name, String forname, String password, UserTypes userType, List<Object> infos) {
 		data.createUser(email, name, forname, password, userType, infos);
+	}
+	
+	public void addOrEditProfilePicture(String email, File file) {
+		data.addOrEditProfilePicture(email, file);
+	}
+	
+	public void addOrEditCV(String email, File file) {
+		data.addOrEditCV(email, file);
 	}
 }
