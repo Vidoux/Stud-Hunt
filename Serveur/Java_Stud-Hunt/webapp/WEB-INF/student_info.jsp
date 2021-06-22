@@ -22,6 +22,14 @@
     </div>
     <div class="nine wide column">
         <div class="ui center aligned segment transparent">
+            <img src="./image_loader?id=${sessionScope.user.getUsername()}" alt="raté...">
+            <button class="ui blue button" id="change_picture" onclick="changePicture">
+                <i class="pen icon"></i>
+                Modifier Votre photo de profil
+            </button>
+
+        </div>
+        <div class="ui center aligned segment transparent">
             <button class="ui blue button" id="change_profil" onclick="activateStudentForm()">
                 <i class="pen icon"></i>
                 Modifier ces informations

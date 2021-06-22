@@ -26,19 +26,18 @@ public class RegisterServlet extends HttpServlet {
 
         String password = request.getParameter("password");
         String email = request.getParameter("email");
-        String prenom = request.getParameter("prenom");
         String nom = request.getParameter("nom");
         String type = request.getParameter("type");
 
-        if(!password.equals("") && !email.equals("") && !prenom.equals("") && !nom.equals("") && !type.equals("")){
+        if(!password.equals("") && !email.equals("") && !nom.equals("") && !type.equals("")){
             try {
                 if(type.equals("student")){
                     List<Object> infos = new ArrayList<>();
                     infos.add(0);
                     infos.add(0);
-                    StudHunt.getInstance().createUser(email, nom, prenom, password, UserTypes.STUDENT, infos);
+                    StudHunt.getInstance().createUser(email, nom, password, UserTypes.STUDENT, infos);
                 }else{
-                    StudHunt.getInstance().createUser(email, nom, prenom, password, UserTypes.COMPANY, null);
+                    StudHunt.getInstance().createUser(email, nom, password, UserTypes.COMPANY, null);
                 }
             }catch(Exception e) {
                 sendErrorPage(request, response, "error while creating the user in the database, please retry");

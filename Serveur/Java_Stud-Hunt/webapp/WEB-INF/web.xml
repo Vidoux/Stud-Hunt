@@ -24,6 +24,10 @@
         <servlet-name>services.StudentInfoServlet</servlet-name>
         <servlet-class>services.StudentInfoServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>services.ImageLoaderServlet</servlet-name>
+        <servlet-class>services.ImageLoaderServlet</servlet-class>
+    </servlet>
 
     <!--Mapping-->
     <servlet-mapping>
@@ -46,6 +50,12 @@
         <servlet-name>services.StudentInfoServlet</servlet-name>
         <url-pattern>/student_info</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>services.ImageLoaderServlet</servlet-name>
+        <url-pattern>/image_loader</url-pattern>
+    </servlet-mapping>
+
+
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>

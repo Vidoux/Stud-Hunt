@@ -27,28 +27,27 @@ public class LoginServlet extends HttpServlet {
         String login = request.getParameter("login");
         System.out.println(login);
         System.out.println(password);
-        ConnexionInfos loginStatus = StudHunt.getInstance().getUserConnection(login, password);
+        try{
+            ConnexionInfos loginStatus = StudHunt.getInstance().getUserConnection(login, password);
+            System.out.println(loginStatus.toString());
 
-        System.out.println(loginStatus.toString());
-
-        String message;
-        //TODO enlever le password de la variable session
-        User user = new User(login, password, loginStatus.getUserType());
+            String message;
+            //TODO enlever le password de la variable session
+            User user = new User(login, password, loginStatus.getUserType());
 
 
-        if(!loginStatus.isValidPassword()){
-            message = "Utilisateur non reconnu...";
-            sendErrorPage(request,response, message);
+            if(!loginStatus.isValidPassword()){
+                message = "Utilisateur non reconnu...";
+                sendErrorPage(request,response, message);
+            }
+            //Création de la variable session
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+
+            this.getServletContext().getRequestDispatcher("/WEB-INF/main_page.jsp").forward(request, response);
+        }catch (Exception e){
+            sendErrorPage(request,response, "error during authentification, please retry");
         }
-
-
-
-        //Création de la variable session
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
-
-        this.getServletContext().getRequestDispatcher("/WEB-INF/main_page.jsp").forward(request, response);
-
     }
 
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
