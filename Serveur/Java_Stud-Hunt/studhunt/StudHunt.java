@@ -25,16 +25,16 @@ public class StudHunt {
 		return data.getUserConnection(login, password);
 	}
 	
-	public void createUser(String email, String name, String forname, String password, UserTypes userType, List<Object> infos) {
-		data.createUser(email, name, forname, password, userType, infos);
+	public boolean createUser(String email, String name, String forname, String password, UserTypes userType, List<Object> infos) {
+		return data.createUser(email, name, forname, password, userType, infos);
 	}
 	
-	public void addOrEditProfilePicture(String email, File file) {
-		data.addOrEditProfilePicture(email, file);
+	public boolean setProfilePicture(String email, File file) {
+		return data.setProfilePicture(email, file);
 	}
 	
-	public void addOrEditCV(String email, File file) {
-		data.addOrEditCV(email, file);
+	public boolean setCV(String email, File file) {
+		return data.setCV(email, file);
 	}
 	
 	public Blob getCV(String email) {

@@ -31,9 +31,9 @@ public class app {
 		ConnexionInfos ci = StudHunt.getInstance().getUserConnection("madrichanderson@gmail.com", "madrich");
 		System.out.println(ci.getUser());
 		//Adding user profile picture
-		StudHunt.getInstance().addOrEditProfilePicture("madrichanderson@gmail.com", new File("D:\\Users\\berna\\Google Drive\\Identités\\Anderson Madrich\\Photo Anderson 1.jpg"));
+		StudHunt.getInstance().setProfilePicture("madrichanderson@gmail.com", new File("D:\\Users\\berna\\Google Drive\\Identités\\Anderson Madrich\\Photo Anderson 1.jpg"));
 		//Adding user CV
-		StudHunt.getInstance().addOrEditCV("madrichanderson@gmail.com", new File("D:\\Projets\\Stud-Hunt\\CV.pdf"));
+		StudHunt.getInstance().setCV("madrichanderson@gmail.com", new File("D:\\Projets\\Stud-Hunt\\CV.pdf"));
 		//Getting user PP
 		StudHunt.getInstance().getProfilePicture("madrichanderson@gmail.com");
 	}
