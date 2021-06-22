@@ -17,6 +17,8 @@
 .loginTitle{
     margin-bottom: 50px;
 }
+
+/*------------------------------------------------------*/
 .littleBody{
     padding-top: 10%;
 }
@@ -26,6 +28,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    min-height: 100%; /*For the mobile background to cover the whole page*/
 }
 
 .transparent {
@@ -39,10 +42,6 @@ body{
 strong {
     color: #023c5f;
 }
-
-
-
-/*------------------------------------------------------*/
 
 /*-----------------------Footer-------------------------------*/
 .footer{
@@ -78,6 +77,11 @@ strong {
     }
     #mobileMenu{
         visibility: hidden;
+    }
+
+    #desktopMenu .menu{
+        border-bottom-right-radius: 10em 0.8em !important;
+        border-bottom-left-radius: 10em 0.8em !important;
     }
     /*------------------------------------------------------*/
 

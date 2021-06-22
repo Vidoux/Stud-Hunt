@@ -3,7 +3,7 @@
 <footer class="ui blue bottom attached inverted vertical footer segment">
     <div class="ui container">
         <div class="ui stackable divided equal width height stackable grid">
-            <div class="column">
+            <div class="center aligned column">
                 <h4 class="ui inverted header">Réalisé par:</h4>
                 <div class="ui list">
                     <div class="item">
@@ -25,7 +25,7 @@
 
                 </div>
             </div>
-            <div class="column">
+            <div class="center aligned column">
                 <h4 class="ui inverted header">À propos</h4>
                 <p class="ui inverted">Cette application Web a été réalisée dnas le cadre de notre projet universitaire PJS4</p>
             </div>

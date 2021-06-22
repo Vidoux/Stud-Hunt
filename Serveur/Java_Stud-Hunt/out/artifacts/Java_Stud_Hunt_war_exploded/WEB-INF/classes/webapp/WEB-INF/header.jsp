@@ -12,23 +12,21 @@
 
             </div>
             <div class="right menu">
+                <a class="item" href="./">Accueil</a>
                 <!--          Si étudient alors: CV, Demandes de contact-->
-                <div class="<c:if test="${ sessionScope.user.getUserType() == UserTypes.COMPANY }">invisibleDiv</c:if>">
-                    <a class="item">Mes information</a>
+                <c:if test="${ sessionScope.user.getUserType() == 'STUDENT' }">
                     <a class="item">Demandes de contact</a>
-                </div>
-                <!--          Si entreprise alors: mes recherches, Prises de Contacts-->
-                <div class="<c:if test="${ sessionScope.user.getUserType() == UserTypes.STUDENT }">invisibleDiv</c:if>">
-                    <a class="item">Votre Entreprise</a>
-                    <a class="item">Vos Recherches</a>
-                </div>
+                </c:if>
 
-                <a class="item"><c:out value="${sessionScope.user.getUsername()}" /></a>
+                <!--          Si entreprise alors: mes recherches, Prises de Contacts-->
+                <c:if test="${ sessionScope.user.getUserType() == 'COMPANY' }">
+                    <a class="item">Vos Recherches</a>
+                </c:if>
                 <div class="ui dropdown item <c:if test="${ sessionScope.user == null }">invisibleDiv</c:if>">
                     <img class="ui avatar image" src="" />  <!--insérer, dynamiquement l'image du profil-->
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <a class="item">Modifier le profil</a>
+                        <a class="item">Modifier votre profil</a>
                         <a class="item" href="./logout">Déconnexion</a>
                     </div>
                 </div>
@@ -46,9 +44,25 @@
                 <div class="ui dropdown item">
                     <i class="bars icon"></i>
                     <div class="menu">
-                        <a class="item">Electronics</a>
-                        <a class="item">Automotive</a>
-                        <a class="item">Home</a>
+                        <!--          Si étudient alors: CV, Demandes de contact-->
+                        <c:if test="${ sessionScope.user.getUserType() == 'STUDENT' }">
+                            <a class="item">Demandes de contact</a>
+                        </c:if>
+                        <!--          Si entreprise alors: mes recherches, Prises de Contacts-->
+                        <c:if test="${ sessionScope.user.getUserType() == 'COMPANY' }">
+                            <a class="item">Vos Recherches</a>
+                        </c:if>
+                        <a class="item" href="./">Accueil</a>
+                        <c:if test="${ sessionScope.user != null }">
+                            <a class="item">Modifier votre profil</a>
+                            <a class="item" href="./logout">Déconnexion</a>
+                        </c:if>
+                        <c:if test="${ sessionScope.user == null }">
+                            <a class="item" href="./login">
+                                <i class="user icon"></i>
+                                <label>Connexion</label>
+                            </a>
+                        </c:if>
                     </div>
                 </div>
             </div>

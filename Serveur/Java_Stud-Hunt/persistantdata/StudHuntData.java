@@ -34,9 +34,9 @@ public class StudHuntData implements PersistentStudHunt {
 			e.printStackTrace();
 		}
 		Scanner sc = new Scanner(System.in);
-		String login = "system";
+		String login = "SYSTEM";
 		System.out.print("\nEntrez le mot de passe de votre base de donnée : ");
-		String password = sc.next();
+		String password = "studhunt";
 		sc.close();
 		try {
 			this.dataBase = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", login, password);

@@ -13,6 +13,7 @@
 </head>
 
 <body class="littleBody">
+<%@include file="header.jsp"%>
 
 <div class="ui container segment small transparent">
 

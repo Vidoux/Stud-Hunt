@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
         System.out.println(loginStatus.toString());
 
         String message;
+        //TODO enlever le password de la variable session
         User user = new User(login, password, loginStatus.getUserType());
 
 
