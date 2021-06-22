@@ -1,6 +1,7 @@
 package studhunt;
 
 import java.io.File;
+import java.sql.Blob;
 import java.util.List;
 
 public class StudHunt {
@@ -34,5 +35,13 @@ public class StudHunt {
 	
 	public void addOrEditCV(String email, File file) {
 		data.addOrEditCV(email, file);
+	}
+	
+	public Blob getCV(String email) {
+		return data.getCV(email);
+	}
+	
+	public Blob getProfilePicture(String email) {
+		return data.getProfilePicture(email);
 	}
 }

@@ -75,14 +75,14 @@ CREATE TABLE PROJECT(
 
 CREATE TABLE CV(
    email VARCHAR(50),
-   pdfFile BLOB,
+   linkedFile BLOB,
    PRIMARY KEY(email),
    FOREIGN KEY(email) REFERENCES STUDENT(email)
 );
 
 CREATE TABLE PROFILE_PICTURE(
    email VARCHAR(50),
-   imageBlob BLOB NOT NULL,
+   linkedFile BLOB NOT NULL,
    PRIMARY KEY(email),
    FOREIGN KEY(email) REFERENCES STUDENT(email)
 );

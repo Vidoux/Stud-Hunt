@@ -3,6 +3,7 @@ package persistantdata;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -33,10 +34,9 @@ public class StudHuntData implements PersistentStudHunt {
 			e.printStackTrace();
 		}
 		Scanner sc = new Scanner(System.in);
-		System.out.print("Entrez l'identifiant de votre base de donnée : ");
-		String login = "SYSTEM";
+		String login = "system";
 		System.out.print("\nEntrez le mot de passe de votre base de donnée : ");
-		String password = "YES";
+		String password = sc.next();
 		sc.close();
 		try {
 			this.dataBase = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", login, password);
@@ -62,17 +62,21 @@ public class StudHuntData implements PersistentStudHunt {
 		PreparedStatement query;
 		ResultSet response;
 		try {
-			query = dataBase.prepareStatement(sqlStatement);
-			response = query.executeQuery();
+			synchronized (dataBase) {
+				query = dataBase.prepareStatement(sqlStatement);
+				response = query.executeQuery();
+			}
 			if (response.next()) {
 				sqlStatement = "UPDATE " + tableName + " SET imageBlob = ? WHERE email = '" + email + "'";
 			} else {
 				sqlStatement = "INSERT INTO " + tableName + " VALUES('" + email + "', ?)";
 			}
-			query = dataBase.prepareStatement(sqlStatement);
 			byte[] fileInBytes = Files.readAllBytes(file.toPath());
-			query.setBytes(1, fileInBytes);
-			response = query.executeQuery();
+			synchronized (dataBase) {
+				query = dataBase.prepareStatement(sqlStatement);
+				query.setBytes(1, fileInBytes);
+				response = query.executeQuery();
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,16 +91,22 @@ public class StudHuntData implements PersistentStudHunt {
 		String sqlStatement = "INSERT INTO APP_USER VALUES ('" + email + "', '" + name + "', '" + forname + "', '" + password + "')";
 		PreparedStatement query;
 		try {
-			query = dataBase.prepareStatement(sqlStatement);
-			query.executeQuery();
+			synchronized (dataBase) {
+				query = dataBase.prepareStatement(sqlStatement);
+				query.executeQuery();
+			}
 			switch (userType) {
 			case STUDENT :
-				query = dataBase.prepareStatement("INSERT INTO STUDENT VALUES ('" + email + "', " + infos.get(0) + ", " + infos.get(1) + ")");
-				query.executeQuery();
+				synchronized (dataBase) {
+					query = dataBase.prepareStatement("INSERT INTO STUDENT VALUES ('" + email + "', " + infos.get(0) + ", " + infos.get(1) + ")");
+					query.executeQuery();
+				}
 				break;
 			case COMPANY :
-				query = dataBase.prepareStatement("INSERT INTO COMPANY VALUES ('" + email + "')");
-				query.executeQuery();
+				synchronized (dataBase) {
+					query = dataBase.prepareStatement("INSERT INTO COMPANY VALUES ('" + email + "')");
+					query.executeQuery();
+				}
 				break;	
 			}
 			System.out.println("User created");
@@ -130,6 +140,37 @@ public class StudHuntData implements PersistentStudHunt {
 			System.err.println("An error occured in the following SQL Statement : " + sqlStatement);
 		}
 		return connectInfos;
+	}
+	
+	@Override
+	public Blob getCV(String email) {
+		return getFile("CV", email);
+	}
+
+	@Override
+	public Blob getProfilePicture(String email) {
+		return getFile("PROFILE_PICTURE", email);
+	}
+
+	private Blob getFile(String tableName, String email) {
+		String sqlStatement = "SELECT linkedFile FROM " + tableName + " WHERE email = '" + email + "'";
+		PreparedStatement query;
+		ResultSet response;
+		try {
+			synchronized (dataBase) {
+					query = dataBase.prepareStatement(sqlStatement);
+					response = query.executeQuery();
+					if (response.next()) {
+						return response.getBlob("linkedFile");
+					}
+			}
+			System.out.println("Statement passed successfully");
+			response.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private UserTypes getUserType(String email) {

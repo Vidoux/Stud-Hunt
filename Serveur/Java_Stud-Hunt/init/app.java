@@ -34,5 +34,7 @@ public class app {
 		StudHunt.getInstance().addOrEditProfilePicture("madrichanderson@gmail.com", new File("D:\\Users\\berna\\Google Drive\\Identités\\Anderson Madrich\\Photo Anderson 1.jpg"));
 		//Adding user CV
 		StudHunt.getInstance().addOrEditCV("madrichanderson@gmail.com", new File("D:\\Projets\\Stud-Hunt\\CV.pdf"));
+		//Getting user PP
+		StudHunt.getInstance().getProfilePicture("madrichanderson@gmail.com");
 	}
 }

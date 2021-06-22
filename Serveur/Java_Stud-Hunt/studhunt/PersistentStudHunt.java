@@ -1,6 +1,7 @@
 package studhunt;
 
 import java.io.File;
+import java.sql.Blob;
 import java.util.List;
 
 public interface PersistentStudHunt {
@@ -12,4 +13,8 @@ public interface PersistentStudHunt {
 	void addOrEditProfilePicture(String email, File file);
 
 	void addOrEditCV(String email, File file);
+
+	Blob getCV(String email);
+
+	Blob getProfilePicture(String email);
 }
