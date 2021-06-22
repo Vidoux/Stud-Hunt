@@ -48,7 +48,6 @@ CREATE SEQUENCE id_School_Seq
 CREATE TABLE APP_USER(
    email VARCHAR(50),
    name VARCHAR(20) NOT NULL,
-   forname VARCHAR(20) NOT NULL,
    password VARCHAR(30) NOT NULL,
    PRIMARY KEY(email)
 );
@@ -61,6 +60,7 @@ CREATE TABLE COMPANY(
 
 CREATE TABLE STUDENT(
    email VARCHAR(50),
+   forname VARCHAR(20) NOT NULL,
    apprenticeship NUMBER(1) NOT NULL,
    internship NUMBER(1) NOT NULL,
    PRIMARY KEY(email),
@@ -84,7 +84,7 @@ CREATE TABLE PROFILE_PICTURE(
    email VARCHAR(50),
    linkedFile BLOB NOT NULL,
    PRIMARY KEY(email),
-   FOREIGN KEY(email) REFERENCES STUDENT(email)
+   FOREIGN KEY(email) REFERENCES APP_USER(email)
 );
 
 CREATE TABLE JOB_OFFER(
