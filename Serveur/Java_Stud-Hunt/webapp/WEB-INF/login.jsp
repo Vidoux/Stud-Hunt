@@ -44,7 +44,12 @@
                 <input type="password" placeholder="mot de passe" name="password">
             </div>
             <div class="ui hidden divider"></div>
-            <button class="big ui blue button" id="submitButton" type="submit">Connexion</button>
+            <button class="big ui blue button" id="submitButton" type="submit">Connexion</button><br>
+            <a href="./register">
+                <div class="ui pointing olive label">
+                    Pas encore de compte? <strong>Inscrivez vous !</strong>
+                </div>
+            </a>
 
         </div>
 

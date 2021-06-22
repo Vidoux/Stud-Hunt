@@ -46,13 +46,7 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
 
-        if(user.getUserType().compareTo(UserTypes.COMPANY) == 0){
-            sendEnterpriseMainPage();
-        }
-
-        if(user.getUserType().compareTo(UserTypes.STUDENT) == 0){
-            sendStudentMainPage();
-        }
+        this.getServletContext().getRequestDispatcher("/WEB-INF/main_page.jsp").forward(request, response);
 
     }
 

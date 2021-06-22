@@ -1,26 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <!-- You MUST include jQuery before Fomantic -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-  <%@include file="scripts/mainScript.js" %>
-  <jsp:include page="style/custom.css" />
-  <jsp:include page="semantic/dist/semantic.min.js"/>
-  <jsp:include page="semantic/dist/semantic.min.css"/>
-
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/semantic/dist/semantic.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/style/custom.css">
+  <script src="${pageContext.request.contextPath}/semantic/dist/semantic.min.js"></script>
   <title>Title</title>
 </head>
 
-
-
-<body>
+<body id="loginBody">
   <%@include file="header.jsp"%>
 
   <div class="ui  container mainContent">
@@ -35,5 +27,5 @@
   <%@include file="footer.jsp"%>
 
 </body>
-<script src="scripts/mainScript.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/mainScript.js"></script>
 </html>

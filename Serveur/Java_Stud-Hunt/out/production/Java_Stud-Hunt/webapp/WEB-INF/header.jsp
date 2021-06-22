@@ -3,26 +3,32 @@
 <header>
     <nav id="desktopMenu">
         <div class="ui fixed blue inverted massive menu">
-            <div class="item">
-                <img src="images/logo(sans titre).png" alt="logo"/>
-            </div>
-            <div class="center menu">
-                <div class="item" id="titrePage">
-                    <h1>Titre de la page</h1>
+            <a href="./">
+                <div class="item">
+                    <img src="./img/logo_blanc.png" alt="logo"/>
                 </div>
+            </a>
+            <div class="center menu">
+
             </div>
             <div class="right menu">
                 <!--          Si étudient alors: CV, Demandes de contact-->
                 <!--          Si entreprise alors: mes recherches, Prises de Contacts-->
-                <a class="active item"></a>
                 <a class="item"></a>
-                <div class="ui dropdown item">
+                <a class="item"></a>
+                <a class="item"><c:out value="${sessionScope.user.getUsername()}" /></a>
+                <div class="ui dropdown item <c:if test="${ sessionScope.user == null }">invisibleDiv</c:if>">
                     <img class="ui avatar image" src="" />  <!--insérer, dynamiquement l'image du profil-->
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <a class="item">Modifier le profil</a>
-                        <a class="item">Déconnexion</a>
+                        <a class="item" href="./logout">Déconnexion</a>
                     </div>
+                </div>
+                <div class="<c:if test="${ sessionScope.user != null }">invisibleDiv</c:if>">
+                    <a class="item" data-tooltip="Se connecter" data-position="bottom right" href="./login">
+                        <i class="user icon"></i>
+                    </a>
                 </div>
             </div>
         </div>

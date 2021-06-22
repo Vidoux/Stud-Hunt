@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/custom.css">
     <script src="${pageContext.request.contextPath}/semantic/dist/semantic.min.js"></script>
     <title>StudHunt-register</title>
+    <link rel="shortcut icon" type="image/png" href="${pageContext.request.contextPath}/img/logo(sans%20titre).png"/>
 </head>
 
 <body class="littleBody">
