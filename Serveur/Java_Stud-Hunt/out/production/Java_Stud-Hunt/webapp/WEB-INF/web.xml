@@ -20,6 +20,10 @@
         <servlet-name>services.LogoutServlet</servlet-name>
         <servlet-class>services.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>services.StudentInfoServlet</servlet-name>
+        <servlet-class>services.StudentInfoServlet</servlet-class>
+    </servlet>
 
     <!--Mapping-->
     <servlet-mapping>
@@ -37,6 +41,10 @@
     <servlet-mapping>
         <servlet-name>services.LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>services.StudentInfoServlet</servlet-name>
+        <url-pattern>/student_info</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

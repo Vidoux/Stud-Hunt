@@ -13,7 +13,7 @@
             </div>
             <div class="right menu">
                 <a class="item" href="./">Accueil</a>
-                <!--          Si étudient alors: CV, Demandes de contact-->
+                <!--          Si étudiant alors: CV, Demandes de contact-->
                 <c:if test="${ sessionScope.user.getUserType() == 'STUDENT' }">
                     <a class="item">Demandes de contact</a>
                 </c:if>
@@ -26,7 +26,7 @@
                     <img class="ui avatar image" src="" />  <!--insérer, dynamiquement l'image du profil-->
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <a class="item">Modifier votre profil</a>
+                        <a class="item" href="./student_info">Modifier votre profil</a>
                         <a class="item" href="./logout">Déconnexion</a>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="ui dropdown item">
                     <i class="bars icon"></i>
                     <div class="menu">
-                        <!--          Si étudient alors: CV, Demandes de contact-->
+                        <!--          Si étudiant alors: CV, Demandes de contact-->
                         <c:if test="${ sessionScope.user.getUserType() == 'STUDENT' }">
                             <a class="item">Demandes de contact</a>
                         </c:if>
@@ -54,7 +54,7 @@
                         </c:if>
                         <a class="item" href="./">Accueil</a>
                         <c:if test="${ sessionScope.user != null }">
-                            <a class="item">Modifier votre profil</a>
+                            <a class="item" href="./student_info">Modifier votre profil</a>
                             <a class="item" href="./logout">Déconnexion</a>
                         </c:if>
                         <c:if test="${ sessionScope.user == null }">
