@@ -1,4 +1,4 @@
-package studhunt;
+package util;
 
 public enum UserTypes {
 	STUDENT,

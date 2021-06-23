@@ -1,6 +1,6 @@
 package persistantdata;
 
-import studhunt.UserTypes;
+import util.UserTypes;
 
 public class User {
     private String username;

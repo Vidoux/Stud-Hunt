@@ -4,7 +4,7 @@ package services;
 import persistantdata.User;
 import studhunt.ConnexionInfos;
 import studhunt.StudHunt;
-import studhunt.UserTypes;
+import util.UserTypes;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

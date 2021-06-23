@@ -2,7 +2,12 @@ package studhunt;
 
 import java.io.File;
 import java.sql.Blob;
+import java.util.HashMap;
 import java.util.List;
+
+import util.Pair;
+import util.References;
+import util.UserTypes;
 
 public class StudHunt {
 	
@@ -25,8 +30,8 @@ public class StudHunt {
 		return data.getUserConnection(login, password);
 	}
 	
-	public boolean createUser(String email, String name, String password, UserTypes userType, List<Object> infos) {
-		return data.createUser(email, name, password, userType, infos);
+	public boolean createUser(String email, String name, String password, UserTypes userType, HashMap<References, String> refernces, List<Pair> infos) {
+		return data.createUser(email, name, password, userType, refernces, infos);
 	}
 	
 	public boolean setProfilePicture(String email, File file) {
