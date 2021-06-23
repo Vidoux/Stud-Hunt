@@ -18,9 +18,9 @@ DROP TABLE SCHOOL CASCADE CONSTRAINTS PURGE
 /
 DROP TABLE ADMIN CASCADE CONSTRAINTS PURGE
 /
-DROP TABLE Accomplish CASCADE CONSTRAINTS PURGE
+DROP TABLE accomplish CASCADE CONSTRAINTS PURGE
 /
-DROP TABLE Asso_8 CASCADE CONSTRAINTS PURGE
+DROP TABLE refer_to CASCADE CONSTRAINTS PURGE
 /
 DROP TABLE concern CASCADE CONSTRAINTS PURGE
 /
@@ -34,7 +34,6 @@ DROP SEQUENCE id_JobOffer_Seq
 DROP SEQUENCE id_Industry_Seq
 /
 DROP SEQUENCE id_School_Seq
-/
 /
 CREATE SEQUENCE id_Project_seq
 /
@@ -67,10 +66,10 @@ CREATE TABLE STUDENT(
    FOREIGN KEY(email) REFERENCES APP_USER(email)
 );
 
-CREATE TABLE PROJECT(
-   id_Project INTEGER,
-   realisation_year DATE NOT NULL,
-   PRIMARY KEY(id_Project)
+CREATE TABLE ADMIN(
+   email VARCHAR(50),
+   PRIMARY KEY(email),
+   FOREIGN KEY(email) REFERENCES APP_USER(email)
 );
 
 CREATE TABLE CV(
@@ -87,6 +86,12 @@ CREATE TABLE PROFILE_PICTURE(
    FOREIGN KEY(email) REFERENCES APP_USER(email)
 );
 
+CREATE TABLE PROJECT(
+   id_Project INTEGER,
+   realisation_year DATE NOT NULL,
+   PRIMARY KEY(id_Project)
+);
+
 CREATE TABLE JOB_OFFER(
    id_JobOffer INTEGER,
    offerType INTEGER NOT NULL,
@@ -97,48 +102,44 @@ CREATE TABLE JOB_OFFER(
 
 CREATE TABLE INDUSTRY(
    id_Industry INTEGER,
+   industryName VARCHAR(20),
    PRIMARY KEY(id_Industry)
 );
 
 CREATE TABLE SCHOOL(
    id_School INTEGER,
+   schoolName VARCHAR(20),
    PRIMARY KEY(id_School)
 );
 
-CREATE TABLE ADMIN(
-   email VARCHAR(50),
-   PRIMARY KEY(email),
-   FOREIGN KEY(email) REFERENCES APP_USER(email)
-);
-
-CREATE TABLE Accomplish(
+CREATE TABLE accomplish(
    id_Project INTEGER,
-   email VARCHAR(50) NOT NULL,
-   PRIMARY KEY(id_Project),
+   email VARCHAR(50),
+   PRIMARY KEY(id_Project, email),
    FOREIGN KEY(id_Project) REFERENCES PROJECT(id_Project),
    FOREIGN KEY(email) REFERENCES STUDENT(email)
 );
 
-CREATE TABLE Asso_8(
-   email VARCHAR(50),
+CREATE TABLE refer_to(
    id_Industry INTEGER,
-   PRIMARY KEY(email, id_Industry),
-   FOREIGN KEY(email) REFERENCES COMPANY(email),
-   FOREIGN KEY(id_Industry) REFERENCES INDUSTRY(id_Industry)
+   email VARCHAR(50),
+   PRIMARY KEY(id_Industry, email),
+   FOREIGN KEY(id_Industry) REFERENCES INDUSTRY(id_Industry),
+   FOREIGN KEY(email) REFERENCES COMPANY(email)
 );
 
 CREATE TABLE concern(
-   email VARCHAR(50),
    id_Industry INTEGER,
-   PRIMARY KEY(email, id_Industry),
-   FOREIGN KEY(email) REFERENCES STUDENT(email),
-   FOREIGN KEY(id_Industry) REFERENCES INDUSTRY(id_Industry)
+   email VARCHAR(50),
+   PRIMARY KEY(id_Industry, email),
+   FOREIGN KEY(id_Industry) REFERENCES INDUSTRY(id_Industry),
+   FOREIGN KEY(email) REFERENCES STUDENT(email)
 );
 
 CREATE TABLE is_part_of(
-   email VARCHAR(50),
    id_School INTEGER,
-   PRIMARY KEY(email, id_School),
-   FOREIGN KEY(email) REFERENCES STUDENT(email),
-   FOREIGN KEY(id_School) REFERENCES SCHOOL(id_School)
+   email VARCHAR(50),
+   PRIMARY KEY(id_School, email),
+   FOREIGN KEY(id_School) REFERENCES SCHOOL(id_School),
+   FOREIGN KEY(email) REFERENCES STUDENT(email)
 );

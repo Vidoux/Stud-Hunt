@@ -2,13 +2,17 @@ package init;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
 
 import studhunt.ConnexionInfos;
 import studhunt.StudHunt;
-import studhunt.UserTypes;
+import util.Pair;
+import util.References;
+import util.StudentInfos;
+import util.UserTypes;
 
 public class app {
 	@SuppressWarnings("unused")
@@ -30,17 +34,20 @@ public class app {
 		STUDENT : {
 			//Infos
 			email = "bernard.hugo.thomas@gmail.com";
-			name = "Hugo";
-			forname = "Bernard";
+			name = "Bernard";
+			forname = "Hugo";
 			password = "0combsHB";
 			cv = new File("D:\\Projets\\Stud-Hunt\\CV.pdf");
 			pic = new File("D:\\Projets\\Stud-Hunt\\Photo Hugo Pro.jpg");
+			HashMap<References, String> references = new HashMap<>();
+			references.put(References.INDUSTRY, "Nucléaire");
+			references.put(References.SCHOOL, "Paris V");
+			List<Pair> infos = new ArrayList<>();
+			infos.add(new Pair(StudentInfos.FORNAME, forname));
+			infos.add(new Pair(StudentInfos.APPRENTICESHIP, 0));
+			infos.add(new Pair(StudentInfos.INTERNSHIP, 0));
 			//Creating student
-			List<Object> infos = new ArrayList<>();
-			infos.add(forname);
-			infos.add(0);
-			infos.add(0);
-			studHuntClass.createUser(email, name, password, UserTypes.STUDENT, infos);
+			studHuntClass.createUser(email, name, password, UserTypes.STUDENT, references, infos);
 			//Adding student CV
 			studHuntClass.setCV(email, cv);
 			//Adding student profile picture
@@ -59,8 +66,10 @@ public class app {
 			name = "RandomCompanyName";
 			password = "RandomCompanyPassword";
 			pic = new File("D:\\Projets\\Stud-Hunt\\Photo Anderson 2.jpg");
+			HashMap<References, String> references = new HashMap<>();
+			references.put(References.INDUSTRY, "Nucléaire");
 			//Creating company
-			studHuntClass.createUser(email, name, password, UserTypes.COMPANY, null);
+			studHuntClass.createUser(email, name, password, UserTypes.COMPANY, references, null);
 			//Adding company profile picture
 			studHuntClass.setProfilePicture(email, pic);
 			//Testing company connection

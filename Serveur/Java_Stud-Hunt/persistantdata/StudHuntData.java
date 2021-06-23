@@ -10,12 +10,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import studhunt.ConnexionInfos;
 import studhunt.PersistentStudHunt;
 import studhunt.StudHunt;
-import studhunt.UserTypes;
+import util.Pair;
+import util.References;
+import util.StudentInfos;
+import util.UserTypes;
 
 /**
  * StudHuntData is the interface with the database, the only entity who communicates with it.
@@ -74,7 +79,7 @@ public class StudHuntData implements PersistentStudHunt {
 	 * @return true if the user has been created
 	 */
 	@Override
-	public boolean createUser(String email, String name, String password, UserTypes userType, List<Object> infos) {
+	public boolean createUser(String email, String name, String password, UserTypes userType, HashMap<References, String> references, List<Pair> infos) {
 		PreparedStatement query;
 		String sqlStatement = "INSERT INTO APP_USER VALUES (?, ?, ?)";
 		try {
@@ -90,26 +95,50 @@ public class StudHuntData implements PersistentStudHunt {
 			switch (userType) {
 			case STUDENT :
 				sqlStatement = "INSERT INTO STUDENT VALUES (?, ?, ?, ?)";
+				String forname = null;
+				int apprenticeship = 0;
+				int internship = 0;
+				for(Pair info : infos) {
+					switch((StudentInfos) info.getFirst()) {
+						case APPRENTICESHIP:
+							apprenticeship = (int) info.getSecond();
+							break;
+						case FORNAME:
+							forname = (String) info.getSecond();
+							break;
+						case INTERNSHIP:
+							internship = (int) info.getSecond();
+							break;
+					}
+				}
 				synchronized (dataBase) {
 					query = dataBase.prepareStatement(sqlStatement);
 					query.setString(1, email);
-					query.setObject(2, infos.get(0));
-					query.setObject(3, infos.get(1));
-					query.setObject(4, infos.get(2));
+					query.setString(2, forname);
+					query.setInt(3, apprenticeship);
+					query.setInt(4, internship);
 					query.executeQuery();
 				}
 				break;
 			case COMPANY :
 				sqlStatement = "INSERT INTO COMPANY VALUES (?)";
 				synchronized (dataBase) {
-					query = dataBase.prepareStatement("INSERT INTO COMPANY VALUES (?)");
+					query = dataBase.prepareStatement(sqlStatement);
 					query.setString(1, email);
 					query.executeQuery();
 				}
 				break;
 			}
-			query.close();
 			System.out.println("Query '" + sqlStatement + "' worked successfully");
+			for (Entry<References, String> reference : references.entrySet()) {
+				sqlStatement = "INSERT INTO " + reference.getKey().toString() + " VALUES (id_" + reference.getKey().toString().charAt(0) + reference.getKey().toString().substring(1).toLowerCase() + "_Seq.NEXTVAL, ?)";
+				synchronized (dataBase) {
+					query = dataBase.prepareStatement(sqlStatement);
+					query.setString(1, reference.getValue());
+					query.executeQuery();
+				}
+			}
+			query.close();
 			System.out.println("User " + name + " created");
 			return true;
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -365,5 +394,13 @@ public class StudHuntData implements PersistentStudHunt {
 			}
 		}
 		return forname;
+	}
+	
+	public boolean createProject() {
+		return false;
+	}
+	
+	public boolean createJobOffer() {
+		return false;
 	}
 }

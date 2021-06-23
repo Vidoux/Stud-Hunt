@@ -1,5 +1,7 @@
 package studhunt;
 
+import util.UserTypes;
+
 public class ConnexionInfos {
     private boolean validPassword;
     private UserTypes userType;

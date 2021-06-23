@@ -1,19 +1,19 @@
 package services;
 
-import persistantdata.User;
-import studhunt.ConnexionInfos;
-import studhunt.StudHunt;
-import studhunt.UserTypes;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import studhunt.StudHunt;
+import util.Pair;
+import util.StudentInfos;
+import util.UserTypes;
 
 /**
  * Servlet d'enregistrement d'un nouvel utilisateur
@@ -33,6 +33,7 @@ public class RegisterServlet extends HttpServlet {
         if(!password.equals("") && !email.equals("") && !nom.equals("") && !type.equals("")){
             try {
                 if(type.equals("student")){
+<<<<<<< Updated upstream
                     List<Object> infos = new ArrayList<>();
                     infos.add(prenom);
                     infos.add(0);
@@ -40,6 +41,16 @@ public class RegisterServlet extends HttpServlet {
                     StudHunt.getInstance().createUser(email, nom, password, UserTypes.STUDENT, infos);
                 }else{
                     StudHunt.getInstance().createUser(email, nom, password, UserTypes.COMPANY, null);
+=======
+                    List<Pair> infos = new ArrayList<>();
+                    //TODO @Tanguy
+        			infos.add(new Pair(StudentInfos.FORNAME, prenom));
+        			infos.add(new Pair(StudentInfos.APPRENTICESHIP, 0));
+        			infos.add(new Pair(StudentInfos.INTERNSHIP, 0));
+                    StudHunt.getInstance().createUser(email, nom, password, UserTypes.STUDENT, null, infos);
+                }else{
+                    StudHunt.getInstance().createUser(email, nom, password, UserTypes.COMPANY, null, null);
+>>>>>>> Stashed changes
                 }
             }catch(Exception e) {
                 sendErrorPage(request, response, "error while creating the user in the database, please retry");
