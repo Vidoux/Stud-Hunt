@@ -7,7 +7,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import persistantdata.User;
 import studhunt.ConnexionInfos;
 import studhunt.StudHunt;
-import studhunt.UserTypes;
+
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -34,8 +34,8 @@ public class ImageActionServlet extends HttpServlet {
 
     private boolean isMultipart;
     private String filePath;
-    private int maxFileSize = 50 * 102400;
-    private int maxMemSize = 4 * 102400;
+    private final int maxFileSize = 50 * 102400;
+    private final int maxMemSize = 4 * 102400;
     private File file ;
 
     public void init( ){
@@ -174,9 +174,7 @@ public class ImageActionServlet extends HttpServlet {
 
                     System.out.println(byteImage.toString());
 
-//                    fi.write( file ) ;
-//                    System.out.println("Uploaded Filename: " + fileName + "<br>");
-//                    StudHunt.getInstance().setProfilePicture("mail.text@mail.com",fi);
+
                 }
             }
         } catch(Exception ex) {

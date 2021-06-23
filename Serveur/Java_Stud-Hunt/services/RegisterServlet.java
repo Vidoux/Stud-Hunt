@@ -33,27 +33,16 @@ public class RegisterServlet extends HttpServlet {
         if(!password.equals("") && !email.equals("") && !nom.equals("") && !type.equals("")){
             try {
                 if(type.equals("student")){
-<<<<<<< Updated upstream
-                    List<Object> infos = new ArrayList<>();
-                    infos.add(prenom);
-                    infos.add(0);
-                    infos.add(0);
-                    StudHunt.getInstance().createUser(email, nom, password, UserTypes.STUDENT, infos);
-                }else{
-                    StudHunt.getInstance().createUser(email, nom, password, UserTypes.COMPANY, null);
-=======
                     List<Pair> infos = new ArrayList<>();
-                    //TODO @Tanguy
         			infos.add(new Pair(StudentInfos.FORNAME, prenom));
         			infos.add(new Pair(StudentInfos.APPRENTICESHIP, 0));
         			infos.add(new Pair(StudentInfos.INTERNSHIP, 0));
                     StudHunt.getInstance().createUser(email, nom, password, UserTypes.STUDENT, null, infos);
                 }else{
                     StudHunt.getInstance().createUser(email, nom, password, UserTypes.COMPANY, null, null);
->>>>>>> Stashed changes
                 }
             }catch(Exception e) {
-                sendErrorPage(request, response, "error while creating the user in the database, please retry");
+                sendErrorPage(request, response, "error while creating the user in the database, please retry" + e);
             }
 
         }else{

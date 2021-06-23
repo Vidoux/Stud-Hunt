@@ -18,10 +18,11 @@
 
 <div class="bigdiv ui centered stackable grid">
     <div class="ui nine wide column center aligned segment transparent">
-        <h2>Votre profil</h2>
+        <h1>Consulter et modifiez votre profil</h1>
     </div>
     <div class="nine wide column">
         <div class="ui center aligned segment transparent">
+            <h1>Photo de Profil</h1>
             <img src="./image_loader?id=${sessionScope.user.getUsername()}" alt="raté...">
             <form method="post" action="./image_action" enctype="multipart/form-data">
                 <div class="item">
@@ -40,18 +41,35 @@
                     Valider et uploader votre photo
                 </button>
             </form>
-
-
-
-
         </div>
         <div class="ui center aligned segment transparent">
-            <button class="ui blue button" id="change_profil" onclick="activateStudentForm()">
+            <h1>CV</h1>
+            <form method="post" action="./cv_action" enctype="multipart/form-data">
+                <div class="item">
+                    <div>
+                        <label for="image_uploads">Sélectionnez votre CV (.pdf)</label>
+                        <div class="ui input">
+                            <input type="file" id="image_uploads" name="image_upload" accept=".pdf">
+                        </div>
+                    </div>
+                </div><br>
+                <div class="preview">
+                    <p>Aucun fichier sélectionné pour le moment</p>
+                </div>
+                <button class="ui blue button" id="change_picture" type="submit">
+                    <i class="pen icon"></i>
+                    Valider et uploader votre photo
+                </button>
+            </form>
+        </div>
+
+
+        <div class="ui left aligned fluid segment transparent">
+            <h1 style="text-align: center;">Vos Informations</h1>
+            <button class="ui fluid blue button" id="change_profil" onclick="activateStudentForm()">
                 <i class="pen icon"></i>
                 Modifier ces informations
-            </button>
-        </div>
-        <div class="ui left aligned fluid segment transparent">
+            </button><br>
             <form class="ui form" id="student_info_frm" method="post" action="./student_info">
                 <div class="field">
                     <label>Votre identité</label>
