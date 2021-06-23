@@ -69,7 +69,9 @@ strong {
     pointer-events: none;
 }
 /*------------------------------------------------------*/
-
+.preview img{
+    max-height: 400px;
+}
 
 
 

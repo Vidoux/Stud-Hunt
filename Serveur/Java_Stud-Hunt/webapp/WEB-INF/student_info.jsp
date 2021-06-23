@@ -23,15 +23,18 @@
     <div class="nine wide column">
         <div class="ui center aligned segment transparent">
             <img src="./image_loader?id=${sessionScope.user.getUsername()}" alt="raté...">
-            <form method="post" action="./image_action">
+            <form method="post" action="./image_action" enctype="multipart/form-data">
                 <div class="item">
                     <div>
-                        <p>Sélectionne ta photo</p>
+                        <label for="image_uploads">Sélectionner des images à uploader (PNG, JPG)</label>
                         <div class="ui input">
-                            <input type="file" accept=".jpg" id="imageUpload" name="image">
+                            <input type="file" id="image_uploads" name="image_upload" accept=".jpg, .jpeg, .png">
                         </div>
                     </div>
                 </div><br>
+                <div class="preview">
+                    <p>Aucun fichier sélectionné pour le moment</p>
+                </div>
                 <button class="ui blue button" id="change_picture" type="submit">
                     <i class="pen icon"></i>
                     Valider et uploader votre photo
