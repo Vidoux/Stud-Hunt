@@ -18,7 +18,7 @@
 
 <div class="bigdiv ui centered stackable grid">
     <div class="ui nine wide column center aligned segment transparent">
-        <h1>Consulter et modifiez votre profil</h1>
+        <h1>Consultez et modifiez votre profil</h1>
     </div>
     <div class="nine wide column">
         <div class="ui center aligned segment transparent">
@@ -38,7 +38,7 @@
                 </div>
                 <button class="ui blue button" id="change_picture" type="submit">
                     <i class="pen icon"></i>
-                    Valider et uploader votre photo
+                    Valider et envoyer votre photo
                 </button>
             </form>
         </div>
@@ -47,18 +47,15 @@
             <form method="post" action="./cv_action" enctype="multipart/form-data">
                 <div class="item">
                     <div>
-                        <label for="image_uploads">Sélectionnez votre CV (.pdf)</label>
+                        <label for="cv_uploads">Sélectionnez votre CV (.pdf)</label>
                         <div class="ui input">
-                            <input type="file" id="image_uploads" name="image_upload" accept=".pdf">
+                            <input type="file" id="cv_uploads" name="cv_upload" accept=".pdf">
                         </div>
                     </div>
                 </div><br>
-                <div class="preview">
-                    <p>Aucun fichier sélectionné pour le moment</p>
-                </div>
-                <button class="ui blue button" id="change_picture" type="submit">
+                <button class="ui blue button" id="change_cv" type="submit">
                     <i class="pen icon"></i>
-                    Valider et uploader votre photo
+                    Valider et envoyer votre cv
                 </button>
             </form>
         </div>
@@ -134,7 +131,7 @@
                     </div>
                     <div class="six wide field">
                         <label>Année</label>
-                        <input type="date" name="DateDiplôme">
+                        <input type="number" name="DateDiplôme">
                     </div>
                 </div>
 
@@ -174,10 +171,6 @@
                 </div>
                 <h4 class="ui dividing header">Coordonnées</h4>
                 <div class="field">
-                    <label>E-mail</label>
-                    <input type="email" size="30" name="e-mail" placeholder="E-mail">
-                </div>
-                <div class="field">
                     <label>Téléphone</label>
                     <input type="number" name="telephone" placeholder="+330 12 34 56 78">
                 </div>
@@ -187,19 +180,27 @@
                         <textarea placeholder="Présente toi en quelques mots max 500 caractères (les entreprises verront cette partie donnez leurs envies de t'embaucher)" maxlength="500"></textarea>
                     </div>
                 </div>
-                <div class="item">
-                    <div>
-                        <p>Dépose ton CV</p>
-                        <div class="ui input">
-                            <input type="file" accept=".pdf" placeholder=" ">
+                <br>
+                <h4 class="ui dividing header">Tes projets </h4>
+                <div class="field">
+                    <label>Nom</label>
+                    <div class="two fields">
+                        <div class="field">
+                            <input type="text" name="nom" placeholder="Nom">
+                        </div>
+                        <div class="field">
+                            <input type="number" value="2021" name="DateDiplôme">
                         </div>
                     </div>
+                    <textarea placeholder="Décris-nous ton projet en quelques mots max 500 caractères" maxlength="500"></textarea>
                 </div>
-                <br>
 
-                <button class="big ui blue button invisibleDiv" id="submitButton" type="submit">Valider</button><br>
-
-
+                <button class="big ui blue button invisibleDiv" id="submitButton" type="submit">Valider</button>
+<%--                TODO: ajouter annuler les modifications--%>
+                <button class="ui blue button invisibleDiv" id="cancelButton" onclick="desactivateStudentForm()">
+                    <i class="close icon"></i>
+                    Annuler
+                </button>
 
             </form>
         </div>

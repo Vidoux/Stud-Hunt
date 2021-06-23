@@ -4,13 +4,26 @@ $('.ui.dropdown')
 
 function activateStudentForm(){
     let inputs = document.getElementsByTagName("input");
-    console.log(inputs);
     for (let i=0; i< inputs.length; ++i){
         inputs[i].style.pointerEvents = "auto";
     }
     document.getElementById("change_profil").className += " loading disabled";
 
     document.getElementById("submitButton").classList.remove("invisibleDiv");
+    document.getElementById("cancelButton").classList.remove("invisibleDiv");
+}
+
+function desactivateStudentForm(){
+    // let inputs = document.getElementsByTagName("input");
+    // for (let i=0; i< inputs.length; ++i){
+    //     inputs[i].style.pointerEvents = "none";
+    // }
+    // document.getElementById("change_profil").classList.remove("loading");
+    // document.getElementById("change_profil").classList.remove("disabled");
+    //
+    // document.getElementById("submitButton").className += " invisibleDiv";
+    // document.getElementById("cancelButton").className += " invisibleDiv";
+    window.location.reload();
 }
 
 function changePicture(){
@@ -71,7 +84,7 @@ function updateImageDisplay() {
             var image = document.createElement('img');
             image.src = window.URL.createObjectURL(curFiles[0]);
             console.log("src" + image.src);
-            image.className="ui circular image"
+            image.className="ui centered circular image"
 
             list.appendChild(image);
             list.appendChild(para);

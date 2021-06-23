@@ -23,14 +23,19 @@ public class StudentInfoServlet extends HttpServlet {
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        HttpSession session = request.getSession();
+        if((session.getAttribute("user") == null)){
+            sendErrorPage(request, response, "Vous devez vous authentifier");
+        }
 
     }
 
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
         HttpSession session = request.getSession();
-
-//        session.setAttribute("studentInfos", studentInfos);
+        if(session.getAttribute("user") == null){
+            this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        }
+        request.setAttribute("email", "booooooooooooooof");
         this.getServletContext().getRequestDispatcher( "/WEB-INF/student_info.jsp").forward( request, response );
     }
 

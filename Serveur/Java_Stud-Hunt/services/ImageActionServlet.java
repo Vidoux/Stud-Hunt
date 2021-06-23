@@ -47,6 +47,10 @@ public class ImageActionServlet extends HttpServlet {
 
 
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user") == null){
+            this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        }
         System.out.println(request.getParameter("id"));
         Blob imageBlob = StudHunt.getInstance().getProfilePicture(request.getParameter("id"));
         InputStream in = null;
@@ -62,6 +66,10 @@ public class ImageActionServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if((session.getAttribute("user") == null)){
+            sendErrorPage(request, response, "Vous devez vous authentifier");
+        }
 //       System.out.println("Tanguy");
 //       HttpSession session = request.getSession();
 //        System.out.println(request.getParameterValues("image"));

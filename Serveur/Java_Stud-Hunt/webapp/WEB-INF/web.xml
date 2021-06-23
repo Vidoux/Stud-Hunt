@@ -28,6 +28,10 @@
         <servlet-name>services.ImageActionServlet</servlet-name>
         <servlet-class>services.ImageActionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>services.CvActionServlet</servlet-name>
+        <servlet-class>services.CvActionServlet</servlet-class>
+    </servlet>
 
     <!--Mapping-->
     <servlet-mapping>
@@ -53,6 +57,10 @@
     <servlet-mapping>
         <servlet-name>services.ImageActionServlet</servlet-name>
         <url-pattern>/image_action</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>services.CvActionServlet</servlet-name>
+        <url-pattern>/cv_action</url-pattern>
     </servlet-mapping>
 
 
