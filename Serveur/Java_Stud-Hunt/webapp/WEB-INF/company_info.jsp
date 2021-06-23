@@ -18,10 +18,31 @@
 
 <div class="bigdiv ui centered stackable grid">
     <div class="ui nine wide column center aligned segment transparent">
-        <h1>Consultez et modifiez votre profil</h1>
+        <h1>Consultez et modifiez votre profil d'Entreprise</h1>
     </div>
-    <div class="ui centered grid">
-        <div class="ui left aligned segment">
+    <div class="ui nine wide column">
+        <div class="ui center aligned segment transparent">
+            <h1>Photo de Profil</h1>
+            <img src="./image_action" class="ui centered small circular image">
+            <form method="post" action="./image_action" enctype="multipart/form-data">
+                <div class="item">
+                    <div>
+                        <label for="image_uploads">Sélectionner des images à uploader (PNG, JPG)</label>
+                        <div class="ui input">
+                            <input type="file" id="image_uploads" name="image_upload" accept=".jpg, .jpeg, .png">
+                        </div>
+                    </div>
+                </div><br>
+                <div class="preview">
+                    <p>Aucun fichier sélectionné pour le moment</p>
+                </div>
+                <button class="ui blue button" id="change_picture" type="submit">
+                    <i class="pen icon"></i>
+                    Valider et envoyer votre photo
+                </button>
+            </form>
+        </div>
+        <div class="ui left aligned segment transparent">
             <form class="ui form">
                 <h4 class="ui dividing header">Information</h4>
                 <div class="field">

@@ -6,6 +6,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import persistantdata.User;
 import studhunt.StudHunt;
+import util.UserTypes;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -61,7 +62,8 @@ public class ImageActionServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if((session.getAttribute("user") == null)){
+        User user = (User) session.getAttribute("user");
+        if(user== null){
             sendErrorPage(request, response, "Vous devez vous authentifier");
         }
 
@@ -100,7 +102,7 @@ public class ImageActionServlet extends HttpServlet {
                 if (!fi.isFormField()) {
                     byte[] byteImage = fi.get();
 
-                    User user = (User) session.getAttribute("user");
+                    assert user != null;
                     System.out.println("image: emailID" + user.getEmail());
                     StudHunt.getInstance().setProfilePicture(user.getEmail(), byteImage);
 
@@ -111,8 +113,13 @@ public class ImageActionServlet extends HttpServlet {
             sendErrorPage(request,response, "error while trying to upload the image" + ex);
 //            return;
         }
-
-        this.getServletContext().getRequestDispatcher("/WEB-INF/student_info.jsp").forward(request, response);
+        assert user != null;
+        if(user.getUserType() == UserTypes.STUDENT){
+            this.getServletContext().getRequestDispatcher("/WEB-INF/student_info.jsp").forward(request, response);
+        }
+        if(user.getUserType() == UserTypes.COMPANY){
+            this.getServletContext().getRequestDispatcher("/WEB-INF/company_info.jsp").forward(request, response);
+        }
     }
 
     /**

@@ -6,6 +6,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import persistantdata.User;
 import studhunt.StudHunt;
+import util.UserTypes;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -54,7 +55,8 @@ public class CvActionServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if((session.getAttribute("user") == null)){
+        User user = (User) session.getAttribute("user");
+        if( user == null){
             sendErrorPage(request, response, "Vous devez vous authentifier");
         }
 
@@ -94,7 +96,6 @@ public class CvActionServlet extends HttpServlet {
                 if ( !fi.isFormField () ) {
                     byte [] byteCV = fi.get();
 
-                    User user = (User) session.getAttribute("user");
                     System.out.println("cv: emailID" + user.getEmail());
                     StudHunt.getInstance().setCV(user.getEmail(), byteCV);
                 }
@@ -103,7 +104,12 @@ public class CvActionServlet extends HttpServlet {
             sendErrorPage(request,response, "error while trying to upload the CV" + ex);
 //            return;
         }
-        this.getServletContext().getRequestDispatcher("/WEB-INF/student_info.jsp").forward(request, response);
+        if(user.getUserType() == UserTypes.STUDENT){
+            this.getServletContext().getRequestDispatcher("/WEB-INF/student_info.jsp").forward(request, response);
+        }
+        if(user.getUserType() == UserTypes.COMPANY){
+            this.getServletContext().getRequestDispatcher("/WEB-INF/company_info.jsp").forward(request, response);
+        }
     }
 
     /**
