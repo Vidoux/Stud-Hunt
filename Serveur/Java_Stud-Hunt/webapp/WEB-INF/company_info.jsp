@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/custom.css">
     <script src="${pageContext.request.contextPath}/semantic/dist/semantic.min.js"></script>
-    <title>Stud-Hunt-Profil</title>
+    <title>Stud-Hunt-Company Profil</title>
     <link rel="shortcut icon" type="image/png" href="${pageContext.request.contextPath}/img/logo(sans%20titre).png"/>
 </head>
 
@@ -20,69 +20,18 @@
     <div class="ui nine wide column center aligned segment transparent">
         <h1>Consultez et modifiez votre profil</h1>
     </div>
-    <div class="nine wide column">
-        <div class="ui center aligned segment transparent">
-            <h1>Photo de Profil</h1>
-            <img src="./image_action" class="ui centered small circular image">
-            <form method="post" action="./image_action" enctype="multipart/form-data">
-                <div class="item">
-                    <div>
-                        <label for="image_uploads">Sélectionner des images à uploader (PNG, JPG)</label>
-                        <div class="ui input">
-                            <input type="file" id="image_uploads" name="image_upload" accept=".jpg, .jpeg, .png">
-                        </div>
-                    </div>
-                </div><br>
-                <div class="preview">
-                    <p>Aucun fichier sélectionné pour le moment</p>
-                </div>
-                <button class="ui blue button" id="change_picture" type="submit">
-                    <i class="pen icon"></i>
-                    Valider et envoyer votre photo
-                </button>
-            </form>
-        </div>
-        <div class="ui center aligned segment transparent">
-            <h1>CV</h1>
-
-            <a href="./cv_action" target="_blank">
-                <button class="ui labeled green icon button">
-                    <i class="file alternate icon"></i>
-                    Voir votre CV
-                </button>
-            </a><br><br>
-            <form method="post" action="./cv_action" enctype="multipart/form-data">
-                <div class="item">
-                    <div>
-                        <label for="cv_uploads">Sélectionnez votre CV (.pdf)</label>
-                        <div class="ui input">
-                            <input type="file" id="cv_uploads" name="cv_upload" accept=".pdf">
-                        </div>
-                    </div>
-                </div><br>
-                <button class="ui blue button" id="change_cv" type="submit">
-                    <i class="pen icon"></i>
-                    Valider et envoyer votre cv
-                </button>
-            </form>
-        </div>
-
-
-        <div class="ui left aligned fluid segment transparent">
-            <h1 style="text-align: center;">Vos Informations</h1>
-            <button class="ui fluid blue button" id="change_profil" onclick="activateStudentForm()">
-                <i class="pen icon"></i>
-                Modifier ces informations
-            </button><br>
-            <form class="ui form" id="student_info_frm" method="post" action="./student_info">
+    <div class="ui centered grid">
+        <div class="ui left aligned segment">
+            <form class="ui form">
+                <h4 class="ui dividing header">Information</h4>
                 <div class="field">
-                    <label>Votre identité</label>
+                    <label>Nom commercial</label>
                     <div class="two fields">
                         <div class="field">
-                            <input type="text" name="nom" placeholder="Nom">
+                            <input type="text" name="noment" placeholder="Nom">
                         </div>
                         <div class="field">
-                            <input type="text" name="prénom" placeholder="Prénom">
+                            <input type="text" name="shipping[last-name]" placeholder="Prénom">
                         </div>
                     </div>
                 </div>
@@ -90,10 +39,10 @@
                     <label>Localisation</label>
                     <div class="fields">
                         <div class="twelve wide field">
-                            <input type="text" name="adresse" placeholder="Adresse">
+                            <input type="text" name="shipping[address]" placeholder="Adresse">
                         </div>
                         <div class="four wide field">
-                            <input type="text" name="codepostal" placeholder="Code postale">
+                            <input type="text" name="shipping[address-2]" placeholder="Code postale">
                         </div>
                     </div>
                 </div>
@@ -119,100 +68,42 @@
                     </div>
                 </div>
 
-                <h4 class="ui dividing header">Parcours scolaire</h4>
-                <div class="field">
-                    <label>Nom de la formation</label>
-                    <!--<div class="sixteen fields">-->
-                    <div class="field">
-                        <input type="text" name="nomdiplôme" placeholder="Nom du dîplome">
-                    </div>
-                    <!-- <div class="field">
-                      <input type="text" name="ecole" placeholder="Ecole">
-                    </div>
-                  </div>-->
-                </div>
+                <h4 class="ui dividing header">Secteur</h4>
                 <div class="fields">
                     <div class="ten wide field">
-                        <label>Secteur</label>
-                        <input type="text" name="Secteur" placeholder="Secteur">
+                        <label>Domaine</label>
+                        <input type="text" name="Secteur" placeholder="Domaine">
                     </div>
                     <div class="six wide field">
-                        <label>Année</label>
-                        <input type="number" name="DateDiplôme">
+                        <label>Date de création</label>
+                        <input type="date" name="DateDiplôme">
                     </div>
                 </div>
 
-                <div class="two fields">
-                    <div class="field">
-                        <label>Ecole</label>
-                        <div class="ui fluid search selection dropdown">
-                            <input type="hidden" name="school">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">Sélectioner une école</div>
-                            <div class="menu">
-                                <div class="item" data-value="af"><i></i>HEC</div>
-                                <div class="item" data-value="ax"><i></i>Epitech</div>
-                                <div class="item" data-value="al"><i></i>Epita</div>
-                                <div class="item" data-value="dz"><i></i>ESSEC</div>
-                                <div class="item" data-value="as"><i></i>Polytechnique</div>
-                                <div class="item" data-value="ad"><i></i>La Sorbonne</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Diplôme actuel</label>
-                        <div class="ui fluid search selection dropdown">
-                            <input type="hidden" name="graduate">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">Selectionner un diplôme</div>
-                            <div class="menu">
-                                <div class="item" data-value="+1"><i></i>Bac/Cap</div>
-                                <div class="item" data-value="+2"><i></i>Bac+1</div>
-                                <div class="item" data-value="+3"><i></i>Bac+2</div>
-                                <div class="item" data-value="+4"><i></i>Bac+3</div>
-                                <div class="item" data-value="+5"><i></i>Bac+4</div>
-                                <div class="item" data-value="+6"><i></i>Bac+5</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Secteur d'activité recherché</label>
-                        <input type="text" name="industry" placeholder="secteur....">
-                    </div>
-                </div>
                 <h4 class="ui dividing header">Coordonnées</h4>
+                <div class="field">
+                    <label>E-mail</label>
+                    <input type="email" size="30" name="e-mail" placeholder="E-mail">
+                </div>
                 <div class="field">
                     <label>Téléphone</label>
                     <input type="number" name="telephone" placeholder="+330 12 34 56 78">
                 </div>
+
                 <div class="ui form">
                     <div class="field">
-                        <label>Présente toi</label>
-                        <textarea placeholder="Présente toi en quelques mots max 500 caractères (les entreprises verront cette partie donnez leurs envies de t'embaucher)" maxlength="500"></textarea>
+                        <label>Texte</label>
+                        <textarea placeholder="Présentez-vous en quelques mots (donnez un premier aperçu de votre entreprise à vos futurs collaborateurs)"></textarea>
                     </div>
-                </div>
-                <br>
-                <h4 class="ui dividing header">Tes projets </h4>
-                <div class="field">
-                    <label>Nom</label>
-                    <div class="two fields">
-                        <div class="field">
-                            <input type="text" name="nom" placeholder="Nom">
-                        </div>
-                        <div class="field">
-                            <input type="number" value="2021" name="DateDiplôme">
-                        </div>
-                    </div>
-                    <textarea placeholder="Décris-nous ton projet en quelques mots max 500 caractères" maxlength="500"></textarea>
                 </div>
 
-                <button class="big ui blue button invisibleDiv" id="submitButton" type="submit">Valider</button>
-<%--                TODO: ajouter annuler les modifications--%>
+                <br>
+                <div class="ui button" tabindex="0">Valider</div>
+
+
+
+
             </form>
-            <button class="ui blue button invisibleDiv" id="cancelButton" onclick="desactivateStudentForm()">
-                <i class="close icon"></i>
-                Annuler
-            </button>
         </div>
     </div>
 </div>
