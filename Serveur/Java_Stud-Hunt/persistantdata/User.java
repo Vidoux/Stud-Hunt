@@ -3,22 +3,22 @@ package persistantdata;
 import util.UserTypes;
 
 public class User {
-    private String username;
+    private String email;
     private String password;
     private UserTypes userType;
 
-    public User(String username,String password, UserTypes userType){
+    public User(String email, String password, UserTypes userType){
         this.userType = userType;
         this.password = password;
-        this.username = username;
+        this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -36,7 +36,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "username='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", userType=" + userType +
                 '}';

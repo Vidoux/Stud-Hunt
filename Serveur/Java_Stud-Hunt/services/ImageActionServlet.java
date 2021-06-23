@@ -5,23 +5,17 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import persistantdata.User;
-import studhunt.ConnexionInfos;
 import studhunt.StudHunt;
 
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Files;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
@@ -181,6 +175,9 @@ public class ImageActionServlet extends HttpServlet {
                     byte [] byteImage = fi.get();
 
                     System.out.println(byteImage.toString());
+                    User user = (User) session.getAttribute("user");
+                    System.out.println("image: emailID" + user.getEmail());
+                    StudHunt.getInstance().setProfilePicture(user.getEmail(),request.getParameterValues("image"));
 
 
                 }
