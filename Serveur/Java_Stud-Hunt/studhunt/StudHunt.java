@@ -1,7 +1,5 @@
 package studhunt;
 
-import java.io.File;
-import java.sql.Blob;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,19 +32,19 @@ public class StudHunt {
 		return data.createUser(email, name, password, userType, refernces, infos);
 	}
 	
-	public boolean setProfilePicture(String email, File file) {
-		return data.setProfilePicture(email, file);
+	public void setProfilePicture(String email, byte[] file) {
+		data.setProfilePicture(email, file);
 	}
 	
-	public boolean setCV(String email, File file) {
-		return data.setCV(email, file);
+	public void setCV(String email, byte[] file) {
+		data.setCV(email, file);
 	}
 	
-	public Blob getCV(String email) {
+	public byte[] getCV(String email) {
 		return data.getCV(email);
 	}
 	
-	public Blob getProfilePicture(String email) {
+	public byte[] getProfilePicture(String email) {
 		return data.getProfilePicture(email);
 	}
 }

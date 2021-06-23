@@ -1,9 +1,5 @@
 package persistantdata;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,25 +19,26 @@ import util.StudentInfos;
 import util.UserTypes;
 
 /**
- * StudHuntData is the interface with the database, the only entity who communicates with it.
+ * StudHuntData is the interface with the database, the only entity who
+ * communicates with it.
  * 
  * @author Hugo BERNARD
  *
  */
 public class StudHuntData implements PersistentStudHunt {
-	
+
 	/**
 	 * Database link
 	 */
 	Connection dataBase;
-	
+
 	/**
 	 * Called at loading to setup the connection with database
 	 */
 	static {
 		StudHunt.getInstance().setData(new StudHuntData());
 	}
-	
+
 	/**
 	 * Load OracleDriver to contrôle the database and connect it
 	 */
@@ -65,41 +62,36 @@ public class StudHuntData implements PersistentStudHunt {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Create a user and it's sub-type (STUDENT or COMPANY)
 	 * 
-	 * @param email the email of the user (Also it's ID in the mean time)
-	 * @param name the name of the user
-	 * @param forname the forname of the user
+	 * @param email    the email of the user (Also it's ID in the mean time)
+	 * @param name     the name of the user
+	 * @param forname  the forname of the user
 	 * @param password the password of the user
-	 * @param userType the type of the user (COMPANY or STUDENT 
-	 * @param infos the additional informations to create a sub-type (Only for STUDENT)
+	 * @param userType the type of the user (COMPANY or STUDENT
+	 * @param infos    the additional informations to create a sub-type (Only for
+	 *                 STUDENT)
 	 * 
 	 * @return true if the user has been created
 	 */
 	@Override
-	public boolean createUser(String email, String name, String password, UserTypes userType, HashMap<References, String> references, List<Pair> infos) {
-		PreparedStatement query;
-		String sqlStatement = "INSERT INTO APP_USER VALUES (?, ?, ?)";
+	public boolean createUser(String email, String name, String password, UserTypes userType,
+			HashMap<References, String> references, List<Pair> infos) {
+		String sqlStatement = null;
+		String forname = null;
+		int apprenticeship = 0;
+		int internship = 0;
+
+		sqlStatement = "INSERT INTO APP_USER VALUES (?, ?, ?)";
 		try {
-			synchronized (dataBase) {
-				query = dataBase.prepareStatement(sqlStatement);
-				query.setString(1, email);
-				query.setString(2, name);
-				query.setString(3, password);
-				query.executeQuery();
-			}
-			query.close();
-			System.out.println("Query '" + sqlStatement + "' worked successfully");
-			switch (userType) {
-			case STUDENT :
-				sqlStatement = "INSERT INTO STUDENT VALUES (?, ?, ?, ?)";
-				String forname = null;
-				int apprenticeship = 0;
-				int internship = 0;
-				for(Pair info : infos) {
-					switch((StudentInfos) info.getFirst()) {
+			executeSQL(sqlStatement, new Object[] { email, name, password});
+			try {
+				switch (userType) {
+				case STUDENT:
+					for (Pair info : infos) {
+						switch ((StudentInfos) info.getFirst()) {
 						case APPRENTICESHIP:
 							apprenticeship = (int) info.getSecond();
 							break;
@@ -109,85 +101,125 @@ public class StudHuntData implements PersistentStudHunt {
 						case INTERNSHIP:
 							internship = (int) info.getSecond();
 							break;
+						}
 					}
+					sqlStatement = "INSERT INTO STUDENT VALUES (?, ?, ?, ?)";
+					executeSQL(sqlStatement, new Object[] { email, forname, apprenticeship, internship });
+					break;
+				case COMPANY:
+					sqlStatement = "INSERT INTO COMPANY VALUES (?)";
+					executeSQL(sqlStatement, new Object[] { email });
+					break;
 				}
-				synchronized (dataBase) {
-					query = dataBase.prepareStatement(sqlStatement);
-					query.setString(1, email);
-					query.setString(2, forname);
-					query.setInt(3, apprenticeship);
-					query.setInt(4, internship);
-					query.executeQuery();
-				}
-				break;
-			case COMPANY :
-				sqlStatement = "INSERT INTO COMPANY VALUES (?)";
-				synchronized (dataBase) {
-					query = dataBase.prepareStatement(sqlStatement);
-					query.setString(1, email);
-					query.executeQuery();
-				}
-				break;
+			} catch (SQLException subTypeException) {
+				System.err.println(formatSQLError("creating the sub-type user", sqlStatement));
+				subTypeException.printStackTrace();
+				return false;
 			}
-			System.out.println("Query '" + sqlStatement + "' worked successfully");
-			for (Entry<References, String> reference : references.entrySet()) {
-				sqlStatement = "INSERT INTO " + reference.getKey().toString() + " VALUES (id_" + reference.getKey().toString().charAt(0) + reference.getKey().toString().substring(1).toLowerCase() + "_Seq.NEXTVAL, ?)";
-				synchronized (dataBase) {
-					query = dataBase.prepareStatement(sqlStatement);
-					query.setString(1, reference.getValue());
-					query.executeQuery();
-				}
-			}
-			query.close();
-			System.out.println("User " + name + " created");
-			return true;
-		} catch (SQLIntegrityConstraintViolationException e) {
-			System.err.println("User already exist");
+		} catch (SQLIntegrityConstraintViolationException userException) {
+			System.err.println("User already existing");
 			return false;
-		} catch (SQLException e) {
-			System.err.println("Error while creating user");
-			e.printStackTrace();
+		} catch (SQLException userException) {
+			System.err.println(formatSQLError("creating the user", sqlStatement));
+			userException.printStackTrace();
 			return false;
-		} 
+		}
+		return addReferences(references, email, userType);
 	}
-	
+
+	public boolean addReferences(HashMap<References, String> references, String email, UserTypes userType) {
+		for (Entry<References, String> reference : references.entrySet()) {
+			String sqlStatement = null;
+			ResultSet response = null;
+			int referenceID = 0;
+			String referenceName = null;
+			String tableName = null;
+
+			sqlStatement = "SELECT * FROM " + reference.getKey().toString() + " WHERE "
+					+ reference.getKey().toString().toLowerCase() + "Name = ?";
+			try {
+				response = executeSQL(sqlStatement, new Object[] { reference.getValue() });
+				synchronized (dataBase) {
+					switch (reference.getKey()) {
+					case SCHOOL:
+						if (!response.next()) {
+							createSchool(reference.getValue());
+						}
+						referenceName = "School";
+						break;
+					case INDUSTRY:
+						if (!response.next()) {
+							createIndustry(reference.getValue());
+						}
+						referenceName = "Industry";
+						break;
+					}
+					sqlStatement = "SELECT id_" + referenceName + " FROM " + referenceName.toUpperCase() + " WHERE " + referenceName + "Name = ?";
+					response = executeSQL(sqlStatement, new Object[] {reference.getValue()});
+					referenceID = response.next() ? response.getInt("id_" + referenceName) : 1;
+				}
+			} catch (SQLException checkReferencesException) {
+				System.err.println(formatSQLError("getting references existing informations", sqlStatement));
+				checkReferencesException.printStackTrace();
+				return false;
+			}
+			switch (userType) {
+			case STUDENT:
+				switch (reference.getKey()) {
+				case SCHOOL:
+					tableName = "is_part_of";
+					break;
+				case INDUSTRY:
+					tableName = "concern";
+					break;
+				}
+				break;
+			case COMPANY:
+				tableName = "refer_to";
+				break;
+			}
+			sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
+			try {
+				executeSQL(sqlStatement, new Object[] {referenceID, email});
+			} catch (SQLException addingReferenceException) {
+				System.err.println(formatSQLError("adding association between user and reference", sqlStatement));
+				addingReferenceException.printStackTrace();
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
-	 * Get all the informations about a user if the user email and password are existing
+	 * Get all the informations about a user if the user email and password are
+	 * existing
 	 * 
-	 * @param email the email of the user
+	 * @param email    the email of the user
 	 * @param password the password for this user
 	 * 
-	 * @return connectInfos the informations requierd about this user if the combinaison email/password was correct
+	 * @return connectInfos the informations requierd about this user if the
+	 *         combinaison email/password was correct
 	 */
 	@Override
 	public ConnexionInfos getUserConnection(String email, String password) {
-		System.out.println("Finding user " + email + " in the database");
-		PreparedStatement query;
-		ResultSet response;
-		String sqlStatement = "SELECT * FROM APP_USER WHERE email = ? AND password = ?";
+		String sqlStatement = null;
+		ResultSet response = null;
+		UserTypes user = null;
 		ConnexionInfos connectInfos = new ConnexionInfos(false, null, null, null);
+
+		sqlStatement = "SELECT * FROM APP_USER WHERE email = ? AND password = ?";
 		try {
-			synchronized (dataBase) {
-				query = dataBase.prepareStatement(sqlStatement);
-				query.setString(1, email);
-				query.setString(2, password);
-				response = query.executeQuery();
-			}
-			System.out.println("Query '" + sqlStatement + "' worked successfully");
+			response = executeSQL(sqlStatement, new Object[] { email, password });
 			if (response.next()) {
-				System.out.println("Found user " + email + " (Name : " + response.getString("name") + ")");
-				UserTypes user = getUserType(email);
+				user = getUserType(email);
 				if (user.equals(UserTypes.STUDENT)) {
 					connectInfos = new ConnexionInfos(true, user, response.getString("name"), getUserForname(email));
 				} else {
 					connectInfos = new ConnexionInfos(true, user, response.getString("name"));
 				}
 			}
-			query.close();
-			response.close();
-		} catch (SQLException e) {
-			System.err.println("An error occured in the SQL statement : '" + sqlStatement + "'");
-			e.printStackTrace();
+		} catch (SQLException userNotFoundException) {
+			System.err.println("The combinaison email/password was not found");
 		}
 		return connectInfos;
 	}
@@ -200,25 +232,29 @@ public class StudHuntData implements PersistentStudHunt {
 	 * @return The CV as a Blob
 	 */
 	@Override
-	public Blob getCV(String email) {
-		String tableName = "CV";
+	public byte[] getCV(String email) {
+		String tableName = null;
+
+		tableName = "CV";
 		return getFile(tableName, email);
 	}
-	
+
 	/**
 	 * Call setFile() for a CV
 	 * 
 	 * @param email the email of the selected user
-	 * @param cv the PDF that will be linked to this user
+	 * @param cv    the PDF that will be linked to this user
 	 * 
 	 * @return true if the PDF has been added without problem
 	 */
 	@Override
-	public boolean setCV(String email, File cv) {
-		String tableName = "CV";
+	public boolean setCV(String email, byte[] cv) {
+		String tableName = null;
+
+		tableName = "CV";
 		return setFile(tableName, email, cv);
 	}
-	
+
 	/**
 	 * Get the picture associated with the user if it exist
 	 * 
@@ -227,22 +263,26 @@ public class StudHuntData implements PersistentStudHunt {
 	 * @return The picture as a Blob
 	 */
 	@Override
-	public Blob getProfilePicture(String email) {
-		String tableName = "PROFILE_PICTURE";
+	public byte[] getProfilePicture(String email) {
+		String tableName = null;
+
+		tableName = "PROFILE_PICTURE";
 		return getFile(tableName, email);
 	}
-	
+
 	/**
 	 * Call setFile() for a profile picture
 	 * 
-	 * @param email the email of the selected user
+	 * @param email          the email of the selected user
 	 * @param profilePicture the picture that will be linked to this user
 	 * 
 	 * @return true if the picture has been added without problem
 	 */
 	@Override
-	public boolean setProfilePicture(String email, File profilePicture) {
-		String tableName = "PROFILE_PICTURE";
+	public boolean setProfilePicture(String email, byte[] profilePicture) {
+		String tableName = null;
+
+		tableName = "PROFILE_PICTURE";
 		return setFile(tableName, email, profilePicture);
 	}
 
@@ -250,82 +290,67 @@ public class StudHuntData implements PersistentStudHunt {
 	 * Get the file from the table asked linked to the email
 	 * 
 	 * @param tableName the table to serach on
-	 * @param email the email linked to the file
+	 * @param email     the email linked to the file
 	 * 
 	 * @return the file serached
 	 */
-	private Blob getFile(String tableName, String email) {
-		Blob file = null;
-		PreparedStatement query;
-		ResultSet response;
-		String sqlStatement = "SELECT linkedFile FROM " + tableName + " WHERE email = ?";
+	private byte[] getFile(String tableName, String email) {
+		String sqlStatement = null;
+		ResultSet response = null;
+		byte[] file = null;
+
+		sqlStatement = "SELECT linkedFile FROM " + tableName + " WHERE email = ?";
 		try {
-			synchronized (dataBase) {
-					query = dataBase.prepareStatement(sqlStatement);
-					query.setString(1, email);
-					response = query.executeQuery();
-					if (response.next()) {
-						file = response.getBlob("linkedFile");
-					}
-			}
-			System.out.println("Query '" + sqlStatement + "' worked successfully");
-			query.close();
-			response.close();
-		} catch (SQLException e) {
-			System.err.println("An error occured in the SQL statement : '" + sqlStatement + "'");
-			e.printStackTrace();
+			response = executeSQL(sqlStatement, new Object[] { email });
+			file = response.next() ? response.getBytes("linkedFile") : null;
+		} catch (SQLException fileNotFondException) {
+			System.err.println(formatSQLError("looking for the file", sqlStatement));
+			fileNotFondException.printStackTrace();
 		}
 		return file;
 	}
-	
+
 	/**
 	 * Update a file linked to a user of create it
 	 * 
 	 * @param tableName the table we look to edit
-	 * @param email the email of the selected user
-	 * @param file the file that will be added
+	 * @param email     the email of the selected user
+	 * @param file      the file that will be added
 	 * 
 	 * @return true if the file has been added without problem
 	 */
-	public boolean setFile(String tableName, String email, File file) {
-		PreparedStatement query;
-		ResultSet response;
-		String sqlStatement = "SELECT * FROM " + tableName + " WHERE email = ?";
+	private boolean setFile(String tableName, String email, byte[] file) {
+		String sqlStatement = null;
+		ResultSet response = null;
+
+		sqlStatement = "SELECT * FROM " + tableName + " WHERE email = ?";
 		try {
-			synchronized (dataBase) {
-				query = dataBase.prepareStatement(sqlStatement);
-				query.setString(1, email);
-				response = query.executeQuery();
-			}
-			System.out.println("Query '" + sqlStatement + "' worked successfully");
+			response = executeSQL(sqlStatement, new Object[] { email });
 			if (response.next()) {
 				sqlStatement = "DELETE FROM " + tableName + " WHERE email = ?";
-				synchronized (dataBase) {
-					query = dataBase.prepareStatement(sqlStatement);
-					query.setString(1, email);
+				try {
+					executeSQL(sqlStatement, new Object[] { email });
+				} catch (SQLException deleteFileException) {
+					System.err.println(formatSQLError("deleting the file", sqlStatement));
+					deleteFileException.printStackTrace();
+					return false;
 				}
-				System.out.println("Query '" + sqlStatement + "' worked successfully");
+
 			}
-			response.close();
-			sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
-			byte[] fileInBytes = Files.readAllBytes(file.toPath());
-			synchronized (dataBase) {
-				query = dataBase.prepareStatement(sqlStatement);
-				query.setString(1, email);
-				query.setBytes(2, fileInBytes);
-			}
-			query.close();
-			System.out.println("Query '" + sqlStatement + "' worked successfully");
-			return true;
-		} catch (SQLException e) {
-			System.err.println("An error occured in the SQL statement : '" + sqlStatement + "'");
-			e.printStackTrace();
-			return false;
-		} catch (IOException e) {
-			System.err.println("An error occured while reading the file");
-			e.printStackTrace();
+		} catch (SQLException fileNotFoundException) {
+			System.err.println(formatSQLError("looking for the file", sqlStatement));
+			fileNotFoundException.printStackTrace();
 			return false;
 		}
+		sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
+		try {
+			executeSQL(sqlStatement, new Object[] { email, file });
+		} catch (SQLException addingFileException) {
+			System.err.println(formatSQLError("adding a file", sqlStatement));
+			addingFileException.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -335,38 +360,86 @@ public class StudHuntData implements PersistentStudHunt {
 	 * 
 	 * @return the user type
 	 */
-	private UserTypes getUserType(String email) {
-		PreparedStatement query = null;
+	@Override
+	public UserTypes getUserType(String email) {
+		String sqlStatement = null;
 		ResultSet response = null;
+
 		for (UserTypes user : UserTypes.values()) {
-			String sqlStatement = "SELECT * FROM " + user + " WHERE email = '" + email + "'";
+			sqlStatement = "SELECT * FROM " + user + " WHERE email = ?";
 			try {
-				synchronized (dataBase) {
-					query = dataBase.prepareStatement(sqlStatement);
-					response = query.executeQuery();
-				}
-				System.out.println("Query '" + sqlStatement + "' worked successfully");
+				response = executeSQL(sqlStatement, new Object[] { email });
 				if (response.next()) {
-					System.out.println("The user is a " + user);
-					query.close();
-					response.close();
 					return user;
 				}
-			} catch (SQLException e) {
-				continue;
+			} catch (SQLException userTypeException) {
+				System.err.println(formatSQLError("getting the user type", sqlStatement));
+				userTypeException.printStackTrace();
 			}
-		}
-		System.err.println("Could not find the user type");
-		try {
-			query.close();
-			response.close();
-		} catch (SQLException e) {
-			System.err.println("Error while closing SQL communication");
-			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
+	@Override
+	public boolean createProject(String email, String projectName, int date) {
+		String sqlStatement = null;
+
+		sqlStatement = "INSERT INTO PROJECT VALUES(?, ?)";
+		try {
+			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_PROJECT_SEQ.NEXTVAL") + 1, projectName, date, email });
+		} catch (SQLException addingProjectException) {
+			System.err.println(formatSQLError("adding a new project", sqlStatement));
+			addingProjectException.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean createJobOffer(String email, int offertype) {
+		String sqlStatement = null;
+
+		sqlStatement = "INSERT INTO JOB_OFFER VALUES(?, ?, ?)";
+		try {
+			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_JOBOFFER_SEQ.NEXTVAL") + 1, offertype, email });
+		} catch (SQLException addingJobOfferException) {
+			System.err.println(formatSQLError("adding a new job offer", sqlStatement));
+			addingJobOfferException.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean createIndustry(String name) {
+		String sqlStatement = null;
+
+		sqlStatement = "INSERT INTO INDUSTRY VALUES (?, ?)";
+		try {
+			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_INDUSTRY_SEQ.NEXTVAL") + 1, name });
+		} catch (SQLException addingIndustryException) {
+			System.err.println(formatSQLError("adding a new industry", sqlStatement));
+			addingIndustryException.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean createSchool(String name) {
+		String sqlStatement = null;
+
+		sqlStatement = "INSERT INTO SCHOOL VALUES (?, ?)";
+		try {
+			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_SCHOOL_SEQ.NEXTVAL") + 1, name });
+		} catch (SQLException addingSchoolException) {
+			System.err.println(formatSQLError("adding a new school", sqlStatement));
+			addingSchoolException.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Get an user forname from the email
 	 * 
@@ -375,32 +448,51 @@ public class StudHuntData implements PersistentStudHunt {
 	 * @return the forname
 	 */
 	private String getUserForname(String email) {
-		PreparedStatement query;
-		ResultSet response;
+		String sqlStatement = null;
+		ResultSet response = null;
 		String forname = null;
-		String sqlStatement = "SELECT forname FROM STUDENT WHERE email = ?";
-		synchronized (dataBase) {
-			try {
-				query = dataBase.prepareStatement(sqlStatement);
-				query.setString(1, email);
-				response = query.executeQuery();
-				if (response.next()) {
-					forname = response.getString("forname");					
-				}
-				
-			} catch (SQLException e) {
-				System.err.println("An error occured in the SQL statement : '" + sqlStatement + "'");
-				e.printStackTrace();
-			}
+
+		sqlStatement = "SELECT forname FROM STUDENT WHERE email = ?";
+		try {
+			response = executeSQL(sqlStatement, new Object[] { email });
+			forname = response.next() ? response.getString("forname") : null;
+		} catch (SQLException userFornameException) {
+			System.err.println(formatSQLError("getting the user forname", sqlStatement));
+			userFornameException.printStackTrace();
 		}
 		return forname;
 	}
 	
-	public boolean createProject() {
-		return false;
+	private int getSequenceValue(String sequenceName) {
+		String sqlStatement = null;
+		int sequenceValue = 1;
+		
+		sqlStatement = "SELECT last_number FROM all_sequences WHERE sequence_name = ?";
+		try {
+			executeSQL(sqlStatement, new Object[] {sequenceName});
+		} catch (SQLException sequenceValueException) {
+			System.err.println(formatSQLError("getting the sequence value", sqlStatement));
+			sequenceValueException.printStackTrace();
+		}
+		return sequenceValue;
 	}
-	
-	public boolean createJobOffer() {
-		return false;
+
+	private ResultSet executeSQL(String sqlStatement, Object[] statementValues) throws SQLException {
+		PreparedStatement query = null;
+		ResultSet response = null;
+		int index = 0;
+
+		synchronized (dataBase) {
+			query = dataBase.prepareStatement(sqlStatement);
+			for (index = 1; index <= statementValues.length; index++) {
+				query.setObject(index, statementValues[index-1]);
+			}
+			response = query.executeQuery();
+		}
+		return response;
+	}
+
+	private String formatSQLError(String message, String sqlStatement) {
+		return "SQL error happened while " + message + "\n" + "SQL statement : " + sqlStatement;
 	}
 }
