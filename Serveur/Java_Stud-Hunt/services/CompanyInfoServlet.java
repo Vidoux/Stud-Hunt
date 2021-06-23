@@ -1,10 +1,6 @@
 package services;
 
 
-import persistantdata.User;
-import studhunt.ConnexionInfos;
-import studhunt.StudHunt;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,8 +13,8 @@ import java.io.IOException;
 /**
  * Servlet de gestion de l'Authentification par login mot de passe
  */
-@WebServlet("/student_info")
-public class StudentInfoServlet extends HttpServlet {
+@WebServlet("/company_info")
+public class CompanyInfoServlet extends HttpServlet {
 
 
 
@@ -35,11 +31,11 @@ public class StudentInfoServlet extends HttpServlet {
         if(session.getAttribute("user") == null){
             this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
-        this.getServletContext().getRequestDispatcher( "/WEB-INF/student_info.jsp").forward( request, response );
+        this.getServletContext().getRequestDispatcher( "/WEB-INF/company_info.jsp").forward( request, response );
     }
 
     private void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
-        request.setAttribute("backDestination", "./student_info");
+        request.setAttribute("backDestination", "./company_info");
         request.setAttribute("errorMessage", "Echec de l'enregistrement des données, "+message);
         this.getServletContext().getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
     }

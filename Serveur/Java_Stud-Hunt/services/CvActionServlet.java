@@ -4,6 +4,7 @@ package services;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import persistantdata.User;
 import studhunt.StudHunt;
 
 import javax.imageio.ImageIO;
@@ -47,15 +48,10 @@ public class CvActionServlet extends HttpServlet {
             this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
 
-        System.out.println(request.getParameter("id"));
-        Blob cvBlob = StudHunt.getInstance().getCV(request.getParameter("id"));
-        InputStream in = null;
-        try {
-            in = cvBlob.getBinaryStream();
-        } catch (SQLException throwables) {
-            sendErrorPage(request,response, "error while trying to get your CV");
-        }
-        //TODO send cv
+        User user = (User) session.getAttribute("user");
+        byte[] CvByte = StudHunt.getInstance().getCV(user.getEmail());
+        response.setContentType("application/pdf");
+        response.getOutputStream().write(CvByte);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -99,22 +95,18 @@ public class CvActionServlet extends HttpServlet {
             while ( i.hasNext () ) {
                 FileItem fi = (FileItem)i.next();
                 if ( !fi.isFormField () ) {
-                    // Get the uploaded file parameters
-                    String fieldName = fi.getFieldName();
-                    String fileName = fi.getName();
-                    String contentType = fi.getContentType();
-                    boolean isInMemory = fi.isInMemory();
-                    long sizeInBytes = fi.getSize();
-
                     byte [] byteCV = fi.get();
 
-                    System.out.println(Arrays.toString(byteCV));
+                    User user = (User) session.getAttribute("user");
+                    System.out.println("cv: emailID" + user.getEmail());
+                    StudHunt.getInstance().setCV(user.getEmail(), byteCV);
                 }
             }
         } catch(Exception ex) {
             sendErrorPage(request,response, "error while trying to upload the CV" + ex);
 //            return;
         }
+        this.getServletContext().getRequestDispatcher("/WEB-INF/student_info.jsp").forward(request, response);
     }
 
 

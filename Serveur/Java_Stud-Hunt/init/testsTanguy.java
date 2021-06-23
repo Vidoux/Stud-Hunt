@@ -22,7 +22,7 @@ public class testsTanguy {
 
         File pic = new File("D:\\tanguy.jpg");
 
-        studHuntClass.setProfilePicture("mail.text@mail.com", pic);
+       // studHuntClass.setProfilePicture("mail.text@mail.com", pic);
 
         }
 

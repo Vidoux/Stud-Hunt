@@ -84,7 +84,7 @@ function updateImageDisplay() {
             var image = document.createElement('img');
             image.src = window.URL.createObjectURL(curFiles[0]);
             console.log("src" + image.src);
-            image.className="ui centered circular image"
+            image.className="ui centered medium avatar image"
 
             list.appendChild(image);
             list.appendChild(para);

@@ -23,7 +23,7 @@
                     <a class="item">Vos Recherches</a>
                 </c:if>
                 <div class="ui dropdown item <c:if test="${ sessionScope.user == null }">invisibleDiv</c:if>">
-                    <img class="ui avatar image" src="" />  <!--insérer, dynamiquement l'image du profil-->
+                    <img class="ui avatar image" src="./image_action" />  <!--insérer, dynamiquement l'image du profil-->
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <c:if test="${ sessionScope.user.getUserType() == 'COMPANY' }">

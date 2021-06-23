@@ -8,6 +8,7 @@ import persistantdata.User;
 import studhunt.StudHunt;
 
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Blob;
@@ -16,8 +17,10 @@ import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.swing.*;
 
 
 /**
@@ -45,18 +48,10 @@ public class ImageActionServlet extends HttpServlet {
         if(session.getAttribute("user") == null){
             this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
-        System.out.println(request.getParameter("id"));
-        Blob imageBlob = StudHunt.getInstance().getProfilePicture(request.getParameter("id"));
-        InputStream in = null;
-        try {
-            in = imageBlob.getBinaryStream();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        BufferedImage image = ImageIO.read(in);
-        OutputStream out = response.getOutputStream();
-        ImageIO.write(image, "jpg", out);
-        out.close();
+        User user = (User) session.getAttribute("user");
+        byte[] imageByte = StudHunt.getInstance().getProfilePicture(user.getEmail());
+        response.setContentType("image/jpg");
+        response.getOutputStream().write(imageByte);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -64,80 +59,12 @@ public class ImageActionServlet extends HttpServlet {
         if((session.getAttribute("user") == null)){
             sendErrorPage(request, response, "Vous devez vous authentifier");
         }
-//       System.out.println("Tanguy");
-//       HttpSession session = request.getSession();
-//        System.out.println(request.getParameterValues("image"));
-      // StudHunt.getInstance().setProfilePicture("mail.text@mail.com",request.getParameterValues("image"));
-
-        // Check that we have a file upload request
-//        isMultipart = ServletFileUpload.isMultipartContent(request);
-//        response.setContentType("text/html");
-//        java.io.PrintWriter out = response.getWriter( );
-//
-//        if( !isMultipart ) {
-//            sendErrorPage(request,response, "error while trying to upload the image");
-//            return;
-//        }
-//
-//        DiskFileItemFactory factory = new DiskFileItemFactory();
-//
-//        // maximum size that will be stored in memory
-//        factory.setSizeThreshold(maxMemSize);
-//
-//        // Location to save data that is larger than maxMemSize.
-//        factory.setRepository(new File("D:\\tempImages"));
-//
-//        // Create a new file upload handler
-//        ServletFileUpload upload = new ServletFileUpload(factory);
-//
-//        // maximum file size to be uploaded.
-//        upload.setSizeMax( maxFileSize );
-//
-//        try {
-//            // Parse the request to get file items.
-//            List<FileItem> fileItems = upload.parseRequest(request);
-//
-//            // Process the uploaded file items
-//            Iterator i = fileItems.iterator();
-//
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet upload</title>");
-//            out.println("</head>");
-//            out.println("<body>");
-//
-//            while ( i.hasNext () ) {
-//                FileItem fi = (FileItem)i.next();
-//                if ( !fi.isFormField () ) {
-//                    // Get the uploaded file parameters
-//                    String fieldName = fi.getFieldName();
-//                    String fileName = fi.getName();
-//                    String contentType = fi.getContentType();
-//                    Boolean isInMemory = fi.isInMemory();
-//                    Long sizeInBytes = fi.getSize();
-//
-//                    // Write the file
-//                    if( fileName.lastIndexOf("\\") >= 0 ) {
-//                        file = new File( filePath + fileName.substring( fileName.lastIndexOf("\\"))) ;
-//                    } else {
-//                        file = new File( filePath + fileName.substring(fileName.lastIndexOf("\\")+1)) ;
-//                    }
-//                    fi.write( file ) ;
-//                    out.println("Uploaded Filename: " + fileName + "<br>");
-//                }
-//            }
-//            out.println("</body>");
-//            out.println("</html>");
-//        } catch(Exception ex) {
-//            System.out.println(ex);
-//        }
 
         // Check that we have a file upload request
         isMultipart = ServletFileUpload.isMultipartContent(request);
 
         if( !isMultipart ) {
             sendErrorPage(request,response, "error while trying to upload the image");
-//            return;
         }
 
         DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -177,7 +104,7 @@ public class ImageActionServlet extends HttpServlet {
                     System.out.println(byteImage.toString());
                     User user = (User) session.getAttribute("user");
                     System.out.println("image: emailID" + user.getEmail());
-                    StudHunt.getInstance().setProfilePicture(user.getEmail(),request.getParameterValues("image"));
+                    StudHunt.getInstance().setProfilePicture(user.getEmail(),byteImage);
 
 
                 }
@@ -186,6 +113,8 @@ public class ImageActionServlet extends HttpServlet {
             sendErrorPage(request,response, "error while trying to upload the image" + ex);
 //            return;
         }
+
+        this.getServletContext().getRequestDispatcher("/WEB-INF/student_info.jsp").forward(request, response);
     }
 
 
