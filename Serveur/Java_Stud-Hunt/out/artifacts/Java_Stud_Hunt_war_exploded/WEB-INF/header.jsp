@@ -59,7 +59,12 @@
                         </c:if>
                         <a class="item" href="./">Accueil</a>
                         <c:if test="${ sessionScope.user != null }">
-                            <a class="item" href="./student_info">Modifier votre profil</a>
+                            <c:if test="${ sessionScope.user.getUserType() == 'STUDENT' }">
+                                <a class="item" href="./student_info">Modifier votre profil</a>
+                            </c:if>
+                            <c:if test="${ sessionScope.user.getUserType() == 'COMPANY' }">
+                                <a class="item" href="./company_info">Modifier votre profil</a>
+                            </c:if>
                             <a class="item" href="./logout">Déconnexion</a>
                         </c:if>
                         <c:if test="${ sessionScope.user == null }">
