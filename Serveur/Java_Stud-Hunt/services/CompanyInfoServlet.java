@@ -11,13 +11,20 @@ import java.io.IOException;
 
 
 /**
- * Servlet de gestion de l'Authentification par login mot de passe
+ * Servlet de gestion de l'enregistrement et de la modifications des informations
+ * concernants les entreprises
  */
 @WebServlet("/company_info")
 public class CompanyInfoServlet extends HttpServlet {
 
 
-
+    /**
+     * Traitement de l'envoie de données pour la mise à jour des informations d'entreprise
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if((session.getAttribute("user") == null)){
@@ -26,6 +33,13 @@ public class CompanyInfoServlet extends HttpServlet {
 
     }
 
+    /**
+     * Retourne la servlet de gestion des informations d'netreprise
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("user") == null){
@@ -34,6 +48,14 @@ public class CompanyInfoServlet extends HttpServlet {
         this.getServletContext().getRequestDispatcher( "/WEB-INF/company_info.jsp").forward( request, response );
     }
 
+    /**
+     * Afficher une page d'erreur avec un message personnalisé
+     * @param request
+     * @param response
+     * @param message message à afficher sur la mage d'erreur
+     * @throws ServletException
+     * @throws IOException
+     */
     private void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
         request.setAttribute("backDestination", "./company_info");
         request.setAttribute("errorMessage", "Echec de l'enregistrement des données, "+message);

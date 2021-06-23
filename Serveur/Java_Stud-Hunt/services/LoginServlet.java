@@ -20,7 +20,14 @@ import javax.servlet.annotation.*;
 public class LoginServlet extends HttpServlet {
 
 
-
+    /**
+     * Traitement du formulaire de connexion, authentification
+     * du couple mot de passe/adresse mail
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String password = request.getParameter("password");
@@ -50,23 +57,31 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Retourne la page de connexion
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
         this.getServletContext().getRequestDispatcher( "/WEB-INF/login.jsp").forward( request, response );
     }
 
+    /**
+     * Afficher une page d'erreur avec un message personnalisé
+     * @param request
+     * @param response
+     * @param message message à afficher sur la mage d'erreur
+     * @throws ServletException
+     * @throws IOException
+     */
     private void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
         request.setAttribute("backDestination", "./login");
         request.setAttribute("errorMessage", "Echec de la connexion, "+message);
         this.getServletContext().getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
     }
 
-    private void sendStudentMainPage(){
-
-    }
-
-    private void sendEnterpriseMainPage(){
-
-    }
 
     public void destroy() {
         super.destroy();

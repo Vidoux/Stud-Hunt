@@ -7,41 +7,32 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import persistantdata.User;
 import studhunt.StudHunt;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 
 /**
- * Servlet de gestion de l'Authentification par login mot de passe
+ * Servlet de gestion de l'enregistrement et de l'envoie de CV au format PDF
  */
 @WebServlet("/cv_action")
 public class CvActionServlet extends HttpServlet {
 
-    private File file ;
 
-    public void init( ){
-        // Get the file location where it would be stored.
-        String filePath = getServletContext().getInitParameter("file-upload");
-    }
-
-
-
-
+    /**
+     * Retourne le CV correspondant au compte connecté
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("user") == null){
@@ -54,6 +45,13 @@ public class CvActionServlet extends HttpServlet {
         response.getOutputStream().write(CvByte);
     }
 
+    /**
+     * Mise à jour du CV d'un étudiant
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if((session.getAttribute("user") == null)){
@@ -65,7 +63,6 @@ public class CvActionServlet extends HttpServlet {
 
         if( !isMultipart) {
             sendErrorPage(request,response, "error while trying to upload the CV");
-//            return;
         }
 
         DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -109,7 +106,14 @@ public class CvActionServlet extends HttpServlet {
         this.getServletContext().getRequestDispatcher("/WEB-INF/student_info.jsp").forward(request, response);
     }
 
-
+    /**
+     * Afficher une page d'erreur avec un message personnalisé
+     * @param request
+     * @param response
+     * @param message message à afficher sur la mage d'erreur
+     * @throws ServletException
+     * @throws IOException
+     */
     private void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
         request.setAttribute("backDestination", "./login");
         request.setAttribute("errorMessage", "Echec du traitement du CV, "+message);

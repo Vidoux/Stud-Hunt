@@ -7,53 +7,58 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import persistantdata.User;
 import studhunt.StudHunt;
 
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.List;
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import javax.swing.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
 
 
 /**
- * Servlet de gestion de l'Authentification par login mot de passe
+ * Servlet de gestion de l'envoie et de la modification de l'image de
+ * profils des utilisateurs
  */
 @WebServlet("/image_action")
 public class ImageActionServlet extends HttpServlet {
 
-    private boolean isMultipart;
-    private String filePath;
-    private final int maxFileSize = 50 * 102400;
-    private final int maxMemSize = 4 * 102400;
-    private File file ;
-
-    public void init( ){
-        // Get the file location where it would be stored.
-        filePath = getServletContext().getInitParameter("file-upload");
-    }
-
-
-
-
+    /**
+     * Retourne l'image correspondante au compte connecté
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("user") == null){
             this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
+        byte[] imageByte = null;
         User user = (User) session.getAttribute("user");
-        byte[] imageByte = StudHunt.getInstance().getProfilePicture(user.getEmail());
+        if(user != null) {
+            imageByte = StudHunt.getInstance().getProfilePicture(user.getEmail());
+        }
+        if(imageByte == null){
+            String contexPath = getServletContext().getRealPath(File.separator);
+            File img = new File(contexPath + "/img/avatar.png");
+            imageByte = Files.readAllBytes(img.toPath());
+        }
         response.setContentType("image/jpg");
         response.getOutputStream().write(imageByte);
     }
 
+    /**
+     * Mise à jour de la photo de profil d'un utilisateur
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if((session.getAttribute("user") == null)){
@@ -61,15 +66,16 @@ public class ImageActionServlet extends HttpServlet {
         }
 
         // Check that we have a file upload request
-        isMultipart = ServletFileUpload.isMultipartContent(request);
+        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 
-        if( !isMultipart ) {
+        if( !isMultipart) {
             sendErrorPage(request,response, "error while trying to upload the image");
         }
 
         DiskFileItemFactory factory = new DiskFileItemFactory();
 
         // maximum size that will be stored in memory
+        int maxMemSize = 4 * 102400;
         factory.setSizeThreshold(maxMemSize);
 
         // Location to save data that is larger than maxMemSize.
@@ -79,32 +85,24 @@ public class ImageActionServlet extends HttpServlet {
         ServletFileUpload upload = new ServletFileUpload(factory);
 
         // maximum file size to be uploaded.
-        upload.setSizeMax( maxFileSize );
+        int maxFileSize = 50 * 102400;
+        upload.setSizeMax(maxFileSize);
 
         try {
             // Parse the request to get file items.
             List fileItems = upload.parseRequest(request);
 
             // Process the uploaded file items
-            Iterator i = fileItems.iterator();
 
 
-            while ( i.hasNext () ) {
-                FileItem fi = (FileItem)i.next();
-                if ( !fi.isFormField () ) {
-                    // Get the uploaded file parameters
-                    String fieldName = fi.getFieldName();
-                    String fileName = fi.getName();
-                    String contentType = fi.getContentType();
-                    boolean isInMemory = fi.isInMemory();
-                    long sizeInBytes = fi.getSize();
+            for (Object fileItem : fileItems) {
+                FileItem fi = (FileItem) fileItem;
+                if (!fi.isFormField()) {
+                    byte[] byteImage = fi.get();
 
-                    byte [] byteImage = fi.get();
-
-                    System.out.println(byteImage.toString());
                     User user = (User) session.getAttribute("user");
                     System.out.println("image: emailID" + user.getEmail());
-                    StudHunt.getInstance().setProfilePicture(user.getEmail(),byteImage);
+                    StudHunt.getInstance().setProfilePicture(user.getEmail(), byteImage);
 
 
                 }
@@ -117,7 +115,14 @@ public class ImageActionServlet extends HttpServlet {
         this.getServletContext().getRequestDispatcher("/WEB-INF/student_info.jsp").forward(request, response);
     }
 
-
+    /**
+     * Afficher une page d'erreur avec un message personnalisé
+     * @param request
+     * @param response
+     * @param message message à afficher sur la mage d'erreur
+     * @throws ServletException
+     * @throws IOException
+     */
     private void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
         request.setAttribute("backDestination", "./login");
         request.setAttribute("errorMessage", "Echec du traitement de l'image, "+message);

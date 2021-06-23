@@ -21,7 +21,13 @@ import util.UserTypes;
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 
-
+    /**
+     * Gestion du formulaire d'enregistrement de nouvel utilisateur
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String password = request.getParameter("password");
@@ -52,23 +58,32 @@ public class RegisterServlet extends HttpServlet {
         this.getServletContext().getRequestDispatcher( "/WEB-INF/login.jsp").forward( request, response );
     }
 
+    /**
+     * Envoie de la page de création d'utilisateur
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
         this.getServletContext().getRequestDispatcher( "/WEB-INF/register.jsp").forward( request, response );
     }
 
+    /**
+     * Afficher une page d'erreur avec un message personnalisé
+     * @param request
+     * @param response
+     * @param message message à afficher sur la mage d'erreur
+     * @throws ServletException
+     * @throws IOException
+     */
     private void sendErrorPage(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
         request.setAttribute("backDestination", "./register");
         request.setAttribute("errorMessage", "Echec de l'enregistrement: "+message);
         this.getServletContext().getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
     }
 
-    private void sendStudentMainPage(){
 
-    }
-
-    private void sendEnterpriseMainPage(){
-
-    }
 
     public void destroy() {
         super.destroy();
