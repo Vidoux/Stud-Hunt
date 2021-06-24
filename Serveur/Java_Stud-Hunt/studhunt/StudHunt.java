@@ -3,6 +3,7 @@ package studhunt;
 import java.util.HashMap;
 import java.util.List;
 
+import util.ConnectionInfos;
 import util.Pair;
 import util.References;
 import util.UserTypes;
@@ -24,7 +25,7 @@ public class StudHunt {
 		if (this.data == null) this.data = data;
 	}
 	
-	public ConnexionInfos getUserConnection(String login, String password) {
+	public ConnectionInfos getUserConnection(String login, String password) {
 		return data.getUserConnection(login, password);
 	}
 	

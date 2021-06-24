@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import studhunt.ConnexionInfos;
 import studhunt.PersistentStudHunt;
 import studhunt.StudHunt;
+import util.ConnectionInfos;
 import util.Pair;
 import util.References;
 import util.StudentInfos;
@@ -204,11 +204,11 @@ public class StudHuntData implements PersistentStudHunt {
 	 *         combinaison email/password was correct
 	 */
 	@Override
-	public ConnexionInfos getUserConnection(String email, String password) {
+	public ConnectionInfos getUserConnection(String email, String password) {
 		String sqlStatement = null;
 		ResultSet response = null;
 		UserTypes user = null;
-		ConnexionInfos connectInfos = new ConnexionInfos(false, null, null, null);
+		ConnectionInfos connectInfos = new ConnectionInfos(false, null, null, null);
 
 		sqlStatement = "SELECT * FROM APP_USER WHERE email = ? AND password = ?";
 		try {
@@ -216,9 +216,9 @@ public class StudHuntData implements PersistentStudHunt {
 			if (response.next()) {
 				user = getUserType(email);
 				if (user.equals(UserTypes.STUDENT)) {
-					connectInfos = new ConnexionInfos(true, user, response.getString("name"), getUserForname(email));
+					connectInfos = new ConnectionInfos(true, user, response.getString("name"), getUserForname(email));
 				} else {
-					connectInfos = new ConnexionInfos(true, user, response.getString("name"));
+					connectInfos = new ConnectionInfos(true, user, response.getString("name"));
 				}
 			}
 		} catch (SQLException userNotFoundException) {

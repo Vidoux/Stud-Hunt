@@ -9,8 +9,8 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 
-import studhunt.ConnexionInfos;
 import studhunt.StudHunt;
+import util.ConnectionInfos;
 import util.Pair;
 import util.References;
 import util.StudentInfos;
@@ -60,7 +60,7 @@ public class app {
 			//Adding student profile picture
 			studHuntClass.setProfilePicture(email, pic);
 			//Testing student connection
-			ConnexionInfos ci = studHuntClass.getUserConnection(email, password);
+			ConnectionInfos ci = studHuntClass.getUserConnection(email, password);
 			System.out.println(ci.getUser());
 			//Getting student CV
 			studHuntClass.getCV(email);
@@ -85,7 +85,7 @@ public class app {
 			//Adding company profile picture
 			studHuntClass.setProfilePicture(email, pic);
 			//Testing company connection
-			ConnexionInfos ci = studHuntClass.getUserConnection(email, password);
+			ConnectionInfos ci = studHuntClass.getUserConnection(email, password);
 			System.out.println(ci.getUser());
 			//Getting company picture
 			studHuntClass.getProfilePicture(email);
