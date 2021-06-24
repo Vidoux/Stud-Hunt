@@ -3,13 +3,14 @@ package studhunt;
 import java.util.HashMap;
 import java.util.List;
 
+import util.ConnectionInfos;
 import util.Pair;
 import util.References;
 import util.UserTypes;
 
 public interface PersistentStudHunt {
 
-	ConnexionInfos getUserConnection(String login, String password);
+	ConnectionInfos getUserConnection(String login, String password);
 
 	boolean createUser(String email, String name, String password, UserTypes userType, HashMap<References, String> references, List<Pair> infos);
 

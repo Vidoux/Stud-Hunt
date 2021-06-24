@@ -1,16 +1,18 @@
 package services;
 
 
-import persistantdata.User;
-import studhunt.ConnexionInfos;
-import studhunt.StudHunt;
-import util.UserTypes;
+import java.io.IOException;
 
-import java.io.*;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import studhunt.StudHunt;
+import util.ConnectionInfos;
+import util.User;
 
 
 /**
@@ -35,7 +37,7 @@ public class LoginServlet extends HttpServlet {
         System.out.println(login);
         System.out.println(password);
         try{
-            ConnexionInfos loginStatus = StudHunt.getInstance().getUserConnection(login, password);
+            ConnectionInfos loginStatus = StudHunt.getInstance().getUserConnection(login, password);
             System.out.println(loginStatus.toString());
 
             String message;
