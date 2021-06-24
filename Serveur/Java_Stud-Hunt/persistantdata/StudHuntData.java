@@ -68,7 +68,6 @@ public class StudHuntData implements PersistentStudHunt {
 	 * 
 	 * @param email    the email of the user (Also it's ID in the mean time)
 	 * @param name     the name of the user
-	 * @param forname  the forname of the user
 	 * @param password the password of the user
 	 * @param userType the type of the user (COMPANY or STUDENT
 	 * @param infos    the additional informations to create a sub-type (Only for
@@ -128,64 +127,68 @@ public class StudHuntData implements PersistentStudHunt {
 	}
 
 	public boolean addReferences(HashMap<References, String> references, String email, UserTypes userType) {
-		for (Entry<References, String> reference : references.entrySet()) {
-			String sqlStatement = null;
-			ResultSet response = null;
-			int referenceID = 0;
-			String referenceName = null;
-			String tableName = null;
+		try {
+			for (Entry<References, String> reference : references.entrySet()) {
+				String sqlStatement = null;
+				ResultSet response = null;
+				int referenceID = 0;
+				String referenceName = null;
+				String tableName = null;
 
-			sqlStatement = "SELECT * FROM " + reference.getKey().toString() + " WHERE "
-					+ reference.getKey().toString().toLowerCase() + "Name = ?";
-			try {
-				response = executeSQL(sqlStatement, new Object[] { reference.getValue() });
-				synchronized (dataBase) {
-					switch (reference.getKey()) {
-					case SCHOOL:
-						if (!response.next()) {
-							createSchool(reference.getValue());
+				sqlStatement = "SELECT * FROM " + reference.getKey().toString() + " WHERE "
+						+ reference.getKey().toString().toLowerCase() + "Name = ?";
+				try {
+					response = executeSQL(sqlStatement, new Object[]{reference.getValue()});
+					synchronized (dataBase) {
+						switch (reference.getKey()) {
+							case SCHOOL:
+								if (!response.next()) {
+									createSchool(reference.getValue());
+								}
+								referenceName = "School";
+								break;
+							case INDUSTRY:
+								if (!response.next()) {
+									createIndustry(reference.getValue());
+								}
+								referenceName = "Industry";
+								break;
 						}
-						referenceName = "School";
-						break;
-					case INDUSTRY:
-						if (!response.next()) {
-							createIndustry(reference.getValue());
-						}
-						referenceName = "Industry";
-						break;
+						sqlStatement = "SELECT id_" + referenceName + " FROM " + referenceName.toUpperCase() + " WHERE " + referenceName + "Name = ?";
+						response = executeSQL(sqlStatement, new Object[]{reference.getValue()});
+						referenceID = response.next() ? response.getInt("id_" + referenceName) : 1;
 					}
-					sqlStatement = "SELECT id_" + referenceName + " FROM " + referenceName.toUpperCase() + " WHERE " + referenceName + "Name = ?";
-					response = executeSQL(sqlStatement, new Object[] {reference.getValue()});
-					referenceID = response.next() ? response.getInt("id_" + referenceName) : 1;
+				} catch (SQLException checkReferencesException) {
+					System.err.println(formatSQLError("getting references existing informations", sqlStatement));
+					checkReferencesException.printStackTrace();
+					return false;
 				}
-			} catch (SQLException checkReferencesException) {
-				System.err.println(formatSQLError("getting references existing informations", sqlStatement));
-				checkReferencesException.printStackTrace();
-				return false;
-			}
-			switch (userType) {
-			case STUDENT:
-				switch (reference.getKey()) {
-				case SCHOOL:
-					tableName = "is_part_of";
-					break;
-				case INDUSTRY:
-					tableName = "concern";
-					break;
+				switch (userType) {
+					case STUDENT:
+						switch (reference.getKey()) {
+							case SCHOOL:
+								tableName = "is_part_of";
+								break;
+							case INDUSTRY:
+								tableName = "concern";
+								break;
+						}
+						break;
+					case COMPANY:
+						tableName = "refer_to";
+						break;
 				}
-				break;
-			case COMPANY:
-				tableName = "refer_to";
-				break;
+				sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
+				try {
+					executeSQL(sqlStatement, new Object[]{referenceID, email});
+				} catch (SQLException addingReferenceException) {
+					System.err.println(formatSQLError("adding association between user and reference", sqlStatement));
+					addingReferenceException.printStackTrace();
+					return false;
+				}
 			}
-			sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
-			try {
-				executeSQL(sqlStatement, new Object[] {referenceID, email});
-			} catch (SQLException addingReferenceException) {
-				System.err.println(formatSQLError("adding association between user and reference", sqlStatement));
-				addingReferenceException.printStackTrace();
-				return false;
-			}
+		}catch(NullPointerException e){
+			return false;
 		}
 		return true;
 	}

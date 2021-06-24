@@ -18,7 +18,7 @@
 <div id="bigdiv" class="ui centered grid">
     <div class="ui segment">
         <h1 class="ui header"><i class="star icon"></i>3 points Communs avec cette offre</h1>
-        <img class="ui centered medium circular image" src="./img/code-development.svg">
+<%--        <img class="ui centered medium circular image" src="./img/code-development.svg">--%>
 
         <div class="ui message">
             <div class="header">
