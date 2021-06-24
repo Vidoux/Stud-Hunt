@@ -272,7 +272,7 @@ public class StudHuntData implements PersistentStudHunt {
 						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_School")});
 						if (response.next()) { schools.add(new School(response.getString("schoolName"))); }
 					}
-					user = new Student(email, name, forname, apprenticeship, internship, password, bio, industry, contractlen, startingdate, contractlen, diploma, projects, schools);
+					user = new Student(email, name, forname, apprenticeship, internship, password, bio, industry, levelstudy, startingdate, contractlen, diploma, projects, schools);
 					break;
 				case COMPANY :
 					//Getting company job offer informations
