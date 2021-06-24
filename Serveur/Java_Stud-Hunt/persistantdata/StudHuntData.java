@@ -64,7 +64,7 @@ public class StudHuntData implements PersistentStudHunt {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Create an user in the DB
 	 * 
@@ -76,10 +76,9 @@ public class StudHuntData implements PersistentStudHunt {
 	public boolean createUser(User user) {
 		String sqlStatement = null;
 
-		sqlStatement = "INSERT INTO APP_USER (email, name, password) "
-					 + "VALUES (?, ?, ?)";
+		sqlStatement = "INSERT INTO APP_USER (email, name, password) " + "VALUES (?, ?, ?)";
 		try {
-			executeSQL(sqlStatement, new Object[] {user.getEmail(), user.getName(), user.getPassword()});
+			executeSQL(sqlStatement, new Object[] { user.getEmail(), user.getName(), user.getPassword() });
 		} catch (SQLIntegrityConstraintViolationException userException) {
 			System.err.println("User already existing");
 			return false;
@@ -88,15 +87,15 @@ public class StudHuntData implements PersistentStudHunt {
 			e.printStackTrace();
 			return false;
 		}
-		switch(user.getUserType()) {
-		case STUDENT :
+		switch (user.getUserType()) {
+		case STUDENT:
 			return createStudent((Student) user);
-		case COMPANY :
+		case COMPANY:
 			return createCompany((Company) user);
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Create a student in the DB
 	 * 
@@ -106,11 +105,11 @@ public class StudHuntData implements PersistentStudHunt {
 	 */
 	private boolean createStudent(Student student) {
 		String sqlStatement = null;
-		
-		sqlStatement = "INSERT INTO STUDENT (email, forname, apprenticeship, internship) "
-					 + "VALUES (?, ?, ?, ?)";
+
+		sqlStatement = "INSERT INTO STUDENT (email, forname, apprenticeship, internship) " + "VALUES (?, ?, ?, ?)";
 		try {
-			executeSQL(sqlStatement, new Object[] {student.getEmail(), student.getForname(), student.getApprenticeship(), student.getInternship()});
+			executeSQL(sqlStatement, new Object[] { student.getEmail(), student.getForname(),
+					student.getApprenticeship(), student.getInternship() });
 			return true;
 		} catch (SQLIntegrityConstraintViolationException userException) {
 			System.err.println("Student already existing");
@@ -131,11 +130,10 @@ public class StudHuntData implements PersistentStudHunt {
 	 */
 	private boolean createCompany(Company company) {
 		String sqlStatement = null;
-	
-		sqlStatement = "INSERT INTO COMPANY "
-					 + "VALUES (?)";
+
+		sqlStatement = "INSERT INTO COMPANY " + "VALUES (?)";
 		try {
-			executeSQL(sqlStatement, new Object[] {company.getEmail()});
+			executeSQL(sqlStatement, new Object[] { company.getEmail() });
 			return true;
 		} catch (SQLIntegrityConstraintViolationException userException) {
 			System.err.println("Company already existing");
@@ -158,13 +156,11 @@ public class StudHuntData implements PersistentStudHunt {
 	public boolean updateUser(User user) {
 		String sqlStatement = null;
 		UserTypes userType = null;
-		
+
 		userType = getUserType(user.getEmail());
-		sqlStatement = "UPDATE APP_USER "
-					 + "SET name = ?, bio = ?"
-					 + "WHERE email = ?";
+		sqlStatement = "UPDATE APP_USER " + "SET name = ?, bio = ?" + "WHERE email = ?";
 		try {
-			executeSQL(sqlStatement, new Object[] {user.getName(), user.getBio(), user.getEmail()});
+			executeSQL(sqlStatement, new Object[] { user.getName(), user.getBio(), user.getEmail() });
 			if (userType.equals(UserTypes.STUDENT)) {
 				return updateStudent((Student) user);
 			}
@@ -185,12 +181,15 @@ public class StudHuntData implements PersistentStudHunt {
 	 */
 	private boolean updateStudent(Student student) {
 		String sqlStatement = null;
-		
+
 		sqlStatement = "UPDATE STUDENT "
-			 	     + "SET forname = ?, apprenticeship = ?, internship = ?, levelstudy = ?, industry = ?, startingdate = ?, contractlen = ?, diploma = ? "
-			 	     + "WHERE email = ?";
+				+ "SET forname = ?, apprenticeship = ?, internship = ?, levelstudy = ?, industry = ?, startingdate = ?, contractlen = ?, diploma = ? "
+				+ "WHERE email = ?";
 		try {
-			executeSQL(sqlStatement, new Object[] { student.getEmail(), student.getForname(), student.getApprenticeship(), student.getInternship(), student.getLevelstudy(), student.getIndustry(), student.getStartingdate(), student.getContractlen(), student.getDiploma()});
+			executeSQL(sqlStatement,
+					new Object[] { student.getEmail(), student.getForname(), student.getApprenticeship(),
+							student.getInternship(), student.getLevelstudy(), student.getIndustry(),
+							student.getStartingdate(), student.getContractlen(), student.getDiploma() });
 			return true;
 		} catch (SQLException e) {
 			System.err.println(formatSQLError("updating the student", sqlStatement));
@@ -198,11 +197,11 @@ public class StudHuntData implements PersistentStudHunt {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Retrive a user with te combinaison email/password given
 	 * 
-	 * @param email the email of the searched user
+	 * @param email    the email of the searched user
 	 * @param password the password of the searched user
 	 * 
 	 * @return the user, or null if not found
@@ -212,7 +211,7 @@ public class StudHuntData implements PersistentStudHunt {
 		User user = null;
 		String sqlStatement = null;
 		ResultSet response = null;
-		
+
 		UserTypes userType = null;
 		String name = null;
 		String bio = null;
@@ -227,63 +226,64 @@ public class StudHuntData implements PersistentStudHunt {
 		List<Project> projects = null;
 		List<School> schools = null;
 		List<JobOffer> jobOffers = null;
-		
+
 		try {
-			//Getting user basic informations
+			// Getting user basic informations
 			userType = getUserType(email);
-			sqlStatement = "SELECT name, bio "
-						 + "FROM APP_USER "
-						 + "WHERE email = ?";
-			response = executeSQL(sqlStatement, new Object[] {email});
-			if(response.next()) {
+			sqlStatement = "SELECT name, bio " + "FROM APP_USER " + "WHERE email = ?";
+			response = executeSQL(sqlStatement, new Object[] { email });
+			if (response.next()) {
 				name = response.getString("name");
 				bio = response.getString("bio");
 			}
-			switch(userType) {
-				case STUDENT :
-					//Getting student sub-type informations
-					sqlStatement = "SELECT forname, apprenticeship, internship, levelstudy, industry, startingdate, contractlen, diploma "
-								 + "FROM STUDENT "
-								 + "WHERE email = ?";
-					response = executeSQL(sqlStatement, new Object[] {email});
+			switch (userType) {
+			case STUDENT:
+				// Getting student sub-type informations
+				sqlStatement = "SELECT forname, apprenticeship, internship, levelstudy, industry, startingdate, contractlen, diploma "
+						+ "FROM STUDENT " + "WHERE email = ?";
+				response = executeSQL(sqlStatement, new Object[] { email });
+				if (response.next()) {
+					forname = response.getString("forname");
+					apprenticeship = response.getInt("apprenticeship");
+					internship = response.getInt("internship");
+					levelstudy = response.getInt("levelstudy");
+					industry = response.getString("industry");
+					startingdate = response.getDate("startingdate");
+					contractlen = response.getInt("contractlen");
+					diploma = response.getString("diploma");
+				}
+				// Getting student projects informations
+				projects = new ArrayList<>();
+				sqlStatement = "SELECT projectName, projectBio, realisation_year FROM PROJECT WHERE email = ?";
+				response = executeSQL(sqlStatement, new Object[] { email });
+				while (response.next()) {
+					projects.add(new Project(response.getString("projectName"), response.getString("projectBio"),
+							response.getInt("realisation_year")));
+				}
+				// Getting student school informations
+				schools = new ArrayList<>();
+				sqlStatement = "SELECT id_School FROM is_part_of WHERE email = ?";
+				response = executeSQL(sqlStatement, new Object[] { email });
+				while (response.next()) {
+					sqlStatement = "SELECT schoolName FROM SCHOOL WHERE id_School = ?";
+					response = executeSQL(sqlStatement, new Object[] { response.getInt("id_School") });
 					if (response.next()) {
-						forname = response.getString("forname");
-						apprenticeship = response.getInt("apprenticeship");
-						internship = response.getInt("internship");
-						levelstudy = response.getInt("levelstudy");
-						industry = response.getString("industry");
-						startingdate = response.getDate("startingdate");
-						contractlen = response.getInt("contractlen");
-						diploma = response.getString("diploma");
+						schools.add(new School(response.getString("schoolName")));
 					}
-					//Getting student projects informations
-					projects = new ArrayList<>();
-					sqlStatement = "SELECT projectName, projectBio, realisation_year FROM PROJECT WHERE email = ?";
-					response = executeSQL(sqlStatement, new Object[] {email});
-					while (response.next()) {
-						projects.add(new Project(response.getString("projectName"), response.getString("projectBio"), response.getInt("realisation_year")));
-					}
-					//Getting student school informations
-					schools = new ArrayList<>();
-					sqlStatement = "SELECT id_School FROM is_part_of WHERE email = ?";
-					response = executeSQL(sqlStatement, new Object[] {email});
-					while (response.next()) {
-						sqlStatement = "SELECT schoolName FROM SCHOOL WHERE id_School = ?";
-						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_School")});
-						if (response.next()) { schools.add(new School(response.getString("schoolName"))); }
-					}
-					user = new Student(email, name, forname, apprenticeship, internship, password, bio, industry, levelstudy, startingdate, contractlen, diploma, projects, schools);
-					break;
-				case COMPANY :
-					//Getting company job offer informations
-					jobOffers = new ArrayList<>();
-					sqlStatement = "SELECT offerType FROM JOB_OFFER WHERE email = ?";
-					response = executeSQL(sqlStatement, new Object[] {email});
-					while (response.next()) {
-						jobOffers.add(new JobOffer(response.getInt("offerType")));
-					}
-					user = new Company(email, name, password, bio, jobOffers);
-					break;
+				}
+				user = new Student(email, name, forname, apprenticeship, internship, password, bio, industry,
+						levelstudy, startingdate, contractlen, diploma, projects, schools);
+				break;
+			case COMPANY:
+				// Getting company job offer informations
+				jobOffers = new ArrayList<>();
+				sqlStatement = "SELECT offerType FROM JOB_OFFER WHERE email = ?";
+				response = executeSQL(sqlStatement, new Object[] { email });
+				while (response.next()) {
+					jobOffers.add(new JobOffer(response.getInt("offerType")));
+				}
+				user = new Company(email, name, password, bio, jobOffers);
+				break;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -451,10 +451,10 @@ public class StudHuntData implements PersistentStudHunt {
 	/**
 	 * Create a project in the DB
 	 * 
-	 * @param email the user's email
+	 * @param email       the user's email
 	 * @param projectName the project name
-	 * @param projectBio the project description
-	 * @param date the project date
+	 * @param projectBio  the project description
+	 * @param date        the project date
 	 * 
 	 * @return true if the project has been well created
 	 */
@@ -464,7 +464,8 @@ public class StudHuntData implements PersistentStudHunt {
 
 		sqlStatement = "INSERT INTO PROJECT VALUES(?, ?, ?, ?, ?)";
 		try {
-			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_PROJECT_SEQ") + 1, projectName, projectBio, date, email });
+			executeSQL(sqlStatement,
+					new Object[] { getSequenceValue("ID_PROJECT_SEQ") + 1, projectName, projectBio, date, email });
 		} catch (SQLException addingProjectException) {
 			System.err.println(formatSQLError("adding a new project", sqlStatement));
 			addingProjectException.printStackTrace();
@@ -476,24 +477,26 @@ public class StudHuntData implements PersistentStudHunt {
 	/**
 	 * Create a job offer in the DB
 	 * 
-	 * @param offertype the type of offer
-	 * @param email the email of the company
+	 * @param offertype      the type of offer
+	 * @param email          the email of the company
 	 * @param apprenticeship if it's in apprenticeship
-	 * @param internship if it's in internship
-	 * @param levelstudy the level of study required
-	 * @param industry the industry domain
-	 * @param startingdate the starting date of the contract
-	 * @param contractlen the durantion of the contract
+	 * @param internship     if it's in internship
+	 * @param levelstudy     the level of study required
+	 * @param industry       the industry domain
+	 * @param startingdate   the starting date of the contract
+	 * @param contractlen    the durantion of the contract
 	 * 
 	 * @return true if the job offer has been well created
 	 */
 	@Override
-	public boolean createJobOffer(int offertype, String email, int apprenticeship, int internship, int levelstudy, String industry, Date startingdate, int contractlen) {
+	public boolean createJobOffer(int offertype, String email, int apprenticeship, int internship, int levelstudy,
+			String industry, Date startingdate, int contractlen) {
 		String sqlStatement = null;
 
 		sqlStatement = "INSERT INTO JOB_OFFER VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
-			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_JOBOFFER_SEQ") + 1, offertype, email , apprenticeship, internship, levelstudy, industry, startingdate, contractlen});
+			executeSQL(sqlStatement, new Object[] { getSequenceValue("ID_JOBOFFER_SEQ") + 1, offertype, email,
+					apprenticeship, internship, levelstudy, industry, startingdate, contractlen });
 		} catch (SQLException addingJobOfferException) {
 			System.err.println(formatSQLError("adding a new job offer", sqlStatement));
 			addingJobOfferException.printStackTrace();
@@ -515,7 +518,7 @@ public class StudHuntData implements PersistentStudHunt {
 
 		sqlStatement = "INSERT INTO SCHOOL VALUES (?, ?)";
 		try {
-			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_SCHOOL_SEQ") + 1, name });
+			executeSQL(sqlStatement, new Object[] { getSequenceValue("ID_SCHOOL_SEQ") + 1, name });
 		} catch (SQLException addingSchoolException) {
 			System.err.println(formatSQLError("adding a new school", sqlStatement));
 			addingSchoolException.printStackTrace();
@@ -523,7 +526,7 @@ public class StudHuntData implements PersistentStudHunt {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * get the current value of a sequence in the DB
 	 * 
@@ -534,10 +537,10 @@ public class StudHuntData implements PersistentStudHunt {
 	private int getSequenceValue(String sequenceName) {
 		String sqlStatement = null;
 		int sequenceValue = 1;
-		
+
 		sqlStatement = "SELECT last_number FROM all_sequences WHERE sequence_name = ?";
 		try {
-			executeSQL(sqlStatement, new Object[] {sequenceName});
+			executeSQL(sqlStatement, new Object[] { sequenceName });
 		} catch (SQLException sequenceValueException) {
 			System.err.println(formatSQLError("getting the sequence value", sqlStatement));
 			sequenceValueException.printStackTrace();
@@ -548,7 +551,7 @@ public class StudHuntData implements PersistentStudHunt {
 	/**
 	 * Execute any SQL request
 	 * 
-	 * @param sqlStatement the request
+	 * @param sqlStatement    the request
 	 * @param statementValues the list of values for the request
 	 * 
 	 * @return the response
@@ -563,7 +566,7 @@ public class StudHuntData implements PersistentStudHunt {
 		synchronized (dataBase) {
 			query = dataBase.prepareStatement(sqlStatement);
 			for (index = 1; index <= statementValues.length; index++) {
-				query.setObject(index, statementValues[index-1]);
+				query.setObject(index, statementValues[index - 1]);
 			}
 			response = query.executeQuery();
 		}
@@ -573,7 +576,7 @@ public class StudHuntData implements PersistentStudHunt {
 	/**
 	 * Format SQL error messages with the last command in error
 	 * 
-	 * @param message the message of the intended operation
+	 * @param message      the message of the intended operation
 	 * @param sqlStatement the statement that failed
 	 * 
 	 * @return the formated string

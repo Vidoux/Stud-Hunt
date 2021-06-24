@@ -7,7 +7,7 @@ import studhunt.StudHunt;
 public class app {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		//Init
+		// Init
 		try {
 			new InjectionServlet().init();
 		} catch (ServletException e) {
@@ -21,13 +21,13 @@ public class app {
 		String password = null;
 		byte[] cv = null;
 		byte[] pic = null;
-		STUDENT : {
-			//Infos
-			
+		STUDENT: {
+			// Infos
+
 		}
-		COMPANY : {
-			//Infos
-			
+		COMPANY: {
+			// Infos
+
 		}
 	}
 }

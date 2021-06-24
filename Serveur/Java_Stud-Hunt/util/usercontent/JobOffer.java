@@ -8,10 +8,10 @@ public class JobOffer {
 	private int apprenticeship;
 	private int internship;
 	private int levelstudy;
-    private String industry;
+	private String industry;
 	private Date startingdate;
 	private int contractlen;
-	   
+
 	public JobOffer(int offerType) {
 		this.setOfferType(offerType);
 	}

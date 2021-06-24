@@ -28,7 +28,7 @@ public interface PersistentStudHunt {
 	/**
 	 * Retrive a user with te combinaison email/password given
 	 * 
-	 * @param email the email of the searched user
+	 * @param email    the email of the searched user
 	 * @param password the password of the searched user
 	 * 
 	 * @return the user, or null if not found
@@ -85,10 +85,10 @@ public interface PersistentStudHunt {
 	/**
 	 * Create a project in the DB
 	 * 
-	 * @param email the user's email
+	 * @param email       the user's email
 	 * @param projectName the project name
-	 * @param projectBio the project description
-	 * @param date the project date
+	 * @param projectBio  the project description
+	 * @param date        the project date
 	 * 
 	 * @return true if the project has been well created
 	 */
@@ -97,14 +97,14 @@ public interface PersistentStudHunt {
 	/**
 	 * Create a job offer in the DB
 	 * 
-	 * @param offertype the type of offer
-	 * @param email the email of the company
+	 * @param offertype      the type of offer
+	 * @param email          the email of the company
 	 * @param apprenticeship if it's in apprenticeship
-	 * @param internship if it's in internship
-	 * @param levelstudy the level of study required
-	 * @param industry the industry domain
-	 * @param startingdate the starting date of the contract
-	 * @param contractlen the durantion of the contract
+	 * @param internship     if it's in internship
+	 * @param levelstudy     the level of study required
+	 * @param industry       the industry domain
+	 * @param startingdate   the starting date of the contract
+	 * @param contractlen    the durantion of the contract
 	 * 
 	 * @return true if the job offer has been well created
 	 */

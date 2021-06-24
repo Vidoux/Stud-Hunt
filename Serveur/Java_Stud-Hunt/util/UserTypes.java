@@ -1,6 +1,5 @@
 package util;
 
 public enum UserTypes {
-	STUDENT,
-	COMPANY;
+	STUDENT, COMPANY;
 }
