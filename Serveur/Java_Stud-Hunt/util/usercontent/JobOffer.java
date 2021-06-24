@@ -1,4 +1,4 @@
-package util.user.usercontent;
+package util.usercontent;
 
 import java.sql.Date;
 

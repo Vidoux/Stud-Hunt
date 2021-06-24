@@ -14,11 +14,11 @@ import studhunt.PersistentStudHunt;
 import studhunt.StudHunt;
 import util.User;
 import util.UserTypes;
-import util.user.usercontent.JobOffer;
-import util.user.usercontent.Project;
-import util.user.userrefernces.School;
-import util.user.usertypes.Company;
-import util.user.usertypes.Student;
+import util.usercontent.JobOffer;
+import util.usercontent.Project;
+import util.userrefernces.School;
+import util.usertypes.Company;
+import util.usertypes.Student;
 
 /**
  * StudHuntData is the interface with the database, the only entity who

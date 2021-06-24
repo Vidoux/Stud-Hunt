@@ -1,4 +1,4 @@
-package util.user.usercontent;
+package util.usercontent;
 
 public class Project {
 	private String projectName;

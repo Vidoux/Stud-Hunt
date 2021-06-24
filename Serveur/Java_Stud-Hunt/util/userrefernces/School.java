@@ -1,4 +1,4 @@
-package util.user.userrefernces;
+package util.userrefernces;
 
 public class School {
 	private String schoolName;
