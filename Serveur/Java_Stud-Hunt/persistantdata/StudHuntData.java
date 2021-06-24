@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -16,7 +17,14 @@ import util.ConnectionInfos;
 import util.Pair;
 import util.References;
 import util.StudentInfos;
+import util.User;
 import util.UserTypes;
+import util.user.Company;
+import util.user.Industry;
+import util.user.JobOffer;
+import util.user.Project;
+import util.user.School;
+import util.user.Student;
 
 /**
  * StudHuntData is the interface with the database, the only entity who
@@ -68,6 +76,7 @@ public class StudHuntData implements PersistentStudHunt {
 	 * 
 	 * @param email    the email of the user (Also it's ID in the mean time)
 	 * @param name     the name of the user
+	 * @param forname  the forname of the user
 	 * @param password the password of the user
 	 * @param userType the type of the user (COMPANY or STUDENT
 	 * @param infos    the additional informations to create a sub-type (Only for
@@ -129,18 +138,18 @@ public class StudHuntData implements PersistentStudHunt {
 	public boolean addReferences(HashMap<References, String> references, String email, UserTypes userType) {
 		try {
 			for (Entry<References, String> reference : references.entrySet()) {
-				String sqlStatement = null;
-				ResultSet response = null;
-				int referenceID = 0;
-				String referenceName = null;
-				String tableName = null;
-
-				sqlStatement = "SELECT * FROM " + reference.getKey().toString() + " WHERE "
-						+ reference.getKey().toString().toLowerCase() + "Name = ?";
-				try {
-					response = executeSQL(sqlStatement, new Object[]{reference.getValue()});
-					synchronized (dataBase) {
-						switch (reference.getKey()) {
+					String sqlStatement = null;
+					ResultSet response = null;
+					int referenceID = 0;
+					String referenceName = null;
+					String tableName = null;
+		
+					sqlStatement = "SELECT * FROM " + reference.getKey().toString() + " WHERE "
+							+ reference.getKey().toString().toLowerCase() + "Name = ?";
+					try {
+						response = executeSQL(sqlStatement, new Object[] { reference.getValue() });
+						synchronized (dataBase) {
+							switch (reference.getKey()) {
 							case SCHOOL:
 								if (!response.next()) {
 									createSchool(reference.getValue());
@@ -153,42 +162,42 @@ public class StudHuntData implements PersistentStudHunt {
 								}
 								referenceName = "Industry";
 								break;
+							}
+							sqlStatement = "SELECT id_" + referenceName + " FROM " + referenceName.toUpperCase() + " WHERE " + referenceName + "Name = ?";
+							response = executeSQL(sqlStatement, new Object[] {reference.getValue()});
+							referenceID = response.next() ? response.getInt("id_" + referenceName) : 1;
 						}
-						sqlStatement = "SELECT id_" + referenceName + " FROM " + referenceName.toUpperCase() + " WHERE " + referenceName + "Name = ?";
-						response = executeSQL(sqlStatement, new Object[]{reference.getValue()});
-						referenceID = response.next() ? response.getInt("id_" + referenceName) : 1;
+					} catch (SQLException checkReferencesException) {
+						System.err.println(formatSQLError("getting references existing informations", sqlStatement));
+						checkReferencesException.printStackTrace();
+						return false;
 					}
-				} catch (SQLException checkReferencesException) {
-					System.err.println(formatSQLError("getting references existing informations", sqlStatement));
-					checkReferencesException.printStackTrace();
-					return false;
-				}
-				switch (userType) {
+					switch (userType) {
 					case STUDENT:
 						switch (reference.getKey()) {
-							case SCHOOL:
-								tableName = "is_part_of";
-								break;
-							case INDUSTRY:
-								tableName = "concern";
-								break;
+						case SCHOOL:
+							tableName = "is_part_of";
+							break;
+						case INDUSTRY:
+							tableName = "concern";
+							break;
 						}
 						break;
 					case COMPANY:
 						tableName = "refer_to";
 						break;
+					}
+					sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
+					try {
+						executeSQL(sqlStatement, new Object[] {referenceID, email});
+					} catch (SQLException addingReferenceException) {
+						System.err.println(formatSQLError("adding association between user and reference", sqlStatement));
+						addingReferenceException.printStackTrace();
+						return false;
+					}
 				}
-				sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
-				try {
-					executeSQL(sqlStatement, new Object[]{referenceID, email});
-				} catch (SQLException addingReferenceException) {
-					System.err.println(formatSQLError("adding association between user and reference", sqlStatement));
-					addingReferenceException.printStackTrace();
-					return false;
-				}
-			}
-		}catch(NullPointerException e){
-			return false;
+		} catch (NullPointerException e) {
+			
 		}
 		return true;
 	}
@@ -225,6 +234,90 @@ public class StudHuntData implements PersistentStudHunt {
 			System.err.println("The combinaison email/password was not found");
 		}
 		return connectInfos;
+	}
+	
+	public User getUser(String email, String password) {
+		User user = null;
+		UserTypes userType = null;
+		String sqlStatement = null;
+		ResultSet response = null;
+		String name = null;
+		String forname = null;
+		int apprenticeship = 0;
+		int internship = 0;
+		List<Project> projects = null;
+		List<JobOffer> jobOffers = null;
+		List<Industry> industries = null;
+		List<School> schools = null;
+		
+		try {
+			//Getting user basic informations
+			userType = getUserType(email);
+			sqlStatement = "SELECT name FROM APP_USER WHERE email = ?";
+				response = executeSQL(sqlStatement, new Object[] {email});
+			name = response.next() ? response.getString("name") : null ;
+			switch(userType) {
+				case STUDENT :
+					//Getting student sub-type informations
+					sqlStatement = "SELECT forname, apprenticeship, internship FROM STUDENT WHERE email = ?";
+					response = executeSQL(sqlStatement, new Object[] {email});
+					if (response.next()) {
+						forname = response.getString("forname");
+						apprenticeship = response.getInt("apprenticeship");
+						internship = response.getInt("internship");
+					}
+					//Getting student projects informations
+					projects = new ArrayList<>();
+					sqlStatement = "SELECT projectName, realisation_year FROM PROJECT WHERE email = ?";
+					response = executeSQL(sqlStatement, new Object[] {email});
+					while (response.next()) {
+						projects.add(new Project(response.getString("projectName"), response.getInt("realisation_year")));
+					}
+					//Getting student indstry informations
+					industries = new ArrayList<>();
+					sqlStatement = "SELECT id_Indsutry FROM concern WHERE email = ?";
+					response = executeSQL(sqlStatement, new Object[] {email});
+					while (response.next()) {
+						sqlStatement = "SELECT industryName FROM INDUSTRY WHERE id_Industry = ?";
+						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_Industry")});
+						if (response.next()) { industries.add(new Industry(response.getString("industryName"))); }
+					}
+					//Getting student school informations
+					schools = new ArrayList<>();
+					sqlStatement = "SELECT id_School FROM is_part_of WHERE email = ?";
+					response = executeSQL(sqlStatement, new Object[] {email});
+					while (response.next()) {
+						sqlStatement = "SELECT schoolName FROM SCHOOL WHERE id_School = ?";
+						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_School")});
+						if (response.next()) { schools.add(new School(response.getString("schoolName"))); }
+					}
+					user = new Student(userType, email, name, forname, password, projects, industries, schools);
+					break;
+				case COMPANY :
+					//Getting company indstry informations
+					industries = new ArrayList<>();
+					sqlStatement = "SELECT id_Indsutry FROM refer_to WHERE email = ?";
+					response = executeSQL(sqlStatement, new Object[] {email});
+					while (response.next()) {
+						sqlStatement = "SELECT industryName FROM INDUSTRY WHERE id_Industry = ?";
+						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_Industry")});
+						if (response.next()) { industries.add(new Industry(response.getString("industryName"))); }
+					}
+					//Getting company job offer informations
+					jobOffers = new ArrayList<>();
+					sqlStatement = "SELECT offerType FROM JOB_OFFER WHERE email = ?";
+					response = executeSQL(sqlStatement, new Object[] {email});
+					while (response.next()) {
+						jobOffers.add(new JobOffer(response.getInt("offerType")));
+					}
+					user = new Company(userType, email, name, password, jobOffers, industries);
+					break;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 	/**

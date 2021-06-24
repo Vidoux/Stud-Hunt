@@ -1,14 +1,22 @@
 package util;
 
-public class User {
-    private String email;
-    private String password;
-    private UserTypes userType;
+import java.util.List;
 
-    public User(String email, String password, UserTypes userType){
+import util.user.Industry;
+
+public abstract class User {
+	private UserTypes userType;
+	private String email;
+	private String name;
+	private String password;
+	private List<Industry> industries;
+
+    public User(UserTypes userType, String email, String name, String password, List<Industry> industries){
         this.userType = userType;
-        this.password = password;
         this.email = email;
+        this.name = name;
+        this.password = password;
+        this.industries = industries;
     }
 
     public String getEmail() {
