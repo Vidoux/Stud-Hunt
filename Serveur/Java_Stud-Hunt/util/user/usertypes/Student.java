@@ -1,10 +1,12 @@
-package util.user;
+package util.user.usertypes;
 
 import java.sql.Date;
 import java.util.List;
 
 import util.User;
 import util.UserTypes;
+import util.user.usercontent.Project;
+import util.user.userrefernces.School;
 
 public class Student extends User {
 	private String forname;

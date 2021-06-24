@@ -1,9 +1,10 @@
-package util.user;
+package util.user.usertypes;
 
 import java.util.List;
 
 import util.User;
 import util.UserTypes;
+import util.user.usercontent.JobOffer;
 
 public class Company extends User {
 	private List<JobOffer> jobOffers;
