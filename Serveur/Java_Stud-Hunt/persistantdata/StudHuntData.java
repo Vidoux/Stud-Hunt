@@ -76,7 +76,7 @@ public class StudHuntData implements PersistentStudHunt {
 	public boolean createUser(User user) {
 		String sqlStatement = null;
 
-		sqlStatement = "INSERT INTO APP_USER "
+		sqlStatement = "INSERT INTO APP_USER (email, name, password) "
 					 + "VALUES (?, ?, ?)";
 		try {
 			executeSQL(sqlStatement, new Object[] {user.getEmail(), user.getName(), user.getPassword()});
