@@ -10,6 +10,14 @@ public class Company extends User {
 
 	public Company(UserTypes userType, String email, String name, String password, List<JobOffer> jobOffers, List<Industry> industries) {
 		super(userType, email, name, password, industries);
+		this.setJobOffers(jobOffers);
+	}
+
+	public List<JobOffer> getJobOffers() {
+		return jobOffers;
+	}
+
+	public void setJobOffers(List<JobOffer> jobOffers) {
 		this.jobOffers = jobOffers;
 	}
 }

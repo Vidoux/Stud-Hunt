@@ -19,32 +19,43 @@ public abstract class User {
         this.industries = industries;
     }
 
-    public String getEmail() {
-        return email;
-    }
+	public UserTypes getUserType() {
+		return userType;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setUserType(UserTypes userType) {
+		this.userType = userType;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public UserTypes getUserType() {
-        return userType;
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", userType=" + userType +
-                '}';
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public List<Industry> getIndustries() {
+		return industries;
+	}
+
+	public void setIndustries(List<Industry> industries) {
+		this.industries = industries;
+	}
 }

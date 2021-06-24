@@ -9,4 +9,20 @@ public class Project {
 		this.realisation_year = realisation_year;
 	}
 
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public int getRealisation_year() {
+		return realisation_year;
+	}
+
+	public void setRealisation_year(int realisation_year) {
+		this.realisation_year = realisation_year;
+	}
+
 }

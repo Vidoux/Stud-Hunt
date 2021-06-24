@@ -246,9 +246,9 @@ public class StudHuntData implements PersistentStudHunt {
 		int apprenticeship = 0;
 		int internship = 0;
 		List<Project> projects = null;
-		List<JobOffer> jobOffers = null;
 		List<Industry> industries = null;
 		List<School> schools = null;
+		List<JobOffer> jobOffers = null;
 		
 		try {
 			//Getting user basic informations
@@ -291,7 +291,7 @@ public class StudHuntData implements PersistentStudHunt {
 						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_School")});
 						if (response.next()) { schools.add(new School(response.getString("schoolName"))); }
 					}
-					user = new Student(userType, email, name, forname, password, projects, industries, schools);
+					user = new Student(userType, email, name, forname, apprenticeship, internship, password, projects, industries, schools);
 					break;
 				case COMPANY :
 					//Getting company indstry informations
