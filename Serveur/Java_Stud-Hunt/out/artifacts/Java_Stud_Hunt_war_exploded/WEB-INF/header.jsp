@@ -15,12 +15,12 @@
                 <a class="item" href="./">Accueil</a>
                 <!--          Si étudiant alors: CV, Demandes de contact-->
                 <c:if test="${ sessionScope.user.getUserType() == 'STUDENT' }">
-                    <a class="item">Demandes de contact</a>
+                    <a class="item" href="./student_contact">Demandes de contact</a>
                 </c:if>
 
                 <!--          Si entreprise alors: mes recherches, Prises de Contacts-->
                 <c:if test="${ sessionScope.user.getUserType() == 'COMPANY' }">
-                    <a class="item">Vos Recherches</a>
+                    <a class="item" href="./job_research">Vos Recherches</a>
                 </c:if>
                 <div class="ui dropdown item <c:if test="${ sessionScope.user == null }">invisibleDiv</c:if>">
                     <img class="ui avatar image" src="./image_action" />  <!--insérer, dynamiquement l'image du profil-->
@@ -51,11 +51,11 @@
                     <div class="menu">
                         <!--          Si étudiant alors: CV, Demandes de contact-->
                         <c:if test="${ sessionScope.user.getUserType() == 'STUDENT' }">
-                            <a class="item">Demandes de contact</a>
+                            <a class="item" href="./student_contact">Demandes de contact</a>
                         </c:if>
                         <!--          Si entreprise alors: mes recherches, Prises de Contacts-->
                         <c:if test="${ sessionScope.user.getUserType() == 'COMPANY' }">
-                            <a class="item">Vos Recherches</a>
+                            <a class="item" href="./job_research">Vos Recherches</a>
                         </c:if>
                         <a class="item" href="./">Accueil</a>
                         <c:if test="${ sessionScope.user != null }">

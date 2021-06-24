@@ -32,6 +32,22 @@
         <servlet-name>services.CvActionServlet</servlet-name>
         <servlet-class>services.CvActionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>services.JobResearchServlet</servlet-name>
+        <servlet-class>services.JobResearchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>services.MatchServlet</servlet-name>
+        <servlet-class>services.MatchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>services.StudentContactServlet</servlet-name>
+        <servlet-class>services.StudentContactServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>services.OfferViewServlet</servlet-name>
+        <servlet-class>services.OfferViewServlet</servlet-class>
+    </servlet>
 
     <!--Mapping-->
     <servlet-mapping>
@@ -61,6 +77,22 @@
     <servlet-mapping>
         <servlet-name>services.CvActionServlet</servlet-name>
         <url-pattern>/cv_action</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>services.JobResearchServlet</servlet-name>
+        <url-pattern>/job_research</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>services.MatchServlet</servlet-name>
+        <url-pattern>/match</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>services.StudentContactServlet</servlet-name>
+        <url-pattern>/student_contact</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>services.OfferViewServlet</servlet-name>
+        <url-pattern>/contact_view</url-pattern>
     </servlet-mapping>
 
 

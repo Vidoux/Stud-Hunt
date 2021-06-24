@@ -207,7 +207,6 @@
                 </div>
 
                 <button class="big ui blue button invisibleDiv" id="submitButton" type="submit">Valider</button>
-<%--                TODO: ajouter annuler les modifications--%>
             </form>
             <button class="ui blue button invisibleDiv" id="cancelButton" onclick="desactivateStudentForm()">
                 <i class="close icon"></i>
