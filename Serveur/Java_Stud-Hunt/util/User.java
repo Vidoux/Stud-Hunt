@@ -6,21 +6,21 @@ public abstract class User {
 	private String name;
 	private String password;
 	private String bio;
-    
-    public User(UserTypes userType, String email, String name, String password){
-        this.userType = userType;
-        this.email = email;
-        this.name = name;
-        this.password = password;
-    }
 
-    public User(UserTypes userType, String email, String name, String password, String bio){
-        this.userType = userType;
-        this.email = email;
-        this.name = name;
-        this.password = password;
-        this.bio = bio;
-    }
+	public User(UserTypes userType, String email, String name, String password) {
+		this.userType = userType;
+		this.email = email;
+		this.name = name;
+		this.password = password;
+	}
+
+	public User(UserTypes userType, String email, String name, String password, String bio) {
+		this.userType = userType;
+		this.email = email;
+		this.name = name;
+		this.password = password;
+		this.bio = bio;
+	}
 
 	public UserTypes getUserType() {
 		return userType;

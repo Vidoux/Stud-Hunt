@@ -7,7 +7,7 @@ public class JobOffer {
 	private String email;
 	private int apprenticeship;
 	private int internship;
-	private String levelstudy;
+	private int levelstudy;
     private String industry;
 	private Date startingdate;
 	private int contractlen;
@@ -48,11 +48,11 @@ public class JobOffer {
 		this.internship = internship;
 	}
 
-	public String getLevelstudy() {
+	public int getLevelstudy() {
 		return levelstudy;
 	}
 
-	public void setLevelstudy(String levelstudy) {
+	public void setLevelstudy(int levelstudy) {
 		this.levelstudy = levelstudy;
 	}
 

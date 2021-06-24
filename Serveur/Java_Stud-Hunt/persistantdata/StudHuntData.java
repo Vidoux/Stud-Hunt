@@ -219,9 +219,9 @@ public class StudHuntData implements PersistentStudHunt {
 		String forname = null;
 		int apprenticeship = 0;
 		int internship = 0;
-		String levelstudy = null;
+		int levelstudy = 0;
 		String industry = null;
-		Date startingdate;
+		Date startingdate = null;
 		int contractlen = 0;
 		String diploma = null;
 		List<Project> projects = null;
@@ -250,7 +250,7 @@ public class StudHuntData implements PersistentStudHunt {
 						forname = response.getString("forname");
 						apprenticeship = response.getInt("apprenticeship");
 						internship = response.getInt("internship");
-						levelstudy = response.getString("levelstudy");
+						levelstudy = response.getInt("levelstudy");
 						industry = response.getString("industry");
 						startingdate = response.getDate("startingdate");
 						contractlen = response.getInt("contractlen");
@@ -272,7 +272,7 @@ public class StudHuntData implements PersistentStudHunt {
 						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_School")});
 						if (response.next()) { schools.add(new School(response.getString("schoolName"))); }
 					}
-					user = new Student(email, name, forname, apprenticeship, internship, password, bio, industry, projects, schools);
+					user = new Student(email, name, forname, apprenticeship, internship, password, bio, industry, contractlen, startingdate, contractlen, diploma, projects, schools);
 					break;
 				case COMPANY :
 					//Getting company job offer informations
@@ -488,7 +488,7 @@ public class StudHuntData implements PersistentStudHunt {
 	 * @return true if the job offer has been well created
 	 */
 	@Override
-	public boolean createJobOffer(int offertype, String email, int apprenticeship, int internship, String levelstudy, String industry, Date startingdate, int contractlen) {
+	public boolean createJobOffer(int offertype, String email, int apprenticeship, int internship, int levelstudy, String industry, Date startingdate, int contractlen) {
 		String sqlStatement = null;
 
 		sqlStatement = "INSERT INTO JOB_OFFER VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";

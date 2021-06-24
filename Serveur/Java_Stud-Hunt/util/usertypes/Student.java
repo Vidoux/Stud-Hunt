@@ -12,7 +12,7 @@ public class Student extends User {
 	private String forname;
 	private int apprenticeship;
 	private int internship;
-	private String levelstudy;
+	private int levelstudy;
 	private String industry;
 	private Date startingdate;
 	private int contractlen;
@@ -25,11 +25,16 @@ public class Student extends User {
 		this.forname = forname;
 	}
 	
-	public Student(String email, String name, String forname, int apprenticeship, int internship, String password, String bio, String industries,List<Project> projects, List<School> schools) {
+	public Student(String email, String name, String forname, int apprenticeship, int internship, String password, String bio, String industry, int levelstudy, Date startingdate, int contractlen, String diploma, List<Project> projects, List<School> schools) {
 		super(UserTypes.STUDENT, email, name, password, bio);
 		this.forname = forname;
 		this.apprenticeship = apprenticeship;
 		this.internship = internship;
+		this.levelstudy = levelstudy;
+		this.industry = industry;
+		this.startingdate = startingdate;
+		this.contractlen = contractlen;
+		this.diploma = diploma;
 		this.projects = projects;
 		this.schools = schools;
 	}
@@ -58,11 +63,11 @@ public class Student extends User {
 		this.internship = internship;
 	}
 
-	public String getLevelstudy() {
+	public int getLevelstudy() {
 		return levelstudy;
 	}
 
-	public void setLevelstudy(String levelstudy) {
+	public void setLevelstudy(int levelstudy) {
 		this.levelstudy = levelstudy;
 	}
 

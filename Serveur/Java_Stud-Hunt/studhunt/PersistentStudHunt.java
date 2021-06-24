@@ -108,7 +108,7 @@ public interface PersistentStudHunt {
 	 * 
 	 * @return true if the job offer has been well created
 	 */
-	boolean createJobOffer(int offertype, String email, int apprenticeship, int internship, String levelstudy,
+	boolean createJobOffer(int offertype, String email, int apprenticeship, int internship, int levelstudy,
 			String industry, Date startingdate, int contractlen);
 
 	/**

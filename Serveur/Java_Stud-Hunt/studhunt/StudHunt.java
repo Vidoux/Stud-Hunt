@@ -6,22 +6,23 @@ import util.User;
 import util.UserTypes;
 
 public class StudHunt {
-	
+
 	private static StudHunt instance;
 	private PersistentStudHunt data;
-	
+
 	static {
 		instance = new StudHunt();
 	}
-	
+
 	public static StudHunt getInstance() {
 		return instance;
 	}
-	
+
 	public void setData(PersistentStudHunt data) {
-		if (this.data == null) this.data = data;
+		if (this.data == null)
+			this.data = data;
 	}
-	
+
 	/**
 	 * Call user creation in DB
 	 * 
@@ -47,7 +48,7 @@ public class StudHunt {
 	/**
 	 * Retrive a user with te combinaison email/password given
 	 * 
-	 * @param email the email of the searched user
+	 * @param email    the email of the searched user
 	 * @param password the password of the searched user
 	 * 
 	 * @return the user, or null if not found
@@ -116,10 +117,10 @@ public class StudHunt {
 	/**
 	 * Create a project in the DB
 	 * 
-	 * @param email the user's email
+	 * @param email       the user's email
 	 * @param projectName the project name
-	 * @param projectBio the project description
-	 * @param date the project date
+	 * @param projectBio  the project description
+	 * @param date        the project date
 	 * 
 	 * @return true if the project has been well created
 	 */
@@ -130,20 +131,21 @@ public class StudHunt {
 	/**
 	 * Create a job offer in the DB
 	 * 
-	 * @param offertype the type of offer
-	 * @param email the email of the company
+	 * @param offertype      the type of offer
+	 * @param email          the email of the company
 	 * @param apprenticeship if it's in apprenticeship
-	 * @param internship if it's in internship
-	 * @param levelstudy the level of study required
-	 * @param industry the industry domain
-	 * @param startingdate the starting date of the contract
-	 * @param contractlen the durantion of the contract
+	 * @param internship     if it's in internship
+	 * @param levelstudy     the level of study required
+	 * @param industry       the industry domain
+	 * @param startingdate   the starting date of the contract
+	 * @param contractlen    the durantion of the contract
 	 * 
 	 * @return true if the job offer has been well created
 	 */
-	public boolean createJobOffer(int offertype, String email, int apprenticeship, int internship, String levelstudy,
+	public boolean createJobOffer(int offertype, String email, int apprenticeship, int internship, int levelstudy,
 			String industry, Date startingdate, int contractlen) {
-		return instance.data.createJobOffer(offertype, email, apprenticeship, internship, levelstudy, industry, startingdate, contractlen);
+		return instance.data.createJobOffer(offertype, email, apprenticeship, internship, levelstudy, industry,
+				startingdate, contractlen);
 	}
 
 	/**
