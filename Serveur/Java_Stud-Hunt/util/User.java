@@ -1,22 +1,25 @@
 package util;
 
-import java.util.List;
-
-import util.user.Industry;
-
 public abstract class User {
 	private UserTypes userType;
 	private String email;
 	private String name;
 	private String password;
-	private List<Industry> industries;
-
-    public User(UserTypes userType, String email, String name, String password, List<Industry> industries){
+	private String bio;
+    
+    public User(UserTypes userType, String email, String name, String password){
         this.userType = userType;
         this.email = email;
         this.name = name;
         this.password = password;
-        this.industries = industries;
+    }
+
+    public User(UserTypes userType, String email, String name, String password, String bio){
+        this.userType = userType;
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.bio = bio;
     }
 
 	public UserTypes getUserType() {
@@ -51,11 +54,11 @@ public abstract class User {
 		this.password = password;
 	}
 
-	public List<Industry> getIndustries() {
-		return industries;
+	public String getBio() {
+		return bio;
 	}
 
-	public void setIndustries(List<Industry> industries) {
-		this.industries = industries;
+	public void setBio(String bio) {
+		this.bio = bio;
 	}
 }

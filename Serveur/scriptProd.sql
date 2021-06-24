@@ -132,6 +132,7 @@ CREATE TABLE concern(
 CREATE TABLE is_part_of(
    id_School INTEGER,
    email VARCHAR(50),
+   diplomaName VARCHAR(50),
    PRIMARY KEY(id_School, email),
    FOREIGN KEY(id_School) REFERENCES SCHOOL(id_School),
    FOREIGN KEY(email) REFERENCES STUDENT(email)

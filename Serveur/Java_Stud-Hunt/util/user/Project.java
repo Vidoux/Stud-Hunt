@@ -2,10 +2,12 @@ package util.user;
 
 public class Project {
 	private String projectName;
+	private String projectBio;
 	private int realisation_year;
 
-	public Project(String projectName, int realisation_year) {
+	public Project(String projectName, String projectBio, int realisation_year) {
 		this.projectName = projectName;
+		this.projectBio = projectBio;
 		this.realisation_year = realisation_year;
 	}
 
@@ -15,6 +17,14 @@ public class Project {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public String getProjectBio() {
+		return projectBio;
+	}
+
+	public void setProjectBio(String projectBio) {
+		this.projectBio = projectBio;
 	}
 
 	public int getRealisation_year() {

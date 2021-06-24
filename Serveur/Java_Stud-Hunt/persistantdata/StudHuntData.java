@@ -1,26 +1,20 @@
 package persistantdata;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import studhunt.PersistentStudHunt;
 import studhunt.StudHunt;
-import util.ConnectionInfos;
-import util.Pair;
-import util.References;
-import util.StudentInfos;
 import util.User;
 import util.UserTypes;
 import util.user.Company;
-import util.user.Industry;
 import util.user.JobOffer;
 import util.user.Project;
 import util.user.School;
@@ -70,217 +64,204 @@ public class StudHuntData implements PersistentStudHunt {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
-	 * Create a user and it's sub-type (STUDENT or COMPANY)
+	 * Create an user in the DB
 	 * 
-	 * @param email    the email of the user (Also it's ID in the mean time)
-	 * @param name     the name of the user
-	 * @param forname  the forname of the user
-	 * @param password the password of the user
-	 * @param userType the type of the user (COMPANY or STUDENT
-	 * @param infos    the additional informations to create a sub-type (Only for
-	 *                 STUDENT)
+	 * @param user the user we'll add to DB
 	 * 
-	 * @return true if the user has been created
+	 * @return true if the user has been created well
 	 */
 	@Override
-	public boolean createUser(String email, String name, String password, UserTypes userType,
-			HashMap<References, String> references, List<Pair> infos) {
+	public boolean createUser(User user) {
 		String sqlStatement = null;
-		String forname = null;
-		int apprenticeship = 0;
-		int internship = 0;
 
-		sqlStatement = "INSERT INTO APP_USER VALUES (?, ?, ?)";
+		sqlStatement = "INSERT INTO APP_USER "
+					 + "VALUES (?, ?, ?)";
 		try {
-			executeSQL(sqlStatement, new Object[] { email, name, password});
-			try {
-				switch (userType) {
-				case STUDENT:
-					for (Pair info : infos) {
-						switch ((StudentInfos) info.getFirst()) {
-						case APPRENTICESHIP:
-							apprenticeship = (int) info.getSecond();
-							break;
-						case FORNAME:
-							forname = (String) info.getSecond();
-							break;
-						case INTERNSHIP:
-							internship = (int) info.getSecond();
-							break;
-						}
-					}
-					sqlStatement = "INSERT INTO STUDENT VALUES (?, ?, ?, ?)";
-					executeSQL(sqlStatement, new Object[] { email, forname, apprenticeship, internship });
-					break;
-				case COMPANY:
-					sqlStatement = "INSERT INTO COMPANY VALUES (?)";
-					executeSQL(sqlStatement, new Object[] { email });
-					break;
-				}
-			} catch (SQLException subTypeException) {
-				System.err.println(formatSQLError("creating the sub-type user", sqlStatement));
-				subTypeException.printStackTrace();
-				return false;
-			}
+			executeSQL(sqlStatement, new Object[] {user.getEmail(), user.getName(), user.getPassword()});
 		} catch (SQLIntegrityConstraintViolationException userException) {
 			System.err.println("User already existing");
 			return false;
-		} catch (SQLException userException) {
+		} catch (SQLException e) {
 			System.err.println(formatSQLError("creating the user", sqlStatement));
-			userException.printStackTrace();
+			e.printStackTrace();
 			return false;
 		}
-		return addReferences(references, email, userType);
-	}
-
-	public boolean addReferences(HashMap<References, String> references, String email, UserTypes userType) {
-		try {
-			for (Entry<References, String> reference : references.entrySet()) {
-					String sqlStatement = null;
-					ResultSet response = null;
-					int referenceID = 0;
-					String referenceName = null;
-					String tableName = null;
-		
-					sqlStatement = "SELECT * FROM " + reference.getKey().toString() + " WHERE "
-							+ reference.getKey().toString().toLowerCase() + "Name = ?";
-					try {
-						response = executeSQL(sqlStatement, new Object[] { reference.getValue() });
-						synchronized (dataBase) {
-							switch (reference.getKey()) {
-							case SCHOOL:
-								if (!response.next()) {
-									createSchool(reference.getValue());
-								}
-								referenceName = "School";
-								break;
-							case INDUSTRY:
-								if (!response.next()) {
-									createIndustry(reference.getValue());
-								}
-								referenceName = "Industry";
-								break;
-							}
-							sqlStatement = "SELECT id_" + referenceName + " FROM " + referenceName.toUpperCase() + " WHERE " + referenceName + "Name = ?";
-							response = executeSQL(sqlStatement, new Object[] {reference.getValue()});
-							referenceID = response.next() ? response.getInt("id_" + referenceName) : 1;
-						}
-					} catch (SQLException checkReferencesException) {
-						System.err.println(formatSQLError("getting references existing informations", sqlStatement));
-						checkReferencesException.printStackTrace();
-						return false;
-					}
-					switch (userType) {
-					case STUDENT:
-						switch (reference.getKey()) {
-						case SCHOOL:
-							tableName = "is_part_of";
-							break;
-						case INDUSTRY:
-							tableName = "concern";
-							break;
-						}
-						break;
-					case COMPANY:
-						tableName = "refer_to";
-						break;
-					}
-					sqlStatement = "INSERT INTO " + tableName + " VALUES(?, ?)";
-					try {
-						executeSQL(sqlStatement, new Object[] {referenceID, email});
-					} catch (SQLException addingReferenceException) {
-						System.err.println(formatSQLError("adding association between user and reference", sqlStatement));
-						addingReferenceException.printStackTrace();
-						return false;
-					}
-				}
-		} catch (NullPointerException e) {
-			
+		switch(user.getUserType()) {
+		case STUDENT :
+			return createStudent((Student) user);
+		case COMPANY :
+			return createCompany((Company) user);
 		}
-		return true;
+		return false;
+	}
+	
+	/**
+	 * Create a student in the DB
+	 * 
+	 * @param student the student to add to DB
+	 * 
+	 * @return true if the student has been well created
+	 */
+	private boolean createStudent(Student student) {
+		String sqlStatement = null;
+		
+		sqlStatement = "INSERT INTO STUDENT (email, forname, apprenticeship, internship) "
+					 + "VALUES (?, ?, ?, ?)";
+		try {
+			executeSQL(sqlStatement, new Object[] {student.getEmail(), student.getForname(), student.getApprenticeship(), student.getInternship()});
+			return true;
+		} catch (SQLIntegrityConstraintViolationException userException) {
+			System.err.println("Student already existing");
+			return false;
+		} catch (SQLException e) {
+			System.err.println(formatSQLError("creating the student", sqlStatement));
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**
-	 * Get all the informations about a user if the user email and password are
-	 * existing
+	 * Create a company in the DB
 	 * 
-	 * @param email    the email of the user
-	 * @param password the password for this user
+	 * @param company the company to add to DB
 	 * 
-	 * @return connectInfos the informations requierd about this user if the
-	 *         combinaison email/password was correct
+	 * @return true if the company has been well created
+	 */
+	private boolean createCompany(Company company) {
+		String sqlStatement = null;
+	
+		sqlStatement = "INSERT INTO COMPANY "
+					 + "VALUES (?)";
+		try {
+			executeSQL(sqlStatement, new Object[] {company.getEmail()});
+			return true;
+		} catch (SQLIntegrityConstraintViolationException userException) {
+			System.err.println("Company already existing");
+			return false;
+		} catch (SQLException e) {
+			System.err.println(formatSQLError("creating the company", sqlStatement));
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Updates a user in the DB
+	 * 
+	 * @param user the user to update in the DB
+	 * 
+	 * @return true if the user has been well updated
 	 */
 	@Override
-	public ConnectionInfos getUserConnection(String email, String password) {
+	public boolean updateUser(User user) {
 		String sqlStatement = null;
-		ResultSet response = null;
-		UserTypes user = null;
-		ConnectionInfos connectInfos = new ConnectionInfos(false, null, null, null);
-
-		sqlStatement = "SELECT * FROM APP_USER WHERE email = ? AND password = ?";
+		UserTypes userType = null;
+		
+		userType = getUserType(user.getEmail());
+		sqlStatement = "UPDATE APP_USER "
+					 + "SET name = ?, bio = ?"
+					 + "WHERE email = ?";
 		try {
-			response = executeSQL(sqlStatement, new Object[] { email, password });
-			if (response.next()) {
-				user = getUserType(email);
-				if (user.equals(UserTypes.STUDENT)) {
-					connectInfos = new ConnectionInfos(true, user, response.getString("name"), getUserForname(email));
-				} else {
-					connectInfos = new ConnectionInfos(true, user, response.getString("name"));
-				}
+			executeSQL(sqlStatement, new Object[] {user.getName(), user.getBio(), user.getEmail()});
+			if (userType.equals(UserTypes.STUDENT)) {
+				return updateStudent((Student) user);
 			}
-		} catch (SQLException userNotFoundException) {
-			System.err.println("The combinaison email/password was not found");
+			return true;
+		} catch (SQLException e) {
+			System.err.println(formatSQLError("updating the user", sqlStatement));
+			e.printStackTrace();
+			return false;
 		}
-		return connectInfos;
+	}
+
+	/**
+	 * Updates a student in the DB
+	 * 
+	 * @param student the student to update in the DB
+	 * 
+	 * @return true if the student has been well updated
+	 */
+	private boolean updateStudent(Student student) {
+		String sqlStatement = null;
+		
+		sqlStatement = "UPDATE STUDENT "
+			 	     + "SET forname = ?, apprenticeship = ?, internship = ?, levelstudy = ?, industry = ?, startingdate = ?, contractlen = ?, diploma = ? "
+			 	     + "WHERE email = ?";
+		try {
+			executeSQL(sqlStatement, new Object[] { student.getEmail(), student.getForname(), student.getApprenticeship(), student.getInternship(), student.getLevelstudy(), student.getIndustry(), student.getStartingdate(), student.getContractlen(), student.getDiploma()});
+			return true;
+		} catch (SQLException e) {
+			System.err.println(formatSQLError("updating the student", sqlStatement));
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
+	/**
+	 * Retrive a user with te combinaison email/password given
+	 * 
+	 * @param email the email of the searched user
+	 * @param password the password of the searched user
+	 * 
+	 * @return the user, or null if not found
+	 */
+	@Override
 	public User getUser(String email, String password) {
 		User user = null;
-		UserTypes userType = null;
 		String sqlStatement = null;
 		ResultSet response = null;
+		
+		UserTypes userType = null;
 		String name = null;
+		String bio = null;
 		String forname = null;
 		int apprenticeship = 0;
 		int internship = 0;
+		String levelstudy = null;
+		String industry = null;
+		Date startingdate;
+		int contractlen = 0;
+		String diploma = null;
 		List<Project> projects = null;
-		List<Industry> industries = null;
 		List<School> schools = null;
 		List<JobOffer> jobOffers = null;
 		
 		try {
 			//Getting user basic informations
 			userType = getUserType(email);
-			sqlStatement = "SELECT name FROM APP_USER WHERE email = ?";
-				response = executeSQL(sqlStatement, new Object[] {email});
-			name = response.next() ? response.getString("name") : null ;
+			sqlStatement = "SELECT name, bio "
+						 + "FROM APP_USER "
+						 + "WHERE email = ?";
+			response = executeSQL(sqlStatement, new Object[] {email});
+			if(response.next()) {
+				name = response.getString("name");
+				bio = response.getString("bio");
+			}
 			switch(userType) {
 				case STUDENT :
 					//Getting student sub-type informations
-					sqlStatement = "SELECT forname, apprenticeship, internship FROM STUDENT WHERE email = ?";
+					sqlStatement = "SELECT forname, apprenticeship, internship, levelstudy, industry, startingdate, contractlen, diploma "
+								 + "FROM STUDENT "
+								 + "WHERE email = ?";
 					response = executeSQL(sqlStatement, new Object[] {email});
 					if (response.next()) {
 						forname = response.getString("forname");
 						apprenticeship = response.getInt("apprenticeship");
 						internship = response.getInt("internship");
+						levelstudy = response.getString("levelstudy");
+						industry = response.getString("industry");
+						startingdate = response.getDate("startingdate");
+						contractlen = response.getInt("contractlen");
+						diploma = response.getString("diploma");
 					}
 					//Getting student projects informations
 					projects = new ArrayList<>();
-					sqlStatement = "SELECT projectName, realisation_year FROM PROJECT WHERE email = ?";
+					sqlStatement = "SELECT projectName, projectBio, realisation_year FROM PROJECT WHERE email = ?";
 					response = executeSQL(sqlStatement, new Object[] {email});
 					while (response.next()) {
-						projects.add(new Project(response.getString("projectName"), response.getInt("realisation_year")));
-					}
-					//Getting student indstry informations
-					industries = new ArrayList<>();
-					sqlStatement = "SELECT id_Indsutry FROM concern WHERE email = ?";
-					response = executeSQL(sqlStatement, new Object[] {email});
-					while (response.next()) {
-						sqlStatement = "SELECT industryName FROM INDUSTRY WHERE id_Industry = ?";
-						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_Industry")});
-						if (response.next()) { industries.add(new Industry(response.getString("industryName"))); }
+						projects.add(new Project(response.getString("projectName"), response.getString("projectBio"), response.getInt("realisation_year")));
 					}
 					//Getting student school informations
 					schools = new ArrayList<>();
@@ -291,18 +272,9 @@ public class StudHuntData implements PersistentStudHunt {
 						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_School")});
 						if (response.next()) { schools.add(new School(response.getString("schoolName"))); }
 					}
-					user = new Student(userType, email, name, forname, apprenticeship, internship, password, projects, industries, schools);
+					user = new Student(email, name, forname, apprenticeship, internship, password, bio, industry, projects, schools);
 					break;
 				case COMPANY :
-					//Getting company indstry informations
-					industries = new ArrayList<>();
-					sqlStatement = "SELECT id_Indsutry FROM refer_to WHERE email = ?";
-					response = executeSQL(sqlStatement, new Object[] {email});
-					while (response.next()) {
-						sqlStatement = "SELECT industryName FROM INDUSTRY WHERE id_Industry = ?";
-						response = executeSQL(sqlStatement, new Object[] {response.getInt("id_Industry")});
-						if (response.next()) { industries.add(new Industry(response.getString("industryName"))); }
-					}
 					//Getting company job offer informations
 					jobOffers = new ArrayList<>();
 					sqlStatement = "SELECT offerType FROM JOB_OFFER WHERE email = ?";
@@ -310,7 +282,7 @@ public class StudHuntData implements PersistentStudHunt {
 					while (response.next()) {
 						jobOffers.add(new JobOffer(response.getInt("offerType")));
 					}
-					user = new Company(userType, email, name, password, jobOffers, industries);
+					user = new Company(email, name, password, bio, jobOffers);
 					break;
 			}
 		} catch (SQLException e) {
@@ -476,13 +448,23 @@ public class StudHuntData implements PersistentStudHunt {
 		return null;
 	}
 
+	/**
+	 * Create a project in the DB
+	 * 
+	 * @param email the user's email
+	 * @param projectName the project name
+	 * @param projectBio the project description
+	 * @param date the project date
+	 * 
+	 * @return true if the project has been well created
+	 */
 	@Override
-	public boolean createProject(String email, String projectName, int date) {
+	public boolean createProject(String email, String projectName, String projectBio, int date) {
 		String sqlStatement = null;
 
-		sqlStatement = "INSERT INTO PROJECT VALUES(?, ?)";
+		sqlStatement = "INSERT INTO PROJECT VALUES(?, ?, ?, ?, ?)";
 		try {
-			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_PROJECT_SEQ.NEXTVAL") + 1, projectName, date, email });
+			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_PROJECT_SEQ") + 1, projectName, projectBio, date, email });
 		} catch (SQLException addingProjectException) {
 			System.err.println(formatSQLError("adding a new project", sqlStatement));
 			addingProjectException.printStackTrace();
@@ -491,13 +473,27 @@ public class StudHuntData implements PersistentStudHunt {
 		return true;
 	}
 
+	/**
+	 * Create a job offer in the DB
+	 * 
+	 * @param offertype the type of offer
+	 * @param email the email of the company
+	 * @param apprenticeship if it's in apprenticeship
+	 * @param internship if it's in internship
+	 * @param levelstudy the level of study required
+	 * @param industry the industry domain
+	 * @param startingdate the starting date of the contract
+	 * @param contractlen the durantion of the contract
+	 * 
+	 * @return true if the job offer has been well created
+	 */
 	@Override
-	public boolean createJobOffer(String email, int offertype) {
+	public boolean createJobOffer(int offertype, String email, int apprenticeship, int internship, String levelstudy, String industry, Date startingdate, int contractlen) {
 		String sqlStatement = null;
 
-		sqlStatement = "INSERT INTO JOB_OFFER VALUES(?, ?, ?)";
+		sqlStatement = "INSERT INTO JOB_OFFER VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
-			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_JOBOFFER_SEQ.NEXTVAL") + 1, offertype, email });
+			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_JOBOFFER_SEQ") + 1, offertype, email , apprenticeship, internship, levelstudy, industry, startingdate, contractlen});
 		} catch (SQLException addingJobOfferException) {
 			System.err.println(formatSQLError("adding a new job offer", sqlStatement));
 			addingJobOfferException.printStackTrace();
@@ -506,28 +502,20 @@ public class StudHuntData implements PersistentStudHunt {
 		return true;
 	}
 
-	@Override
-	public boolean createIndustry(String name) {
-		String sqlStatement = null;
-
-		sqlStatement = "INSERT INTO INDUSTRY VALUES (?, ?)";
-		try {
-			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_INDUSTRY_SEQ.NEXTVAL") + 1, name });
-		} catch (SQLException addingIndustryException) {
-			System.err.println(formatSQLError("adding a new industry", sqlStatement));
-			addingIndustryException.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
+	/**
+	 * Create a school in the DB
+	 * 
+	 * @param name the school name
+	 * 
+	 * @return true if the school has been well created
+	 */
 	@Override
 	public boolean createSchool(String name) {
 		String sqlStatement = null;
 
 		sqlStatement = "INSERT INTO SCHOOL VALUES (?, ?)";
 		try {
-			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_SCHOOL_SEQ.NEXTVAL") + 1, name });
+			executeSQL(sqlStatement, new Object[] {getSequenceValue("ID_SCHOOL_SEQ") + 1, name });
 		} catch (SQLException addingSchoolException) {
 			System.err.println(formatSQLError("adding a new school", sqlStatement));
 			addingSchoolException.printStackTrace();
@@ -535,30 +523,14 @@ public class StudHuntData implements PersistentStudHunt {
 		}
 		return true;
 	}
-
-	/**
-	 * Get an user forname from the email
-	 * 
-	 * @param email the email used to find forname
-	 * 
-	 * @return the forname
-	 */
-	private String getUserForname(String email) {
-		String sqlStatement = null;
-		ResultSet response = null;
-		String forname = null;
-
-		sqlStatement = "SELECT forname FROM STUDENT WHERE email = ?";
-		try {
-			response = executeSQL(sqlStatement, new Object[] { email });
-			forname = response.next() ? response.getString("forname") : null;
-		} catch (SQLException userFornameException) {
-			System.err.println(formatSQLError("getting the user forname", sqlStatement));
-			userFornameException.printStackTrace();
-		}
-		return forname;
-	}
 	
+	/**
+	 * get the current value of a sequence in the DB
+	 * 
+	 * @param sequenceName the name of the sequence wanted
+	 * 
+	 * @return the sequence actual value
+	 */
 	private int getSequenceValue(String sequenceName) {
 		String sqlStatement = null;
 		int sequenceValue = 1;
@@ -573,6 +545,16 @@ public class StudHuntData implements PersistentStudHunt {
 		return sequenceValue;
 	}
 
+	/**
+	 * Execute any SQL request
+	 * 
+	 * @param sqlStatement the request
+	 * @param statementValues the list of values for the request
+	 * 
+	 * @return the response
+	 * 
+	 * @throws SQLException general SQL exception handled further
+	 */
 	private ResultSet executeSQL(String sqlStatement, Object[] statementValues) throws SQLException {
 		PreparedStatement query = null;
 		ResultSet response = null;
@@ -588,6 +570,14 @@ public class StudHuntData implements PersistentStudHunt {
 		return response;
 	}
 
+	/**
+	 * Format SQL error messages with the last command in error
+	 * 
+	 * @param message the message of the intended operation
+	 * @param sqlStatement the statement that failed
+	 * 
+	 * @return the formated string
+	 */
 	private String formatSQLError(String message, String sqlStatement) {
 		return "SQL error happened while " + message + "\n" + "SQL statement : " + sqlStatement;
 	}

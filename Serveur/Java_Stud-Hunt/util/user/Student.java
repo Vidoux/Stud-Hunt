@@ -1,5 +1,6 @@
 package util.user;
 
+import java.sql.Date;
 import java.util.List;
 
 import util.User;
@@ -9,17 +10,26 @@ public class Student extends User {
 	private String forname;
 	private int apprenticeship;
 	private int internship;
+	private String levelstudy;
+	private String industry;
+	private Date startingdate;
+	private int contractlen;
+	private String diploma;
 	private List<Project> projects;
 	private List<School> schools;
 	
-	public Student(UserTypes userType, String email, String name, String forname, int apprenticeship, int internship, String password, List<Project> projects, List<Industry> industries, List<School> schools) {
-		super(userType, email, name, password, industries);
+	public Student(String email, String name, String forname, String password) {
+		super(UserTypes.STUDENT, email, name, password);
+		this.forname = forname;
+	}
+	
+	public Student(String email, String name, String forname, int apprenticeship, int internship, String password, String bio, String industries,List<Project> projects, List<School> schools) {
+		super(UserTypes.STUDENT, email, name, password, bio);
 		this.forname = forname;
 		this.apprenticeship = apprenticeship;
 		this.internship = internship;
 		this.projects = projects;
 		this.schools = schools;
-		
 	}
 
 	public String getForname() {
@@ -44,6 +54,46 @@ public class Student extends User {
 
 	public void setInternship(int internship) {
 		this.internship = internship;
+	}
+
+	public String getLevelstudy() {
+		return levelstudy;
+	}
+
+	public void setLevelstudy(String levelstudy) {
+		this.levelstudy = levelstudy;
+	}
+
+	public String getIndustry() {
+		return industry;
+	}
+
+	public void setIndustry(String industry) {
+		this.industry = industry;
+	}
+
+	public Date getStartingdate() {
+		return startingdate;
+	}
+
+	public void setStartingdate(Date startingdate) {
+		this.startingdate = startingdate;
+	}
+
+	public int getContractlen() {
+		return contractlen;
+	}
+
+	public void setContractlen(int contractlen) {
+		this.contractlen = contractlen;
+	}
+
+	public String getDiploma() {
+		return diploma;
+	}
+
+	public void setDiploma(String diploma) {
+		this.diploma = diploma;
 	}
 
 	public List<Project> getProjects() {

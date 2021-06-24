@@ -8,9 +8,17 @@ import util.UserTypes;
 public class Company extends User {
 	private List<JobOffer> jobOffers;
 
-	public Company(UserTypes userType, String email, String name, String password, List<JobOffer> jobOffers, List<Industry> industries) {
-		super(userType, email, name, password, industries);
-		this.setJobOffers(jobOffers);
+	public Company(String email, String name, String password) {
+		super(UserTypes.COMPANY, email, name, password);
+	}
+	
+	public Company(String email, String name, String password, String bio) {
+		super(UserTypes.COMPANY, email, name, password, bio);
+	}
+	
+	public Company(String email, String name, String password, String bio, List<JobOffer> jobOffers) {
+		super(UserTypes.COMPANY, email, name, password);
+		this.jobOffers = jobOffers;
 	}
 
 	public List<JobOffer> getJobOffers() {
