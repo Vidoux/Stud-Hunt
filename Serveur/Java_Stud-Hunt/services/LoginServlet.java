@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import studhunt.StudHunt;
-import util.ConnectionInfos;
 import util.User;
+import util.UserTypes;
+
 
 
 /**
@@ -37,15 +38,16 @@ public class LoginServlet extends HttpServlet {
         System.out.println(login);
         System.out.println(password);
         try{
-            ConnectionInfos loginStatus = StudHunt.getInstance().getUserConnection(login, password);
-            System.out.println(loginStatus.toString());
-
+            UserTypes userType =  StudHunt.getInstance().getUserType(login);
             String message;
-            //TODO enlever le password de la variable session
-            User user = new User(login, password, loginStatus.getUserType());
+            if(userType == null){
+                message = "Utilisateur non reconnu...";
+                sendErrorPage(request,response, message);
+            }
+            User user =null;
+            user = StudHunt.getInstance().getUser(login, password);
 
-
-            if(!loginStatus.isValidPassword()){
+            if(user == null){
                 message = "Utilisateur non reconnu...";
                 sendErrorPage(request,response, message);
             }

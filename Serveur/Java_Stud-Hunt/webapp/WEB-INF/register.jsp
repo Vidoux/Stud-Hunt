@@ -56,14 +56,12 @@
                 <label>nom</label>
                 <input type="text" placeholder="nom" name="nom">
             </div>
-            <div class="field" id="prenom_register">
+            <div class="field invisibleDiv" id="prenom_register">
                 <label>prénom</label>
                 <input type="text" placeholder="prénom" name="prenom">
             </div>
-
-
-
         </div>
+
         <div class="inline two fields">
             <div class="field">
                 <label>adresse email (login de connexion)</label>
@@ -73,6 +71,21 @@
                 <label>mot de passe</label>
                 <input type="password" name="password">
             </div>
+<%--            <div class="grouped fields invisibleDiv" id="studentTypeCheckbox">--%>
+<%--                <label>Vous recherchez: </label>--%>
+<%--                <div class="field">--%>
+<%--                    <div class="ui slider checkbox" id="apprentice_checkbox">--%>
+<%--                        <input type="checkbox" name="typeStudent" value="apprentice">--%>
+<%--                        <label>Un Apprentissage</label>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <div class="field">--%>
+<%--                    <div class="ui slider checkbox" id="intern_checkbox">--%>
+<%--                        <input type="radio" name="typeStudent" value="intern">--%>
+<%--                        <label>Un Stage</label>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
         </div>
 
         <button class="big ui blue button" id="submitButton" type="submit">Enregister</button>

@@ -1,6 +1,12 @@
 package services;
 
 
+import studhunt.StudHunt;
+import util.User;
+import util.usercontent.Project;
+import util.userrefernces.School;
+import util.usertypes.Student;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Date;
+import java.util.List;
 
 
 /**
@@ -31,6 +39,8 @@ public class StudentInfoServlet extends HttpServlet {
             sendErrorPage(request, response, "Vous devez vous authentifier");
         }
 
+
+
     }
 
     /**
@@ -45,6 +55,29 @@ public class StudentInfoServlet extends HttpServlet {
         if(session.getAttribute("user") == null){
             this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
+        String tanguy = "Wesh";
+        Student user = (Student) session.getAttribute("user");
+
+        List<Project> projects = user.getProjects();
+        Project proj =null;
+        if(projects.size()>0){
+            proj = projects.get(0);
+        }
+        session.setAttribute("proj", proj );
+
+        List<School> schools = user.getSchools();
+        School school1 = null;
+        String schoolname ="";
+        if(schools.size()>0){
+            school1 = schools.get(0);
+            schoolname = school1.getSchoolName();
+        }
+        session.setAttribute("school", schoolname);
+
+
+        Date startingDate = user.getStartingdate();
+        String bio = user.getBio();
+        String name = user.getName();
         this.getServletContext().getRequestDispatcher( "/WEB-INF/student_info.jsp").forward( request, response );
     }
 

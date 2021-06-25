@@ -1,7 +1,7 @@
 package services;
 
 
-import persistantdata.User;
+import util.User;
 import util.UserTypes;
 
 import javax.servlet.ServletException;

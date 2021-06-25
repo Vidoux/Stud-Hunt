@@ -27,7 +27,7 @@
             </div>
             <div class="center aligned column">
                 <h4 class="ui inverted header">À propos</h4>
-                <p class="ui inverted">Cette application Web a été réalisée dnas le cadre de notre projet universitaire PJS4</p>
+                <p class="ui inverted">Cette application Web a été réalisée dans le cadre de notre projet universitaire PJS4</p>
             </div>
         </div>
     </div>

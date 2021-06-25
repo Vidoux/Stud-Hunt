@@ -36,6 +36,7 @@ $('#student_checkbox')
     .checkbox({
     onChecked: function() {
         document.getElementById("prenom_register").classList.remove("invisibleDiv");
+        // document.getElementById("studentTypeCheckbox").classList.remove("invisibleDiv");
         console.log("unchecked");
     },
 });
@@ -44,9 +45,12 @@ $('#company_checkbox')
     .checkbox({
         onChecked: function() {
             document.getElementById("prenom_register").classList.add("invisibleDiv");
+            // document.getElementById("studentTypeCheckbox").classList.add("invisibleDiv");
             console.log("unchecked");
         },
     });
+
+
 
 //---------------------Image Upload-----------------------------
 

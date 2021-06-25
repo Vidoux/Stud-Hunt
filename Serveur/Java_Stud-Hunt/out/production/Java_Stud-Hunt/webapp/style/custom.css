@@ -74,6 +74,18 @@ strong {
     max-height: 400px;
 }
 
+/*-----------------------main_page-------------------------------*/
+.pusher{
+    background-color: #FFF !important;
+}
+
+.pusher .headerSegment{
+    padding-top: 150px !important;
+    padding-bottom: 50px !important;
+    background-color: rgb(73, 150, 189) !important;
+}
+/*------------------------------------------------------*/
+
 
 
 
@@ -183,4 +195,6 @@ strong {
         transform: translate3d(100%, 0, 0);
     }
 }
+
+
 

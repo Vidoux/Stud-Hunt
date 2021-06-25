@@ -1,8 +1,7 @@
 package services;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import studhunt.StudHunt;
-import util.Pair;
-import util.StudentInfos;
-import util.UserTypes;
+
+import util.User;
+
+import util.usertypes.Company;
+import util.usertypes.Student;
 
 /**
  * Servlet d'enregistrement d'un nouvel utilisateur
@@ -38,15 +39,13 @@ public class RegisterServlet extends HttpServlet {
 
         if(!password.equals("") && !email.equals("") && !nom.equals("") && !type.equals("")){
             try {
+                User user = null;
                 if(type.equals("student")){
-                    List<Pair> infos = new ArrayList<>();
-        			infos.add(new Pair(StudentInfos.FORNAME, prenom));
-        			infos.add(new Pair(StudentInfos.APPRENTICESHIP, 0));
-        			infos.add(new Pair(StudentInfos.INTERNSHIP, 0));
-                    StudHunt.getInstance().createUser(email, nom, password, UserTypes.STUDENT, null, infos);
+                    user = new Student(email, nom, prenom, password);
                 }else{
-                    StudHunt.getInstance().createUser(email, nom, password, UserTypes.COMPANY, null, null);
+                    user = new Company(email, nom, password);
                 }
+                StudHunt.getInstance().createUser(user);
             }catch(Exception e) {
                 sendErrorPage(request, response, "error while creating the user in the database, please retry" + e);
             }
