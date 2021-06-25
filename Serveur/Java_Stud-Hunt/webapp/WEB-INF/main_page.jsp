@@ -12,7 +12,7 @@
     <title>Stud-Hunt</title>
 </head>
 
-<body id="loginBody">
+<body>
 <%@include file="header.jsp"%>
 
 <div class="pusher">
@@ -26,58 +26,87 @@
 
     </div>
 
-    <div class="ui vertical stripe segment">
+    <div class="ui center aligned vertical stripe segment" id="droite">
         <div class="ui middle aligned stackable grid container">
             <div class="row">
                 <div class="eight wide column">
-                    <h3 class="ui header">We Help Companies and Companions</h3>
-                    <p>We can give your company superpowers to do things that they never thought possible. Let us delight your customers and empower your needs...through pure data analytics.</p>
-                    <h3 class="ui header">We Make Bananas That Can Dance</h3>
-                    <p>Yes that's right, you thought it was the stuff of dreams, but even bananas can be bioengineered.</p>
+                    <h2 class="ui blue header">Une aide aux entreprises et aux etudiants dans leurs recherches</h2>
+                    <p>Nous savons à quel point il est important pour vous d'avoir le collabotateur le plus adapté au valeurs de votre entreprise. Et a quel point il est important pour un salarié de se sentir valorisé par les missions confiés et réalisées</p>
                 </div>
                 <div class="six wide right floated column">
-                    <img src="assets/images/wireframe/white-image.png" class="ui large bordered rounded image">
+                    <img src="./img/loupe.png" class="ui centered small rounded image">
                 </div>
             </div>
             <div class="row">
                 <div class="center aligned column">
-                    <a class="ui huge button">Check Them Out</a>
+                    <a class="ui huge teal button" href="./register">Commencer</a>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <div class="ui vertical stripe quote segment">
+    <div class="ui center aligned vertical stripe quote segment" id="gauche">
+        <H2 class="blue centered">Quelques avis</H2>
         <div class="ui equal width stackable internally celled grid">
             <div class="center aligned row">
+
                 <div class="column">
-                    <h3>"What a Company"</h3>
-                    <p>That is what they all say about us</p>
+                    <h3>"Quelle site ! Après 5 mois de recherche j'ai trouvé à peine en 1 semaine avec ce site."</h3>
+                    <p>M.Lopez</p>
                 </div>
                 <div class="column">
-                    <h3>"I shouldn't have gone with their competitor."</h3>
-                    <p>
-                        <img src="assets/images/avatar/nan.jpg" class="ui avatar image"> <b>Nan</b> Chief Fun Officer Acme Toys
-                    </p>
+                    <h3>"J'ai pu trouver mon stage de fin d'études sans rien faire, c'est l'entreprise qui est venue à moi"</h3>
+                    <p>M.Sacko</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="ui vertical stripe segment">
-        <div class="ui text container">
-            <h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
-            <p>Instead of focusing on content creation and hard work, we have learned how to master the art of doing nothing by providing massive amounts of whitespace and generic content that can seem massive, monolithic and worth your attention.</p>
-            <a class="ui large button">Read More</a>
-            <h4 class="ui horizontal header divider">
-                <a href="#">Case Studies</a>
-            </h4>
-            <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
-            <p>Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
-            <a class="ui large button">I'm Still Quite Interested</a>
+    <div class="ui center aligned vertical stripe segment" id="droite">
+        <div class="ui middle aligned stackable grid container">
+            <div class="row">
+                <div class="eight wide column">
+                    <h2 class="ui blue header">Ne perdez plus votre temps</h2>
+                    <p>On sait que votre temps est précieux, notre algorithme se charge pour vous de mettre en relation entreprise et étudiants avec une efficacité optimale.</p>
+                    <!-- <h3 class="ui header">Tout le monde à sa chance</h3>
+                    <p>Nos mises en relation se fait de manière non discriminatoire, peu importe vos particularités ou d'où vous venez</p> -->
+                </div>
+                <div class="six wide right floated column">
+                    <img src="./img/sablier.svg" class="ui centered small rounded image">
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="center aligned column">
+                    <a class="ui huge button">Commencer</a>
+                </div>
+            </div> -->
         </div>
     </div>
+
+    <div class="ui center aligned vertical stripe segment" id="gauche">
+        <div class="ui middle aligned stackable grid container">
+            <div class="row">
+                <div class="eight wide column">
+                    <h2 class="ui blue header">Venez comme vous êtes</h2>
+                    <h2 class="ui blue header">Tout le monde à sa chance</h2>
+                    <p>Nos mises en relation se font de manière non discriminatoire, peu importe vos particularités ou d'où vous venez, vous avez votre opportunité à portée de main.</p>
+                </div>
+                <div class="six wide right floated column">
+                    <img src="./img/trefle.svg" class="ui centered small rounded image">
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="center aligned column">
+                    <a class="ui huge button">Commencer</a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+
+
+
 
 
 </div>
