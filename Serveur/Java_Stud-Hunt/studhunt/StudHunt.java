@@ -158,4 +158,82 @@ public class StudHunt {
 	public boolean createSchool(String name) {
 		return instance.data.createSchool(name);
 	}
+	
+	/**
+	 * Delete a user and it's dependencies
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteUser(String email) {
+		return instance.data.deleteUser(email);
+	}
+
+	/**
+	 * Delete a CV
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteCV(String email) {
+		return instance.data.deleteCV(email);
+	}
+
+	/**
+	 * Delete a profile picture
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteProfilePicture(String email) {
+		return instance.data.deleteProfilePicture(email);
+	}
+
+	/**
+	 * Delete a project
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteProject(String email) {
+		return instance.data.deleteProject(email);
+	}
+
+	/**
+	 * Delete a job offer
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteJobOffer(String email) {
+		return instance.data.deleteJobOffer(email);
+	}
+
+	/**
+	 * Delete a school
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteSchool(int id_School) {
+		return instance.data.deleteSchool(id_School);
+	}
+
+	/**
+	 * Delete a school association with student
+	 * 
+	 * @param id_School the school associated
+	 * @param email     the student
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteSchoolStudentAssociation(int id_School, String email) {
+		return instance.data.deleteSchoolStudentAssociation(id_School, email);
+	}
 }

@@ -119,4 +119,68 @@ public interface PersistentStudHunt {
 	 * @return true if the school has been well created
 	 */
 	boolean createSchool(String name);
+
+	/**
+	 * Delete a user and it's dependencies
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteUser(String email);
+
+	/**
+	 * Delete a CV
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteCV(String email);
+
+	/**
+	 * Delete a profile picture
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteProfilePicture(String email);
+
+	/**
+	 * Delete a project
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteProject(String email);
+
+	/**
+	 * Delete a job offer
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteJobOffer(String email);
+
+	/**
+	 * Delete a school
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteSchool(int id_School);
+
+	/**
+	 * Delete a school association with student
+	 * 
+	 * @param id_School the school associated
+	 * @param email     the student
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteSchoolStudentAssociation(int id_School, String email);
 }
