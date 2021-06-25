@@ -58,6 +58,28 @@ public class StudHunt {
 	}
 
 	/**
+	 * Get the user type of a given email
+	 * 
+	 * @param email the email to serch for
+	 * 
+	 * @return the user type
+	 */
+	public UserTypes getUserType(String email) {
+		return instance.data.getUserType(email);
+	}
+
+	/**
+	 * Delete a user and it's dependencies
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteUser(String email) {
+		return instance.data.deleteUser(email);
+	}
+
+	/**
 	 * Get the CV associated with the user if it exist
 	 * 
 	 * @param email the email of the user
@@ -78,6 +100,17 @@ public class StudHunt {
 	 */
 	public boolean setCV(String email, byte[] cv) {
 		return instance.data.setCV(email, cv);
+	}
+
+	/**
+	 * Delete a CV
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteCV(String email) {
+		return instance.data.deleteCV(email);
 	}
 
 	/**
@@ -104,14 +137,14 @@ public class StudHunt {
 	}
 
 	/**
-	 * Get the user type of a given email
+	 * Delete a profile picture
 	 * 
-	 * @param email the email to serch for
+	 * @param email email of the user
 	 * 
-	 * @return the user type
+	 * @return true if deleted
 	 */
-	public UserTypes getUserType(String email) {
-		return instance.data.getUserType(email);
+	boolean deleteProfilePicture(String email) {
+		return instance.data.deleteProfilePicture(email);
 	}
 
 	/**
@@ -126,6 +159,31 @@ public class StudHunt {
 	 */
 	public boolean createProject(String email, String projectName, String projectBio, int date) {
 		return instance.data.createProject(email, projectName, projectBio, date);
+	}
+
+	/**
+	 * Uptade project values
+	 * 
+	 * @param email       the email of the owner
+	 * @param projectName the new project name
+	 * @param projectBio  the new project bio
+	 * @param date        the new realisation year
+	 * 
+	 * @return true if updated
+	 */
+	boolean updateProject(String email, String projectName, String projectBio, String date) {
+		return instance.data.updateProject(email, projectName, projectBio, date);
+	}
+
+	/**
+	 * Delete a project
+	 * 
+	 * @param email email of the user
+	 * 
+	 * @return true if deleted
+	 */
+	boolean deleteProject(String email) {
+		return instance.data.deleteProject(email);
 	}
 
 	/**
@@ -149,58 +207,23 @@ public class StudHunt {
 	}
 
 	/**
-	 * Create a school in the DB
+	 * Update a job offer in the DB
 	 * 
-	 * @param name the school name
+	 * @param offerType      the type of offer
+	 * @param email          the email of the company
+	 * @param apprenticeship if it's in apprenticeship
+	 * @param internship     if it's in internship
+	 * @param levelstudy     the level of study required
+	 * @param industry       the industry domain
+	 * @param startingdate   the starting date of the contract
+	 * @param contractlen    the durantion of the contract
 	 * 
-	 * @return true if the school has been well created
+	 * @return true if the job offer has been well updated
 	 */
-	public boolean createSchool(String name) {
-		return instance.data.createSchool(name);
-	}
-	
-	/**
-	 * Delete a user and it's dependencies
-	 * 
-	 * @param email email of the user
-	 * 
-	 * @return true if deleted
-	 */
-	boolean deleteUser(String email) {
-		return instance.data.deleteUser(email);
-	}
-
-	/**
-	 * Delete a CV
-	 * 
-	 * @param email email of the user
-	 * 
-	 * @return true if deleted
-	 */
-	boolean deleteCV(String email) {
-		return instance.data.deleteCV(email);
-	}
-
-	/**
-	 * Delete a profile picture
-	 * 
-	 * @param email email of the user
-	 * 
-	 * @return true if deleted
-	 */
-	boolean deleteProfilePicture(String email) {
-		return instance.data.deleteProfilePicture(email);
-	}
-
-	/**
-	 * Delete a project
-	 * 
-	 * @param email email of the user
-	 * 
-	 * @return true if deleted
-	 */
-	boolean deleteProject(String email) {
-		return instance.data.deleteProject(email);
+	boolean updateJobOffer(int offerType, String email, int apprenticeship, int internship, int levelstudy,
+			String industry, Date startingdate, int contractlen) {
+		return instance.data.updateJobOffer(offerType, email, apprenticeship, internship, levelstudy, industry,
+				startingdate, contractlen);
 	}
 
 	/**
@@ -212,6 +235,29 @@ public class StudHunt {
 	 */
 	boolean deleteJobOffer(String email) {
 		return instance.data.deleteJobOffer(email);
+	}
+
+	/**
+	 * Create a school in the DB
+	 * 
+	 * @param name the school name
+	 * 
+	 * @return true if the school has been well created
+	 */
+	public boolean createSchool(String name) {
+		return instance.data.createSchool(name);
+	}
+
+	/**
+	 * Update a school
+	 * 
+	 * @param id_School  the id of the school
+	 * @param schoolName the school new name
+	 * 
+	 * @return true if updated
+	 */
+	boolean updateSchool(int id_School, String schoolName) {
+		return instance.data.updateSchool(id_School, schoolName);
 	}
 
 	/**
