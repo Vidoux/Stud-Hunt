@@ -133,7 +133,7 @@ INSERT INTO is_part_of
 VALUES (ID_SCHOOL_SEQ.CURRVAL, 'tanguy.vidal@etu.u-paris.fr');
 
 INSERT INTO APP_USER 
-VALUES ('frederic.lopez@etu.u-paris.fr', 'LOPEZ', '0', 'Le meilleur en voitures');
+VALUES ('frederic.lopez@etu.u-paris.fr', 'LOPEZ', '0jesaisplusFL', 'Le meilleur en voitures');
 INSERT INTO STUDENT
 VALUES ('frederic.lopez@etu.u-paris.fr', 'Frederic', 1, 1, 1, 'Automobile', TO_DATE('05/06/2025', 'DD/MM/YYYY'), 120, 'Dimplome Carglass');
 INSERT INTO PROJECT
@@ -144,7 +144,7 @@ INSERT INTO is_part_of
 VALUES (ID_SCHOOL_SEQ.CURRVAL, 'frederic.lopez@etu.u-paris.fr');
 
 INSERT INTO APP_USER 
-VALUES ('julien.sacko@etu.u-paris.fr', 'SACKO', '0', 'Le meilleur en Essonne');
+VALUES ('julien.sacko@etu.u-paris.fr', 'SACKO', '0risorangisJS', 'Le meilleur en Essonne');
 INSERT INTO STUDENT
 VALUES ('julien.sacko@etu.u-paris.fr', 'Julien', 0, 0, 0, 'Rap', TO_DATE('25/06/2021', 'DD/MM/YYYY'), 6, 'Chouf a Evry');
 INSERT INTO PROJECT
