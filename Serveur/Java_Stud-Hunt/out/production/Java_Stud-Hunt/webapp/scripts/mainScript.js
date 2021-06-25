@@ -7,6 +7,10 @@ function activateStudentForm(){
     for (let i=0; i< inputs.length; ++i){
         inputs[i].style.pointerEvents = "auto";
     }
+    let textareas = document.getElementsByTagName("textarea");
+    for (let i=0; i< textareas.length; ++i){
+        textareas[i].style.pointerEvents = "auto";
+    }
     document.getElementById("change_profil").className += " loading disabled";
 
     document.getElementById("submitButton").classList.remove("invisibleDiv");

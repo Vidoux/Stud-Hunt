@@ -84,7 +84,7 @@
                             <input type="text" name="nom" placeholder="Nom" value="${sessionScope.user.getName()}">
                         </div>
                         <div class="field">
-                            <input type="text" name="prénom" placeholder="Prénom" value="${sessionScope.user.getForname()}">
+                            <input type="text" name="prenom" placeholder="Prénom" value="${sessionScope.user.getForname()}">
                         </div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                     <label>Nom de la formation</label>
                     <!--<div class="sixteen fields">-->
                     <div class="field">
-                        <input type="text" name="nomdiplôme" placeholder="Nom du dîplome" value="${sessionScope.user.getDiploma()}">
+                        <input type="text" name="nomdiplome" placeholder="Nom du dîplome" value="${sessionScope.user.getDiploma()}">
                     </div>
                     <div class="field">
                       <input type="text" name="ecole" placeholder="Ecole" value="${sessionScope.school}">
@@ -125,7 +125,7 @@
                 <div class="fields">
                     <div class="ten wide field">
                         <label>Secteur</label>
-                        <input type="text" name="Secteur" placeholder="Secteur" value="${sessionScope.user.getIndustry()}">
+                        <input type="text" name="secteur" placeholder="Secteur" value="${sessionScope.user.getIndustry()}">
                     </div>
                 </div>
 
@@ -176,7 +176,10 @@
                 <div class="ui form">
                     <div class="field">
                         <label>Présente toi</label>
-                        <textarea placeholder="Présente toi en quelques mots max 500 caractères (les entreprises verront cette partie donnez leurs envies de t'embaucher)" maxlength="500" value="${sessionScope.user.getBio()}"></textarea>
+                        <input type="text"
+                               placeholder="Présente toi en quelques mots max 500 caractères (les entreprises verront cette partie donnez leurs envies de t'embaucher)"
+                               maxlength="500" name="bio"
+                               value="${sessionScope.user.getBio()}">
                     </div>
                 </div>
                 <br>
@@ -186,19 +189,19 @@
                     <div class="two fields">
                         <div class="field">
 
-                            <input type="text" name="nom" placeholder="Nom" value="<c:if test="${ sessionScope.proj != null }">
+                            <input type="text" name="nom_projet" placeholder="Nom" value="<c:if test="${ sessionScope.proj != null }">
                         ${sessionScope.proj.getProjectName()}
                     </c:if>">
                         </div>
                         <div class="field">
-                            <input type="number" name="DateDiplôme" value="<c:if test="${ sessionScope.proj != null }">
+                            <input type="number" name="annee-projet" value="<c:if test="${ sessionScope.proj != null }">
                         ${sessionScope.proj.getRealisation_year()}
                     </c:if>">
                         </div>
                     </div>
-                    <textarea  placeholder="<c:if test="${ sessionScope.proj != null }">
+                    <input type="text" value="<c:if test="${ sessionScope.proj != null }">
                         ${sessionScope.proj.getProjectBio()}
-                    </c:if>"></textarea>
+                    </c:if>" name="bio_projet">
                 </div>
 
                 <button class="big ui blue button invisibleDiv" id="submitButton" type="submit">Valider</button>

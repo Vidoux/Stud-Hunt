@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,12 +36,41 @@ public class StudentInfoServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        Student user = (Student) session.getAttribute("user");
         if((session.getAttribute("user") == null)){
             sendErrorPage(request, response, "Vous devez vous authentifier");
         }
 
+        String schoolName = request.getParameter("ecole");
+        School school = new School(schoolName);
+        List<School> schoolList = new ArrayList<School>();
+        schoolList.add(school);
 
+        user.setName(request.getParameter("nom"));
+        user.setForname(request.getParameter("prenom"));
+        user.setDiploma(request.getParameter("nomdiplome"));
+        user.setSchools(schoolList);
+        user.setIndustry(request.getParameter("secteur"));
+        user.setBio(request.getParameter("bio"));
 
+        String projectName = request.getParameter("nom_projet");
+
+        int projectDate = 0;
+        if(request.getParameter("annee-projet") != ""){
+            projectDate = Integer.parseInt(request.getParameter("annee-projet"));
+        }
+
+        String bioProjet = request.getParameter("bio_projet");
+
+        Project proj = new Project(projectName, bioProjet, projectDate);
+        List<Project> projectList = new ArrayList<>();
+        projectList.add(proj);
+        user.setProjects(projectList);
+        System.out.println("Information entered");
+        System.out.println(StudHunt.getInstance().updateUser(user));
+        System.out.println("effectivement");
+        System.out.println(user.toString());
+        this.getServletContext().getRequestDispatcher( "/WEB-INF/student_info.jsp").forward( request, response );
     }
 
     /**
@@ -55,7 +85,6 @@ public class StudentInfoServlet extends HttpServlet {
         if(session.getAttribute("user") == null){
             this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
-        String tanguy = "Wesh";
         Student user = (Student) session.getAttribute("user");
 
         List<Project> projects = user.getProjects();
@@ -78,6 +107,7 @@ public class StudentInfoServlet extends HttpServlet {
         Date startingDate = user.getStartingdate();
         String bio = user.getBio();
         String name = user.getName();
+
         this.getServletContext().getRequestDispatcher( "/WEB-INF/student_info.jsp").forward( request, response );
     }
 

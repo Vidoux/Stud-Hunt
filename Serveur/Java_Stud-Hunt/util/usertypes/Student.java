@@ -118,4 +118,20 @@ public class Student extends User {
 	public void setSchools(List<School> schools) {
 		this.schools = schools;
 	}
+
+	@Override
+	public String toString() {
+		return "Student{" +
+				"forname='" + forname + '\'' +
+				", apprenticeship=" + apprenticeship +
+				", internship=" + internship +
+				", levelstudy=" + levelstudy +
+				", industry='" + industry + '\'' +
+				", startingdate=" + startingdate +
+				", contractlen=" + contractlen +
+				", diploma='" + diploma + '\'' +
+				", projects=" + projects +
+				", schools=" + schools +
+				'}';
+	}
 }

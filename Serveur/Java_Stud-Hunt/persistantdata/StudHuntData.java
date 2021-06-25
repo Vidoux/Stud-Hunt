@@ -192,9 +192,9 @@ public class StudHuntData implements PersistentStudHunt {
 					 + "WHERE email = ?";
 		try {
 			executeSQL(sqlStatement,
-					new Object[] { student.getEmail(), student.getForname(), student.getApprenticeship(),
+					new Object[] { student.getForname(), student.getApprenticeship(),
 							student.getInternship(), student.getLevelstudy(), student.getIndustry(),
-							student.getStartingdate(), student.getContractlen(), student.getDiploma() });
+							student.getStartingdate(), student.getContractlen(), student.getDiploma(),student.getEmail() });
 			return true;
 		} catch (SQLException e) {
 			System.err.println(formatSQLError("updating the student", sqlStatement));
